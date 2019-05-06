@@ -56,9 +56,9 @@ Einfach übersetzt zielt LOD auf öffentlich zugängliche Daten ab, die unterein
 
 \paragraph{Zwei Anwendungsfälle für RDF im Geschichtswissenschaftlichen Kontext}
 
-Verbund verschiedener Kontexte
+Ein erster Anwendungsfall, von dem geisteswissenschaftliche Wissensbasen profitieren können, ist oben bereits kurz angedeutet worden: das Verbinden einer eigenen Wissensbasis mit externen, bereits bestehenden Wissensbasen. Das Erforschen und Erkunden von Wissen benötigt generell in jeglichem Kontext sehr viel Zeit und ebenfalls Pflege der Daten. Daher kommt diesem Anwendungsfall der LOD Gedanke entgegen, da bereits erstellte Wissensbasen und deren Datenbanken öffentlich zugänglich sind.
 
-Erschliessen bisher unbekannten Verbindungen
+Gerade generelle Themen oder Kontexte wie Personen, Städte oder Orte werden in vielen geschichtswissenschaftlichen Projekten benötigt, und gerade diese sind in öffentlichen Datenbanken zugänglich. Daher ist es für diese Anwendungsfälle sinnvoll, den eigens entwickelten Anwendungsfall an diese Datenbanken zu knüpfen. Dadurch wird der eigene Zeitaufwand erheblich reduziert und die angebundenen Daten genießen in der Regel außerdem einen hohen Standard, da bereits viele potenzielle Reviews von anderen Nutzern bestehen.
 
 Ein zweiter großer Vorteil davon, geschichtswissenschaftliche Daten in Form von Metadaten und RDF zu persistieren, ist das mögliche Erschließen von vorher nicht bekannten oder erforschten Zusammenhänge der persistierten Objekte. Dazu folgendes (frei erfundenes) Beispiel: Ausgehend von der eigenen Wissensbasis, die die Daten aus \autoref{fig:statements} enthält, sollen nun zwei weitere Wissensbasen angekoppelt werden, welche auf der einen Seite weitere Informationen über Personen und vor allem deren familiärer Beziehungen beinhaltet, und auf der anderen Seite eine Wissensbasis, die mehr Informationen über Gebäude und deren Geschichte beinhaltet. Dies ist in \autoref{fig:extendedStatements} visualisiert.
 
@@ -72,13 +72,25 @@ In dem Beispiel beinhaltet die eigene Wissensbasis Informationen über \q{Peter}
 
 Dadurch erweitern die beiden externen Wissensbasen die eigenen Informationen durch die neu erstellten Relationen. Darüber hinaus jedoch lässt sich so ebenfalls eine neue Erkenntnis in den Daten schliessen: sowohl \q{Peter} als auch dessen \q{Großvater} sind direkt oder indirekt am Bau des \q{Steinschlosses} beteiligt.
 
-\paragraph{Das CIDOC CRM}
+\paragraph{Das Contextual Reference Model - CIDOC CRM}
 
-blub
+Bisher war die technische Beschreibung der semantischen Daten im ViSIT Kontext aus Gründen der Einfachheit sehr flach gehalten. Gemäß den Semantic Web Standards basieren die Metadaten jedoch auf einem Datenmodell, um die Anforderungen des Semantic Webs zu genügen und ebenfalls technische Verabeitbarkeit zu gewährleisten.
+
+In ViSIT ist die Wahl hierbei auf das \textbf{Contextual Reference Model CIDOC CRM} \cite{CIDOC-Doerr-2003} gefallen, da dies eine der bekanntesten und vorherrschendsten Ontologien im Bereich des kulturellen Erbes ist. Diese Ontologie wird als Basis benutzt, die im folgenden Paragraphen erweitert für den ViSIT Kontext beschrieben wird. Der größte Vorteil dieser Ontologie ist, dass sie sich nicht auf einen speziellen Bereich des kulturellem Erbes fokussiert ist, sondern auf generische Weise komplexe Zusammenhänge und verschiedene Themengebiete abbildet. Zudem solle es möglich sein, andere Ontologien oder Modelle aus dem selben Bereich in diese Ontologie zu überführen, um eine gemeinsam verständliche Wissensbasis zu kreieren.
+
+Das CIDOC CRM wird seit mittlerweile über 10 Jahren von der CIDOC Documentation Standards Working Group\footnote{\url{http://network.icom.museum/cidoc/working-groups/overview/}} und der CIDOC CRM SIG\footnote{\url{http://network.icom.museum/cidoc/working-groups/crm-special-interest-group/}} entwickelt, welche beide Arbeitsgruppen von CIDOC\footnote{\url{http://network.icom.museum/cidoc/}} sind. Das CIDOC CRM ist 2000 als \q{Working Draft} bei der ISO/TC46/SC4\footnote{\url{https://www.iso.org/committee/48798.html}} akzeptiert worden, welcher 2006 schliesslich auch als offizieller Standard \cite{CIDOCCRM-iso21127:2006} akzeptiert wurde, und 2014 in eine überarbeitete Version \cite{CIDOCCRM-iso21127:2014} überführt wurde.
+
+In der aktuellen Hauptversion 6.2\footnote{\url{http://www.cidoc-crm.org/Version/version-6.2}}, die im Mai 2015 veröffentlicht wurde, enthält die Ontologie 89 RDF Klassen und 149 einzigartige Relationen und Eigenschaften, die sich in einer mehrfach ineinander- sowie auseinander verzweigenden Struktur einordnen. Laufend werden ebenfalls Nebenversionen veröffentlicht - die aktuellste Versionsnummer lautet 6.2.3\footnote{\url{http://www.cidoc-crm.org/Version/version-6.2.3}}.
 
 \paragraph{Das ViSIT Model - VisMo}
 
-blub
+
+
+------------------------------
+
+vismo tut genau das, wofür CIDOC entwickelt wurde: den eigenen use case auf das generische CIDOC CRM abbilden
+
+dadurch gewährleistet ist, dass externe leser des modells dieses "intuitiv" verstehen/lesen/benutzen können
 
 \subsection{Technische Details zur Semantischen Datenbank}\label{sec:technicalBackground}
 

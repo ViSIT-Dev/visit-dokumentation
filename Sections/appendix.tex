@@ -1,0 +1,851 @@
+\section{Appendix}\label{sec:appendix}
+
+\begin{lstlisting}[caption={VisMo Ontologie in der letzten (englischen) Version.},label={lst:vismo},captionpos=b,language=xml]
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://visit.de/ontologies/vismo/"
+     xml:base="http://visit.de/ontologies/vismo/"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:ns="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:wot="http://xmlns.com/wot/0.1/"
+     xmlns:foaf="http://xmlns.com/foaf/0.1/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <owl:Ontology rdf:about="http://visit.de/ontologies/vismo/">
+        <owl:versionIRI rdf:resource="http://visit.de/ontologies/vismo/0.4.5/"/>
+        <owl:imports rdf:resource="http://erlangen-crm.org/170309/"/>
+        <owl:imports rdf:resource="http://xmlns.com/foaf/0.1/"/>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/containsEntry -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/containsEntry">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://visit.de/ontologies/vismo/isEntryIn"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Reference"/>
+        <rdfs:range rdf:resource="http://visit.de/ontologies/vismo/ReferenceEntry"/>
+        <rdfs:comment>Reference from a vismo:Reference to a contained vismo:ReferenceEntry.</rdfs:comment>
+        <rdfs:label>contains entry</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/employsTraderoute -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/employsTraderoute">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://visit.de/ontologies/vismo/forTrade"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Trade"/>
+        <rdfs:range rdf:resource="http://visit.de/ontologies/vismo/Traderoute"/>
+        <rdfs:comment>Refers from a vismo:Trade to the vismo:TradeRoute that the trade is fullfilled on.</rdfs:comment>
+        <rdfs:label>employs traderoute</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/endLocation -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/endLocation">
+        <rdfs:subPropertyOf rdf:resource="http://visit.de/ontologies/vismo/routeLocation"/>
+        <rdfs:comment>Refers from a traderoute to the vismo:City that represents the ending point for the route.</rdfs:comment>
+        <rdfs:label>end location</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/entryIsAbout -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/entryIsAbout">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://visit.de/ontologies/vismo/referencedByEntry"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/ReferenceEntry"/>
+        <rdfs:range rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:comment>Reference from a vismo:ReferenceEntry to a vismo:Resource, associating the describing nature of the associated vismo:Reference.</rdfs:comment>
+        <rdfs:label>entry is about</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/forTrade -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/forTrade">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Traderoute"/>
+        <rdfs:range rdf:resource="http://visit.de/ontologies/vismo/Trade"/>
+        <rdfs:comment>Refers from a vismo:TradeRoute to the vismo:Trade resource that illustrates the trading on the given route.</rdfs:comment>
+        <rdfs:label>for trade</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/hasDigitalRepresentation -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/hasDigitalRepresentation">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://visit.de/ontologies/vismo/representsDigitally"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:range rdf:resource="http://visit.de/ontologies/vismo/DigitalRepresentation"/>
+        <rdfs:comment>Links from a vismo:Resource (so an object that can be further specified in the ViSIT context) to a digital representation of it, e.g. a picture that shows the respective resource, a 3D model, etc.</rdfs:comment>
+        <rdfs:label>has digital representation</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/interactionSource -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/interactionSource">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/MiscellaneousInteraction"/>
+        <rdfs:range rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:label>interaction source</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/interactionTarget -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/interactionTarget">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:range rdf:resource="http://visit.de/ontologies/vismo/MiscellaneousInteraction"/>
+        <rdfs:label>interaction target</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/interstation -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/interstation">
+        <rdfs:subPropertyOf rdf:resource="http://visit.de/ontologies/vismo/routeLocation"/>
+        <rdfs:comment>Refers from a traderoute to the vismo:City that represents a interstation for the route.</rdfs:comment>
+        <rdfs:label>interstation</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/isEntryIn -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/isEntryIn">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/ReferenceEntry"/>
+        <rdfs:range rdf:resource="http://visit.de/ontologies/vismo/Reference"/>
+        <rdfs:comment>Reference from a vismo:ReferenceEntry to its encompassing vismo:Resource.</rdfs:comment>
+        <rdfs:label>is entry in</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/partOfTradeRoute -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/partOfTradeRoute">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://visit.de/ontologies/vismo/routeLocation"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Place"/>
+        <rdfs:range rdf:resource="http://visit.de/ontologies/vismo/Traderoute"/>
+        <rdfs:comment>Refers from a vismo:City to a/multiple vismo:TradeRoute resource, indicating the given city is part of a trade route and therefore its associated trade.</rdfs:comment>
+        <rdfs:label>part of trade route</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/reference -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/reference">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://visit.de/ontologies/vismo/referencedBy"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:range rdf:resource="http://visit.de/ontologies/vismo/Reference"/>
+        <rdfs:comment>Issues that the referenced vismo:Reference contains further and descriptive information about the given vismo:Resource entity.</rdfs:comment>
+        <rdfs:label>reference</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/referencedBy -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/referencedBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Reference"/>
+        <rdfs:range rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:comment>Refers to the vismo:Resource entities that reference this vismo:Reference and therefore this entity contains further and descriptive information about the resource entities.</rdfs:comment>
+        <rdfs:label>referenced by</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/referencedByEntry -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/referencedByEntry">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:range rdf:resource="http://visit.de/ontologies/vismo/ReferenceEntry"/>
+        <rdfs:comment>Reference from a vismo:Resource to a given vismo:ReferenceEntry, indicating that the associated vismo:Reference contains information about the former.</rdfs:comment>
+        <rdfs:label>referenced by entry</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/representsDigitally -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/representsDigitally">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/DigitalRepresentation"/>
+        <rdfs:range rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:comment>Refers from a given digital representation (a picture, 3D model, etc.) back to the vismo:Resource that it originally represents.</rdfs:comment>
+        <rdfs:label>represents digitally</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/routeLocation -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/routeLocation">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Traderoute"/>
+        <rdfs:range rdf:resource="http://visit.de/ontologies/vismo/Place"/>
+        <rdfs:comment>Refers (with different sub-properties) from a vismo:TradeRoute to a vismo:City that is located on said route.</rdfs:comment>
+        <rdfs:label>route location</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/startLocation -->
+
+    <owl:ObjectProperty rdf:about="http://visit.de/ontologies/vismo/startLocation">
+        <rdfs:subPropertyOf rdf:resource="http://visit.de/ontologies/vismo/routeLocation"/>
+        <rdfs:comment>Refers from a traderoute to the vismo:City that represents the starting point for the route.</rdfs:comment>
+        <rdfs:label>start location</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/buildingHistory -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/buildingHistory">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Architecture"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment>Property used to (freely) describe the building history of a vismo:Architecture entity.</rdfs:comment>
+        <rdfs:label>building history</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/comment -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/comment">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">This is a comment about a given vismo entity.</rdfs:comment>
+        <rdfs:isDefinedBy rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://visit.de/ontologies/vismo</rdfs:isDefinedBy>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">comment</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/description -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/description">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">This property defines a (historical) description for a vismo entity.</rdfs:comment>
+        <rdfs:isDefinedBy rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://visit.de/ontologies/vismo/</rdfs:isDefinedBy>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">description</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/entryPages -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/entryPages">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/ReferenceEntry"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment>The range of pages that a given vismo:ReferenceEntry references of a vismo:Reference entity.</rdfs:comment>
+        <rdfs:label>entry pages</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/helpfulLinks -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/helpfulLinks">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment>This property is used to conveniently collect links to online resources that contain further information of the associated vismo:Resource.</rdfs:comment>
+        <rdfs:label>helpful links</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/iconography -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/iconography">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment>A property to associate iconography to a given vismo:Resource entity.</rdfs:comment>
+        <rdfs:label>iconography</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/innerDescription -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/innerDescription">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Architecture"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment>Property used to describe the interior of a vismo:Architecture entity.</rdfs:comment>
+        <rdfs:label>inner description</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/keyword -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/keyword">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment>This property is used to address keywords for a vismo:Resource entity. These refer to more general topics that can be addressed to anything out of the VisMo domain, for example &quot;Trade&quot;, &quot;War&quot;/&quot;Peace&quot;, or overall temporal associations.</rdfs:comment>
+        <rdfs:label>keyword</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/literature -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/literature">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">This property defines a literature entry that contains further information about the given vismo entity.</rdfs:comment>
+        <rdfs:isDefinedBy rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://visit.de/ontologies/vismo/</rdfs:isDefinedBy>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">literature</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/outerDescription -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/outerDescription">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Architecture"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment>Property used to describe the exterior of a vismo:Architecture entity.</rdfs:comment>
+        <rdfs:label>outer description</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/pages -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/pages">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Reference"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment>Number of pages of a given vismo:Reference entity.</rdfs:comment>
+        <rdfs:label>pages</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/publisher -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/publisher">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Reference"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment>The publisher of the given vismo:Reference entity.</rdfs:comment>
+        <rdfs:label>publisher</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/series -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/series">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Reference"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:label>series</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/superordinateTitle -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/superordinateTitle">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Title"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment>Textual String to name the title of the superordinate reference collection that incorporates the associated vismo:Reference entity.</rdfs:comment>
+        <rdfs:label>superordinate title</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/technicalMetadata -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/technicalMetadata">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/DigitalRepresentation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment>Refers from a vismo:DigitalRepresentation to a JSON formatted String that represents the technical metadata that is produced by the process that creates given digital representation.</rdfs:comment>
+        <rdfs:label>technical metadata</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/thumbnail -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/thumbnail">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment>A thumbnail generated for the respective digital representation. In general a base 64 encoding.</rdfs:comment>
+        <rdfs:label>thumbnail</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/volume -->
+
+    <owl:DatatypeProperty rdf:about="http://visit.de/ontologies/vismo/volume">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/Reference"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:comment>Number of volumes of a given publication series.</rdfs:comment>
+        <rdfs:label>volume</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#topDataProperty -->
+
+    <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#topDataProperty">
+        <rdfs:domain rdf:resource="http://visit.de/ontologies/vismo/DigitalRepresentation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    </rdf:Description>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Activity -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Activity">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E7_Activity"/>
+        <rdfs:subClassOf rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:comment>Activities in the ViSIT context are any type of timely historical event that can contribute a timely frame for associated ViSIT concepts. For example &quot;World War II&quot;, &quot;The battle for town x&quot;, etc.</rdfs:comment>
+        <rdfs:label>Activity</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Architecture -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Architecture">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E53_Place"/>
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E84_Information_Carrier"/>
+        <rdfs:subClassOf rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:comment>Architecture in the ViSIT context describes every building or architectural production that has been erected by mankind in some way.</rdfs:comment>
+        <rdfs:label>Architecture</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/BishopricAffiliation -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/BishopricAffiliation">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E55_Type"/>
+        <rdfs:comment>This class comprises headwords for bishopric affiliations for vismo:Architecture resources.</rdfs:comment>
+        <rdfs:label>Bishopric Affiliation</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Country -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Country">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E53_Place"/>
+        <rdfs:subClassOf rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:label>Country</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Dating -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Dating">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E52_Time-Span"/>
+        <rdfs:comment>More specific class of the E52_TimeSpan and used in the ViSIT context to give temporal associations with various entities.</rdfs:comment>
+        <rdfs:label>Dating</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Description -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Description">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E55_Type"/>
+        <rdfs:comment>Descriptions comprise characteristic types for objects in the domain of museums. Therefore these are for example &quot;painting&quot;, &quot;oil painting&quot;, &quot;chest&quot;, etc.</rdfs:comment>
+        <rdfs:label>Description</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/DigitalRepresentation -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/DigitalRepresentation">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+        <rdfs:comment>A digital representation symbolises a multimedia representation of a vismo:Resource that can be illustrated in some way. These incorporate pictures, videos, audio files, and 3D models in particular.</rdfs:comment>
+        <rdfs:label>Digital Representation</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Function -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Function">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E55_Type"/>
+        <rdfs:comment>Functions relate to semantical and functional properties that are inherited by vismo:Object as well as vismo:Architecture and their vismo:Structural Evolution resources. Both an object as well as an architecture could exert &quot;military&quot; functions.</rdfs:comment>
+        <rdfs:label>Function</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/GeographicalAffiliation -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/GeographicalAffiliation">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E55_Type"/>
+        <rdfs:comment>This class comprises headwords for geographical affiliations for vismo:Architecture resources.</rdfs:comment>
+        <rdfs:label>Geographical Affiliation</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Group -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Group">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E74_Group"/>
+        <rdfs:subClassOf rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:comment>This more general class will comprise different groups of people that are associated in the VisMo context. In the first instance these are WorkingGroups (Werkst\"a tten) and joint practices (Soziet\"a ten).</rdfs:comment>
+        <rdfs:label>Group</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/GroupDescription -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/GroupDescription">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E55_Type"/>
+        <rdfs:comment>This Class comprises descriptional types for all kinds of groups that are associated in the VisMo context, such as Werkstatt and Soziet\"a t.</rdfs:comment>
+        <rdfs:label>Group Description</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/HistoricalChange -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/HistoricalChange">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E9_Move"/>
+        <rdfs:subClassOf rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:label>HistoricalChange</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/InscriptionType -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/InscriptionType">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E55_Type"/>
+        <rdfs:comment>This E55_Type describes the type of an Inscription, done on various vismo:Object entities.</rdfs:comment>
+        <rdfs:label>Inscription Type</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Institution -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Institution">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E53_Place"/>
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E74_Group"/>
+        <rdfs:subClassOf rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:comment>An institution in the ViSIT context is primarily used for museums, which inherit both the properties of a E53_Place as well as a E74_Group. This is necessary to make instances of this class be able to represent a spatial entity as well as an entity that can for example hold vismo:Objects.</rdfs:comment>
+        <rdfs:label>Institution</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Marriage -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Marriage">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E74_Group"/>
+        <rdfs:subClassOf rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:comment>A Subclass of the E74_Group in order to differentiate the participation of a vismo:Person in a Marriage rather than any other vismo:Group.</rdfs:comment>
+        <rdfs:label>Marriage</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/MiscellaneousInteraction -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/MiscellaneousInteraction">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E7_Activity"/>
+        <rdfs:subClassOf rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:comment>This E7_Activity subclass is used for various dynamic interactions between vismo:Resource objects, whose interaction is not yet known or more specifically not defined by the ontology model.</rdfs:comment>
+        <rdfs:label>MiscellaneousInteraction</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Mounting -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Mounting">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E55_Type"/>
+        <rdfs:comment>This class comprises the various possibilities of fix/mount/place an Inscription onto a vismo:Object.</rdfs:comment>
+        <rdfs:label>Mounting</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Object -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Object">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E84_Information_Carrier"/>
+        <rdfs:subClassOf rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:comment>Objects in the ViSIT context subsume all sorts of items that are displayed in a museum.</rdfs:comment>
+        <rdfs:label>Object</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/OrderAffiliation -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/OrderAffiliation">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E55_Type"/>
+        <rdfs:comment>This class comprises headwords for order affiliations for vismo:Architecture resources.</rdfs:comment>
+        <rdfs:label>Order Affiliation</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Person -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Person">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E21_Person"/>
+        <rdfs:subClassOf rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+        <rdfs:label>Person</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Place -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Place">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E53_Place"/>
+        <rdfs:subClassOf rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:comment>All cities, towns, settlements etc. of some sort are subsumed under this class.</rdfs:comment>
+        <rdfs:label>Place</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Profession -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Profession">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E55_Type"/>
+        <rdfs:comment>Professions subsume all roles, employments, titles, authorities, etc. for persons that are inherent in the cultural heritage domain.</rdfs:comment>
+        <rdfs:label>Profession</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Reference -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Reference">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E84_Information_Carrier"/>
+        <rdfs:comment>Used in the cultural use case of Visit as a reference to various textual information objects that contained further and descriptive information about a given Visit resource.</rdfs:comment>
+        <rdfs:label>Reference</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/ReferenceEntry -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/ReferenceEntry">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E84_Information_Carrier"/>
+        <rdfs:comment>A Reference Entry contains further information about the reference of a vismo:Resource in a given vismo:Reference entity, like the page numbers for example.</rdfs:comment>
+        <rdfs:label>Reference Entry</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/ReferenceType -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/ReferenceType">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E55_Type"/>
+        <rdfs:comment>Summarises the various types that references in the cultural heritage domain can have.</rdfs:comment>
+        <rdfs:label>Reference Type</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Resource -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Resource">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E1_CRM_Entity"/>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+        <rdfs:comment>A vismo:Resource adds descriptional functionality to the resources used in the ViSIT context, therefore adding the possibilities of adding comments, descriptions, as well as literature information to the given resource.</rdfs:comment>
+        <rdfs:label>Resource</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Room -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Room">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E53_Place"/>
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E84_Information_Carrier"/>
+        <rdfs:subClassOf rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:comment>A room in the classic sense. Can only be associated with its vismo:Architecture entity that contains it.</rdfs:comment>
+        <rdfs:label>Room</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/SacralBuilding -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/SacralBuilding">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E55_Type"/>
+        <rdfs:comment>A further type characterisation for vismo:Architecture entities, classifying them by a sacral type.</rdfs:comment>
+        <rdfs:label>Sacral Building</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/SecularBuilding -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/SecularBuilding">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E55_Type"/>
+        <rdfs:comment>A further type characterisation for vismo:Architecture entities, classifying them by a secular type.</rdfs:comment>
+        <rdfs:label>Secular Building</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/StructuralEvolution -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/StructuralEvolution">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E11_Modification"/>
+        <rdfs:subClassOf rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:comment>A vismo:StructuralEvolution changes a vismo:Architecture entity in some way. A change in its basic vismo:Function can thereby be established. For example a castle that changes from its military function to a museum.</rdfs:comment>
+        <rdfs:label>StructuralEvolution</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Technique -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Technique">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E55_Type"/>
+        <rdfs:comment>Techniques subsume the naming of production processes, which have the result of producing an vismo:Object that are associated with the cultural heritage domain.</rdfs:comment>
+        <rdfs:label>Technique</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Title -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Title">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E35_Title"/>
+        <rdfs:comment>A Class to comprise a title in combination with a superordinate title of a reference collection that contains this vismo:Reference entity.</rdfs:comment>
+        <rdfs:label>Title</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Trade -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Trade">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E9_Move"/>
+        <rdfs:subClassOf rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:comment>This class subsumes a trade of some or more vismo:TradeGood entities. A trade should always be associated with a vismo:TradeRoute.</rdfs:comment>
+        <rdfs:label>Trade</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/TradeGood -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/TradeGood">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E55_Type"/>
+        <rdfs:comment>Tradegoods subsume titeled names for the goods that are transported and sold on vismo:TradeRoute objects.</rdfs:comment>
+        <rdfs:label>Tradegood</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/Traderoute -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/Traderoute">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+        <rdfs:comment>A vismo:TradeRoute encompasses several vismo:City entities that are associated with the vismo:Trade that is associated with the given trade route. These cities can thereby be starting or end location, as well as an intermediate station.</rdfs:comment>
+        <rdfs:label>Traderoute</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://visit.de/ontologies/vismo/WorkingGroup -->
+
+    <owl:Class rdf:about="http://visit.de/ontologies/vismo/WorkingGroup">
+        <rdfs:subClassOf rdf:resource="http://erlangen-crm.org/170309/E74_Group"/>
+        <rdfs:subClassOf rdf:resource="http://visit.de/ontologies/vismo/Resource"/>
+        <rdfs:comment>Frauke :)</rdfs:comment>
+        <rdfs:label>WorkingGroup</rdfs:label>
+    </owl:Class>
+</rdf:RDF>
+
+\end{lstlisting}

@@ -90,3 +90,33 @@ pdfproducer={LaTeX with hyperref and ClassicThesis} % PDF producer
 % Koelli's commands
 \newcommand{\q}[1]{``#1''}
 \newcommand{\qq}[1]{`#1'}
+
+\usepackage{listings}
+
+\definecolor{theBlack}{gray}{0.0}
+
+% LstListing RDF style
+\lstset{
+language=XML, 
+numbers=left,
+stepnumber=1,
+numberstyle=\tiny,
+basicstyle=\color{theBlack}\scriptsize\ttfamily,
+commentstyle=\color{theBlack},
+keywordstyle=\color{theBlack},
+identifierstyle=\color{theBlack},
+stringstyle=\color{theBlack},
+keywords={},
+columns=fullflexible,
+captionpos=b,
+%rulesepcolor=\color{shadowgray},
+keepspaces=true,
+fontadjust=true,
+showstringspaces=false,
+tabsize=2,
+frame=tlrb,
+label=code:XML,
+%firstnumber=last,
+caption={Example XML},
+breaklines=true
+}
