@@ -84,13 +84,19 @@ In der aktuellen Hauptversion 6.2\footnote{\url{http://www.cidoc-crm.org/Version
 
 \paragraph{Das ViSIT Model - VisMo}
 
+Aufbauend auf dem CIDOC CRM wurde eine Ontologie entwickelt, die den kompletten Anwendungsfall des ViSIT Projekt abbilden kann: das \textbf{ViSIT Model VisMo}. Der Fokus liegt dabei auf der Darstellung von Architektur-Objekten und Ausstellungsobjekten, die mit Personen oder Gruppen von Personen, Orten sowie zeitlichen Events in Verbindung gesetzt werden, um eine Wissensbasis zu kreieren.
 
+Dabei erfüllt VisMo genau den Zweck, den sich das CIDOC CRM als Ziel gesetzt hat: als eine semantische \q{Erweiterung} des CIDOC CRM ist der Inhalt, der für VisMo produziert wird, direkt zum größten Teil verständlich und Leser oder Benutzer des Modells können dies intuitiver, auf der Basis der Beschreibungen des CIDOC CRM, verstehen, lesen und benutzen. Dies ist dadurch begründet, dass alle Klassen und viele der Relationen und Eigenschaften durch Vererbung speziellere Konzepte der CIDOC CRM Klassen und Relationen/Eigenschaften sind. Nur einzelne Teile des VisMo sind speziell für die Ontologie hinzugefügt worden, immer wenn kein Konzept aus dem CIDOC CRM passend für eine Vererbung war. \autoref{fig:modelworkflow} visualisiert den Entwicklungsprozess hinter VisMo.
 
-------------------------------
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/berndl/modelworkflow}
+    \caption{\label{fig:modelworkflow} Arbeitsprozess hinter der Entwicklung des ViSIT Modells.}
+\end{figure}
 
-vismo tut genau das, wofür CIDOC entwickelt wurde: den eigenen use case auf das generische CIDOC CRM abbilden
+Der erste Schritt bestand dabei in der Sammlung der Kernthemen, die in ViSIT behandelt werden. Aus diesen konnte dann im nächsten Schritt ein grobes Konzept entwickelt werden, welches anschließend in RDF übertragen werden konnte. Wie oben beschrieben, wurde hierbei von CIDOC CRM Grundklassen und Relationen bzw. Eigenschaften ausgegangen, welche dann für den ViSIT Kontext erweitert und angepasst wurden. Als nächstes konnten dann die erstmals groben Konzepte und Entitäten mit benötigten Metadaten bzw. dessen Anforderungen erweitert werden. Die Ergebnisse der vorherigen Schritte konnten dann letztendlich in dem Ontologie-Editor \textbf{protegé}\footnote{\url{https://protege.stanford.edu/}} zusammengeführt werden, um eine RDF/OWL Ontologie zu erstellen. Diese ist in ihrer letzten offiziellen Version in \autoref{lst:vismo} im Appendix zu sehen.
 
-dadurch gewährleistet ist, dass externe leser des modells dieses "intuitiv" verstehen/lesen/benutzen können
+Ebenfalls ist in \autoref{fig:modelworkflow} visualisiert, wie und an welcher Stelle die VisMo Ontologie technisch zum Einsatz kommt: sie dient als Input für das sogenannte WissKI Modul, um aus der Ontologie Ein- sowie Ausgabemasken zu generieren, welche letztendlich vom Endnutzer des ViSIT Systems benutzt werden, um einerseits Daten in die semantische Datenbank einzutragen und diese dann auch wieder auszulesen und anzuzeigen. Der große Vorteil an diesem Prozess ist, dass der Endnutzer keinerlei Wissen über das Semantic Web und seine Technologien benötigt, da der oben beschriebene Prozess davon abstrahiert. Damit schreiben und lesen die Endnutzer im Endeffekt RDF, ohne davon zu wissen. Technische Details zu diesem Prozess sowie WissKI werden in folgenden Unterkapiteln gegeben.
 
 \subsection{Technische Details zur Semantischen Datenbank}\label{sec:technicalBackground}
 
@@ -132,7 +138,11 @@ copy and paste feature
 
 excel importer
 
+\subsection{FAQ und häufig auftretende Probleme}\label{sec:faqSW}
 
+drupal update
+
+seite schaltet sich selbst in maintenance mode -> meistens ein wichtiges drupal update -> drupal per composer updaten, dann sollte wieder gehen. wenn nicht, seite per drush aus maintenance nehmen, dann ist wieder zugreifbar 
 
 
 
