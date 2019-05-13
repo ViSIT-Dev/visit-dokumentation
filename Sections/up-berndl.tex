@@ -102,11 +102,42 @@ Ebenfalls ist in \autoref{fig:modelworkflow} visualisiert, wie und an welcher St
 
 Nachdem \autoref{sec:theoreticalBackground} die theoretische Grundlage für die Semantische Datenbank beschrieben hat, fokussiert sich dieses Unterkapitel auf die technischen Aspekte der Datenbank. Dazu zählt in erster Linie die \textbf{allgemeine Infrastruktur}, das \textbf{Hosting} an der Universität Passau, der \textbf{allgemeine Zugriff auf die Datenbank}, getroffene Entscheidungen bezüglich \textbf{Security und Zertifizierungen}, sowie die anschließende Beschreibung einzelner Komponenten: dem \textbf{CMS Drupal}, dessen Modul \textbf{WissKI}, die \textbf{ViSIT REST API}, der unterliegende RDF Triplestore \textbf{RDF4J} und dessen generelle Funktionalität.
 
-testserver und produktiver server
+Für die semantische Datenbank wurde zur Projektlaufzeit aus Testzwecken ebenfalls eine Testinstanz ins Leben gerufen, welche eine komplette Spiegelung des damals aktuellen Systems ist. Die beiden Haupt-URLs der Server sind:
+
+\begin{itemize}
+	\item \texttt{https://database.visit.uni-passau.de/}
+	\item \texttt{https://database-test.visit.uni-passau.de/}
+\end{itemize}
+
+Von diesen beiden Base-URLs ausgehend sind die weiteren Komponenten über folgende URL-Zusätze zu erreichen:
+
+\begin{itemize}
+	\item \textbf{Drupal/WissKI:} Base URL + \texttt{/drupal}
+	\item \textbf{RDF4J:} Base URL + \texttt{/rdf4j-workbench}
+	\item \textbf{Tomcat:} Base URL (ohne Zusatz)
+	\item \textbf{ViSIT REST API:} Base URL + \texttt{/metadb-rest-api}
+	\item \textbf{API Beschreibung:} Base URL + \texttt{/metadb-test-api/swagger-ui.html}
+\end{itemize}
 
 \paragraph{Infrastruktur}
 
-blub
+Die Semantische Datenbank des ViSIT Projekts ist auf einem virtuellen Server an der Universität Passau installiert. Die allgemeine Infrastruktur ist in \autoref{fig:infrastructure} zu sehen.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/berndl/infrastructure}
+    \caption{\label{fig:infrastructure} Technische Infrastruktur der Semantischen Datenbank des ViSIT Projekts.}
+\end{figure}
+
+Dessen Hauptkomponenten mit Beschreibung oder Verweis auf das ausführliche Unterkapitel sind die folgenden:
+
+\begin{description}
+	\item[haproxy] Dem virtuellen Server für die ViSIT Infrastruktur ist ein \textbf{haproxy}\footnote{\url{http://www.haproxy.org/}} vorgeschaltet. Dieser ist dafür da, die per HTTPS verschlüsselten Anfragen von aussen an den Server entgegen zu nehmen, und intern an die richtigen Komponenten weiterzuleiten. Prinzipiell kann dieser haproxy ebenfalls Anfragen per HTTP entgegen nehmen, leitet diese dann aber automatisch auf den Port für HTTPS weiter. Damit ist sicher gestellt, dass nach aussen nur verschlüsselte Daten versandt werden. Dem haproxy sind für die benötigte Funktionalität zwei backends bekannt: eines für den Tomcat (ViSIT REST API und Triplestore RDF4J) und eines für Drupal bzw. WissKI (welche hintergründig auf einem Apache laufen). Die Verschlüsselung ist durch ein SSL Zertifikat der Universität gewährleistet. Die Konfiguration zum haproxy is am Server zu finden unter \texttt{/etc/haproxy}.
+	\item[Tomcat] Zur Installation weiterer Komponenten am Server, ist ein \textbf{Apache Tomcat}\footnote{\url{http://tomcat.apache.org/}} in der Version 8.5.24 installiert. Am Server ist dieser zu finden unter \texttt{/opt/tomcat8/apache-tomcat-8.5.24}.
+	\item[ViSIT REST API] Diese API wurde eigens für ViSIT entwickelt, um eine Abstraktionsschicht für die unterliegenden Metadaten zu bieten. Während WissKI diese Abstraktion für die wissenschaftlichen Benutzer der Metadaten bildet, ist die API für die technische Anbindung der restlichen Komponenten des ViSIT Projekts zuständig. Die API bietet in erster Linie die Möglichkeit, die RDF Metadaten aus dem Triplestore zu lesen. Zurückgegeben wird das Ergebnis im JSON Format, um eine möglichst breite Verständnis und damit direkte Verwendbarkeit zu gewährleisten. Der zweite große Teil behandelt das Schreiben, Auslesen und Updaten der sogenannten technischen Metadaten: Metadaten, die Informationen zu einem Medien-Objekt im ViSIT Kontext geben. Die REST API ist als eigenständiges Java-Projekt implementiert, welches auf dem ViSIT Server bzw. in dessen Tomcat Installation deployed wird. Eine ausführliche Beschreibung wird in \autoref{sec:rest} gegeben.
+	\item[Triplestore RDF4J] Der Triplestore ist für die Persistierung der RDF Daten zuständig. Im ViSIT Kontext ist die Wahl hierfür auf die \textbf{RDF4J}\footnote{\url{http://rdf4j.org/}} Datenbank gefallen, dieser ist jedoch durch jeglichen gleichwertigen Triplestore ersetzbar. Wie bei der REST API beschrieben, wird im ViSIT Kontext weitestgehend möglich von den RDF Daten abstrahiert. Dies wird sowohl durch die REST API und dem WissKI Modul bewerkstelligt. Der RDF4J Triplestore ist am Server bzw. in dessen Tomcat Installation deployed.
+	\item[Drupal und WissKI] blub
+\end{description}
 
 virtueller server durch haproxy, der den eigentlichen servern vorgeschaltet ist. dadurch wird ssl und https ermöglicht
 
@@ -118,6 +149,8 @@ zertifizierung, sicherheit
 drupal
 
 wisski (allgemein)
+
+Tomcat
 
 rdf4j
 
@@ -151,9 +184,9 @@ copy and paste feature
 
 excel importer
 
-\subsection{FAQ und häufig auftretende Probleme}\label{sec:faqSW}
+\subsection{Semantische Datenbank - FAQ und häufig auftretende Probleme}\label{sec:faqSW}
 
-drupal update
+drupal update (manuell per hand und composer, manchmal per update dialog von drupal automatisch möglich)
 
 seite schaltet sich selbst in maintenance mode -> meistens ein wichtiges drupal update -> drupal per composer updaten, dann sollte wieder gehen. wenn nicht, seite per drush aus maintenance nehmen, dann ist wieder zugreifbar 
 
