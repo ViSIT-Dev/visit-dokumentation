@@ -136,33 +136,59 @@ Dessen Hauptkomponenten mit Beschreibung oder Verweis auf das ausführliche Unte
 	\item[Tomcat] Zur Installation weiterer Komponenten am Server, ist ein \textbf{Apache Tomcat}\footnote{\url{http://tomcat.apache.org/}} in der Version 8.5.24 installiert. Am Server ist dieser zu finden unter \texttt{/opt/tomcat8/apache-tomcat-8.5.24}.
 	\item[ViSIT REST API] Diese API wurde eigens für ViSIT entwickelt, um eine Abstraktionsschicht für die unterliegenden Metadaten zu bieten. Während WissKI diese Abstraktion für die wissenschaftlichen Benutzer der Metadaten bildet, ist die API für die technische Anbindung der restlichen Komponenten des ViSIT Projekts zuständig. Die API bietet in erster Linie die Möglichkeit, die RDF Metadaten aus dem Triplestore zu lesen. Zurückgegeben wird das Ergebnis im JSON Format, um eine möglichst breite Verständnis und damit direkte Verwendbarkeit zu gewährleisten. Der zweite große Teil behandelt das Schreiben, Auslesen und Updaten der sogenannten technischen Metadaten: Metadaten, die Informationen zu einem Medien-Objekt im ViSIT Kontext geben. Die REST API ist als eigenständiges Java-Projekt implementiert, welches auf dem ViSIT Server bzw. in dessen Tomcat Installation deployed wird. Eine ausführliche Beschreibung wird in \autoref{sec:rest} gegeben.
 	\item[Triplestore RDF4J] Der Triplestore ist für die Persistierung der RDF Daten zuständig. Im ViSIT Kontext ist die Wahl hierfür auf die \textbf{RDF4J}\footnote{\url{http://rdf4j.org/}} Datenbank gefallen, dieser ist jedoch durch jeglichen gleichwertigen Triplestore ersetzbar. Wie bei der REST API beschrieben, wird im ViSIT Kontext weitestgehend möglich von den RDF Daten abstrahiert. Dies wird sowohl durch die REST API und dem WissKI Modul bewerkstelligt. Der RDF4J Triplestore ist am Server bzw. in dessen Tomcat Installation deployed.
-	\item[Drupal und WissKI] blub
+	\item[Drupal und WissKI] Die letzte Komponente der Infrastruktur der Semantischen Datenbank ist eine Kombination aus dem Content Management System \textbf{Drupal}\footnote{\url{https://www.drupal.org/}} und dessen Modul \textbf{WissKI - Wissenschaftliche KommunikationsInfrastruktur}\footnote{\url{http://wiss-ki.eu/}}. Als Modul baut WissKI auf der Implementierung von Drupal auf und benutzt dessen Funktionalität zum Persistieren von Entities als Inhalt. Zudem, da WissKI aber ebenfalls mit RDF Daten arbeitet, wird ein Triplestore benötigt - wie oben beschrieben. WissKI übernimmt dabei die Synchronisation zwischen den Entities in Drupal und den RDF Daten, sowohl beim Speichern als auch beim Auslesen von Daten. Weiterhin bietet WissKI die Möglichkeit, ein eigenes Datenmodell zu definieren, welches den gesamten Datenfluss eine Struktur vorgibt. Aus diesem werden ebenfalls einfache Interfaces generiert, um auf der einen Seite die Daten anzulegen, und auf der anderen Seite auf eine einfache Weise darzustellen. Weitere Details hierzu werden in \autoref{sec:wisski} beschrieben.
 \end{description}
 
-virtueller server durch haproxy, der den eigentlichen servern vorgeschaltet ist. dadurch wird ssl und https ermöglicht
+Im Zusammenspiel der obig genannten Komponenten erlaubt das gesamte System der Semantischen Datenbank das Management der semantischen Daten, die für den Kontext des ViSIT Projekts benötigt werden. Der Workflow der Datenbank sieht dabei in etwa wie folgt aus:
 
---------------------------------------------------------------------
-infrastruktur, hosting, allgemeiner zugriff
-
-zertifizierung, sicherheit
-
-drupal
-
-wisski (allgemein)
-
-Tomcat
-
-rdf4j
-
-REST API - später genauer beschrieben, hier nur eingliederung in infrastructure
-
-grundfunktionalität
+\begin{itemize}
+	\item Über die einfachen WissKI Eingabe-Interfaces geben die Kuratoren bzw. Geisteswissenschaftler Informationen und Metadaten in das Gesamtsystem ein.
+	\item Diese Metadaten werden mit der WissKI Funktionalität automatisch ebenfalls in RDF Daten übersetzt, die dem Schema entsprechen, welches bei Installation und Konfiguration des Gesamtsystems erstellt wird (siehe \autoref{sec:theoreticalBackground} für das Metadatenmodell CIDOC + VisMo, \autoref{sec:wisski} für die Konfiguration von WissKI).
+	\item Für Forschungszwecke können diese angelegten Metadaten dann mit den WissKI Ausgabe-Interfaces betrachtet werden, was ebenfalls die Graphstrukturen hinter den Daten hervorhebt, da in den Interfaces zwischen den einzelnen Entitäten navigiert werden kann.
+	\item Die ViSIT REST API dient zur technischen Anbindung weiterer ViSIT Komponenten, indem die Metadaten auf standardisierte Weise abgefragt werden können.
+\end{itemize}
 
 \subsection{WissKI - Wissenschaftliche KommunikationsInfrastruktur}\label{sec:wisski}
 
 aufhänger: wissenschaftlicher zugang, zugang für die geisteswissenschaftler und forscher
 
 connection zu den rdf daten
+
+\paragraph{WissKI Salz Adapter}
+
+nur ein adapter nötig, der die verbindung zur RDF db herstellt
+
+aktueller visittestrepo
+
+read und write URL des triplestores angeben
+
+default graph URI
+
+rest auf standard lassen
+
+zusatz: generierung der hierarchy, computing at the bottom
+
+\paragraph{WissKI Ontology}
+
+zur auswahl der aktuellen ontologie
+
+vorsicht: wenn die ontologie ausgetauscht wird, sollte die "neue" ontologie auf der alten basieren, damit vorher getätigte konfigurationen nicht hopps gehen
+
+auswahl des adapters -> anzeigen der aktuellen ontologie
+
+wenn sie ausgetauscht werden soll -> delete ontology -> upload new ontology (nur über einen direkten URL pfad möglich, tipp: temporärer upload)
+
+\paragraph{Pathbuilders}
+
+verweis aus wisski homepage bzw. dessen entwickler, die eine viel bessere erklärung geben
+
+aktueller "visittestrepo\_pathes"
+
+übersicht: auflistung aller ids, pfade, datentypen und möglichkeit zum bearbeiten
+
+erzeugen neuer pfade: path oder group (+ erklärung), anlegen des pfads, mark feature, relationship oder property
+
+------------------------------------------
 
 pfade
 
@@ -186,9 +212,15 @@ excel importer
 
 \subsection{Semantische Datenbank - FAQ und häufig auftretende Probleme}\label{sec:faqSW}
 
+generell gut: flush von wisski cashes sowie drupal per drush cc
+
+neue ontologie in wisski eingefügt: zum adapter gehen und recompute hierarchy
+
 drupal update (manuell per hand und composer, manchmal per update dialog von drupal automatisch möglich)
 
-seite schaltet sich selbst in maintenance mode -> meistens ein wichtiges drupal update -> drupal per composer updaten, dann sollte wieder gehen. wenn nicht, seite per drush aus maintenance nehmen, dann ist wieder zugreifbar 
+seite schaltet sich selbst in maintenance mode -> meistens ein wichtiges drupal update -> drupal per composer updaten, dann sollte wieder gehen. wenn nicht, seite per drush aus maintenance nehmen, dann ist wieder zugreifbar
+
+
 
 
 
