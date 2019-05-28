@@ -49,6 +49,8 @@ dottedtoc % Dotted lines leading to the page numbers in the table of contents
 
 \usepackage{varioref} % More descriptive referencing
 
+
+
 %----------------------------------------------------------------------------------------
 %	THEOREM STYLES
 %---------------------------------------------------------------------------------------
@@ -127,3 +129,11 @@ label=code:XML,
 caption={Example XML},
 breaklines=true
 }
+
+\lstdefinestyle{MyBashStyle} {
+    language=bash,
+    basicstyle=\ttfamily,
+  showstringspaces=false,
+  commentstyle=\color{red},
+  keywordstyle=\color{blue}
+  }

@@ -1,5 +1,49 @@
-\section{Kufstein - Backend und Fernrohr}\label{sec:kufstein}
+\section{Installationsprozess}\label{sec:installationsprozess}
 
-TODO rename label and heading
+\subsection{Infrastruktur}
+
+Die ViSIT-Applikationen basieren auf der Server-Client-Architektur. Damit diese Applikationen installiert werden können, wird ein hausinternes Netzwerk (Intranet) und ein damit verbundener Server - lokaler Applikations-Server (kurz LAS) - benötigt. Die ViSIT-Applikationen sind in diesem Zusammenhang die Clients, welche über das Netzwerk mit dem lokalen Applikations-Server verbunden sind. Auf dem LAS ist das ViSIT-System installiert, welches über das Internet Zugang zum globalen ViSIT-Netzwerk hat.
+Das ViSIT-System ist eine Ansammlung von mehreren kleinen Applikationen, welche parallel auf dem LAS laufen können. Jeder Client, auf welchem eine der ViSIT-Applikationen läuft, hat eigene Server-Software, welche auf dem LAS installiert ist und für die serverseitigen Berechnungen zuständig ist.
+
+Die Applikationen wurden mit der IT-Technologie “Docker” erstellt. Mit Docker hat man die Möglichkeit, Anwendungen in sogenannten Containern auszuführen und diese Container können aufeinander aufbauen und miteinander kommunizieren. Im Gegensatz zu einer virtuellen Maschine, ist eine Docker-basierte Anwendung nur ein Prozess, der auf dem System ausgeführt wird. Es ist somit kein Gastbetriebssystem erforderlich, wie dies bei Virtuellen Maschinen der Falls ist. Container sind einfach konfigurierbare, abgeschlossene Einheiten, in welchen die Anwendung ausgeführt werden. 
+Mit Docker können Linux-Container erstellt und verwendet werden können. Die erstellten Container sind eine Virtualisierung auf der Ebene des Betriebssystems. Durch das Erstellen von Containern, werden isolierte Linux-Systeme auf dem gleichen Host erzeugt. Diese Container können flexibel erstellt, bereitgestellt, kopiert und zwischen Umgebungen verschoben werden. Zweck dieser Container ist die Unabhängigkeit und die Fähigkeit, mehrere Prozesse und Applikationen getrennt voneinander betreiben zu können. Die Vorteile von Docker-Containern sind unter anderem Modularität und Versionsverwaltung. Modularität ermöglicht es, bei zum Beispiel einer Reparatur oder Aktualisierung einer Applikation, nur einen Teil dieser Applikation außer Betrieb zu nehmen, ohne die gesamte Applikation außer Betrieb nehmen zu müssen. Docker bietet eine eingebaute Versionsverwaltung, welche es erlaubt, den aktuellen Stand eines Containers in ein sogenanntes Image zu sichern. Somit ist es möglich, die unterschiedlichen Zustände eines Images in einer Historie nachzuverfolgen. Ein Image ist ein Speicherabbild eines Containers und es besteht aus mehreren Layern, welche schreibgeschützt sind und somit nicht verändert werden können. Ein Layer ist wiederum ein Teil eines Images und enthält einen Befehl oder eine Datei, welche dem Image hinzugefügt wurde. Aufgrund dieser Layer kann die ganze Historie eines Images nachvollzogen werden.
+
+\subsection{Projekt auf dem LAS installieren}
+
+Als erster Schritt muss die Datenbank für die Applikation angelegt werden. Wie oben erklärt, wurde für das ViSIT-Projekt Docker verwendet. Damit gespeicherte Daten auch außerhalb eines Containers abgelegt oder in einem anderen Container eingebunden werden können, werden sogenannte Volumes erstellt. Volumes haben viele Vorteile, vor allem aber sind sie einfacher zu sichern oder zu migrieren. Volumes funktionieren sowohl auf Linux- als auch auf Windows-Containern.
+Im ersten Schritt wird ein Volume mit der Datenbank auf dem lokalen Rechner im Terminal mit dem Kommando
+\begin{lstlisting}[style=MyBashStyle]
+docker volume create visit-database
+\end{lstlisting} erstellt. Einen eigenen Volume benötigt man deshalb, weil die dort abgelegten Daten permanent gespeichert werden müssen - würde z.B.: der Container gelöscht oder beendet werden - dann wären die nur im Docker Container gespeicherten Daten ebenfalls gelöscht werden. Damit dies nicht passieren kann, werden die Daten parallel lokal auf dem Rechner gespeichert.
+Damit Dateien zwischen Geräten in einem lokalen Netzwerk oder zwischen entfernten Geräten über das Internet synchronisiert werden können, wird eine Datensynchronisation mit Peer-to-Peer-Übertragung benötigt. Dies wird im ViSIT-Projekt mit Syncthing realisiert und auch dafür muss ein eigener Volume lokal auf dem Rechner erstellt werden. Dies geschieht mit \begin{lstlisting}[style=MyBashStyle]
+docker volume create visit-syncthing
+\end{lstlisting}-Befehl, welcher ebenfalls im Terminal ausgeführt wird.
+Als nächster Schritt wird das gesamte ViSIT-Projekt von GitHub mittels
+
+\begin{lstlisting}[style=MyBashStyle]
+docker run -d --name visit -p 80:80 -p 22000:22000 -p 21027:21027
+-v visit-syncthing:/var/syncthing
+-v s:/p2p/visit:/var/p2p
+-v visit-database:/var/lib/mysql
+--restart unless-stopped visitapp/maincontainer \end{lstlisting}
+
+geklont. Beim erstmaligen Starten benötigt der Vorgang länger, da das Projekt aus dem Git Repository sowie das Appbundle (https://github.com/ViSIT-Dev/appbundle) heruntergeladen werden.\\
+
+Erklärung der einzelnen Befehle:\\
+\begin{lstlisting}[style=MyBashStyle]
+docker run -d --name visit -p 80:80 -p 22000:22000 -p 21027:21027 
+\end{lstlisting}
+
+
+docker run startet den Container und mit den mit den Parametern -d gibt man an, dass der Container im Hintergrund dauerhaft laufen soll (Daemonmode). Weiters wird mit --name visit der Name des Containers festgelegt, in diesem Fall heißt der Container visit. Der Container kann im weiteren Verlauf auch über diesen Namen angesprochen werden.
+Mit dem Parameter -p 80:80 werden die Ports vom Host an den Container gebunden. Hier wird der lokale Hostport 80 auf den Containerport 80 gemappt. Die weiteren Ports -p 22000:22000 -p 21027:21027 werden für das Syncthing und für das Peer to Peer-Netzwerk benötigt.
+Als nächstes folgt der Befehl -v visit-syncthing:/var/syncthing. Mit dem Parameter -v wird ein Verzeichnis (Volume) auf dem Hostrechner zu einem Verzeichnis innerhalb des Containers verbunden, auf diese Weise werden die Daten persistent gespeichert, das heißt, dass ein Ordner auf dem Hostsystem auf einen Ordner im Container gemappt wird. Das bedeutet, dass die Daten in beiden Ordnern immer inhaltsgleich sind. Ohne dem Mapping zu einen Ordner auf dem Hostsystem, wären alle Daten aus dem Docker Container, wenn dieser Container gelöscht wird, ebenfalls gelöscht. Um die Daten persistent, also dauerhaft zu speichern, wird immer ein Ordner im Hostsystem mit dem entsprechenden Ordner im Docker Container gemappt.
+Zuerst wird das Verzeichnis auf dem Hostrechner angegeben, hier visit-syncthing, und nach dem Doppelpunkt steht das Verzeichnis innerhalb des Containers, hier /var/syncthing. 
+Im nächsten Teil des Befehls -v s:/p2p/visit:/var/p2p wird ebenfalls zuerst das Verzeichnis auf dem Hostrechner angegeben, s:/p2p/visit und dann das Verzeichnis innerhalb des Containers /var/p2p.
+Im nächsten Befehl -v visit-database:/var/lib/mysql geht es um die Verbindung zur Datenbank. Hier wird ebenfalls zuerst das Verzeichnis auf dem Hostrechner angegeben visit-database und nach dem Doppelpunkt steht das Verzeichnis innerhalb des Containers /var/lib/mysql.
+Zuletzt wird mittels --restart unless-stopped visitapp/maincontainer dem System mitgeteilt, dass der Docker Container visitapp/maincontainer automatisch gestartet werden soll außer, wenn er manuell oder anderweitig gestoppt wird.
+
+Wenn der Vorgang abgeschlossen ist, kann über Lokalhost im Browser unter localhost:80/typo3/ das Backend aufgegerufen werden. Das erstmalige einloggen in das Backend (TYPO3) erfolgt mit dem Benutzername: admin und Passwort: visit-admin.
+
 
 \cite{anno4j1}
