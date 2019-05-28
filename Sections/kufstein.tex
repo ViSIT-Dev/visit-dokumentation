@@ -85,33 +85,36 @@ Zuletzt wird mittels \begin{lstlisting}[style=MyBashStyle]
 visitapp/maincontainer
 \end{lstlisting} automatisch gestartet werden soll außer, wenn er manuell oder anderweitig gestoppt wird.
 
-Wenn der Vorgang abgeschlossen ist, kann über Lokalhost im Browser unter \textbf{localhost:80/typo3/} das Backend aufgegerufen werden. Das erstmalige einloggen in das Backend (TYPO3) erfolgt mit dem \textbf{Benutzername: admin} und \textbf{Passwort: visit-admin}.
+Wenn der Vorgang abgeschlossen ist, kann über Lokalhost im Browser unter \textbf{localhost:80/typo3/} das Backend aufgegerufen werden (siehe Abbildung \ref{img:typo_3_login}). Das erstmalige einloggen in das Backend (TYPO3) erfolgt mit dem \textbf{Benutzername: admin} und \textbf{Passwort: visit-admin}.
 
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=12cm]{Figures/paula/typo_3_login.png}
-\caption{Das Login-Fenster für TYPO3}
+\caption{Das Login-Fenster für TYPO3 im Browser}
 \label{img:typo_3_login}
 \end{figure}
+
+
 
 \section{TYPO3}
 \subsection{Allgemein}
 
 TYPO3 ist ein freies Content-Management-System für Webseiten, es wird in Frontend und Backend getrennt. Als Frontend wird die Präsentationsebene bezeichnet, das ist der Teil einer Applikation, den der Betrachter sehen kann. Als Backend hingegen, bezeichnet man die Datenzugriffsebene, das ist der Teil einer Applikation, welcher nicht für den Besucher sichtbar ist. Das Backend ist der Verwaltungsbereich einer Webseite. TYPO3 wird auf einem Webserver installiert und über den Webbrowser benutzt.
-Das Backend kann man sich als eine Werkstatt vorstellen in der Sachen produziert und gelagert werden und wenn sie fertig sind, ins Schaufenster, dem Frontend, gestellt werden und von Besuchern bestaunt werden können.
+
+Das Backend ist die Datenzugriffsebene, dieser Teil ist für den Endbenutzer nicht sichtbar. Es beinhaltet die Programmierung einer Applikation und den Administrationsbereich. Im Gegensatz dazu das Frontend, das ist die tatsächliche Webseite, die der Endbenutzer im Browser sieht, also die Benutzeroberfläche.
 
 \subsection{Login}
 
-Damit niemand unbefugter im Frontend sowie Backend etwas verändern kann, muss man sich zuerst ins Backend einloggen. Dies geschieht über den Aufruf der Domain \textbf{localhost:80/typo3/} im Webbrowser.
+Damit niemand unbefugter im Frontend sowie Backend etwas verändern kann, muss man sich zuerst ins Backend einloggen. Dies geschieht über den Aufruf der Domain \textbf{localhost:80/typo3/} im Webbrowser (siehe Abbildung \ref{img:typo_3_login}).
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=12cm]{Figures/paula/login_TYPO3.png}
+\includegraphics[width=8cm]{Figures/paula/login_TYPO3.png}
 \caption{Das Login-Fenster für TYPO3}
 \label{img:typo_3_logIn}
 \end{figure}
 
-Im Login-Fenster kann der Benutzername sowie das Passwort eingetragen werden. Beim ersten Login ist der \textbf{Benutzername: admin} und das \textbf{Passwort: visit-admin}, dieser muss in weiterer Folge verändert werden. Mehr dazu siehe Anpassung.
+Im Login-Fenster kann der Benutzername sowie das Passwort eingetragen werden (siehe Abbildung \ref{img:typo_3_logIn}). Beim ersten Login ist der \textbf{Benutzername: admin} und das \textbf{Passwort: visit-admin}, dieser muss in weiterer Folge verändert werden. Mehr dazu siehe Anpassung.
 Nach einem erfolgreichen Login wird das Backend mit den dazugehörigen Modulen im Browser geladen.
 
 \begin{figure}[ht!]
@@ -123,7 +126,76 @@ Nach einem erfolgreichen Login wird das Backend mit den dazugehörigen Modulen i
 
 \subsection{Aufbau von TYPO3}
 
-Das TYPO3-Backend besteht aus einem Kopfbereich (grün eingerahmt) und einem Hauptbereich (rot eingerahmt), welcher aus drei Spalten besteht. Im Kopfbereich kann der Administrator seine TYPO3-Benutzerenstellungen konfigurieren. Im Hauptbereich werden Webdokumente bearbeitet. Das TYPO3-Backend wird von links nach rechts abgearbeitet.
+Das TYPO3-Backend besteht aus einem Kopfbereich (grün eingerahmt) und einem Hauptbereich (rot eingerahmt), welcher aus drei Spalten besteht (siehe Abbildung \ref{img:typo_3_backend}). Im Kopfbereich kann der Administrator seine TYPO3-Benutzerenstellungen konfigurieren. Im Hauptbereich werden Webdokumente bearbeitet. Das TYPO3-Backend wird von links nach rechts abgearbeitet.
+
+\subsubsection{Kopfleiste}
+
+Die Kopfleiste bietet die Möglichkeit, die im TYPO3 Backend gespeicherten Lesezeichen aufzurufen (Stern-Symbol), den TYPO3 Cache der gesamten Webseite zu leeren (Blitz-Symbol) sowie Hilfe und Dokumentationen (Fragezeichen) zu TYPO3 aufzurufen. Das vierte Symbol zeigt die wichtigsten Systeminformationen. Mit einem Klick auf den Benutzernamen, in der Grafik “admin”, öffnet sich ein Kontext-Menü mit der Möglichkeit Einstellungen an seinem Benutzer vorzunehmen oder sich aus dem TYPO3 Backend auszuloggen. Rechts neben dem Benutzer befindet sich das Suchfeld, mit dem sich das gesamte TYPO3 Backend durchsuchen lässt.
+
+\subsubsection{Die Spalten des Hauptbereichs}
+
+\textbf{Linke Spalte:} \textit{Modulleiste} (blau eingerahmt), hier kann das Modul ausgewählt werden, welches bearbeitet werden soll (siehe Abbildung \ref{img:typo_3_backend}).\\
+
+\textbf{Mittlere Spalte:} \textit{Seitenbaum} (gelb eingerahmt), hier wird die zu bearbeitende TYPO3-Seite ausgewählt. Der Seitenbaum ist das zentrale Element, wenn es darum geht sich durch die Webseite zu navigieren. Hier wird der Aufbau und die Seitenhierarchie der Webseite in einer Struktur abgebildet, die der Ordnerstruktur ähnlich ist. Einzelne Seiten können Unterseiten enthalten, die im Seitenbaum eingerückt dargestellt werden (siehe Abbildung \ref{img:typo_3_backend}).\\
+
+\textbf{Rechte Spalte:} \textit{Arbeitsbereich} (violett eingerahmt), hier wird am ausgewählten TYPO3-Objekt gearbeitet (siehe Abbildung \ref{img:typo_3_backend}).
+
+\subsection{Konfiguration des Backends mit TYPO3}
+
+Die für die Applikationen benötigten TYPO3 Extensions werden automatisch installiert, sollte eine weitere Extension benötigt werden, befindet sich eine Anleitung für die Installation in diesem Abschnitt. Extensions sind optionale Software-Komponenten, also Zusatzmodule, die eine bestehende Software erweitern.\\
+Installation von TYPO3 Extensions: Dazu wird in der linken Spalte zuerst das Modul “Extensions” ausgewählt. Dann erscheinen im Hauptfenster verschiedene Extensions, welche alphabetisch gelistet sind. Bei der Erstinstallation werden folgende Extensions (unten ist der Key angegeben, welcher sich in der mittleren Spalte befindet) automatisch installiert (siehe Abbildung \ref{img:extensions}):
+
+\begin{itemize}
+    \item visit\_tablets
+    \item scheduler
+    \item tstemplate
+    \item fluid\_styled\_content
+    \item setup
+\end{itemize}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/extensions.png}
+\caption{Installation der Extensions}
+\label{img:extensions}
+\end{figure}
+
+Mittels einem Klick auf das Würfelsymbol mit einem Plus werden die oben angegebenen Extensions der Reihe nach aktiviert (siehe Abbildung \ref{img:extensions}). Die aktivierten Extensions erscheinen dann als auswählbare Module in der linken Spalte.
+Optional kann im nächsten Schritt die Sprache Deutsch installiert werden, sonst ist die Hauptsprache Englisch. Um die Sprache zu installieren, wird in der linken Spalte unter den ADMIN TOOLS “Languages” ausgewählt (siehe Abbildung \ref{img:sprache_aendern}).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/sprache_aendern.png}
+\caption{Änderung der Sprache}
+\label{img:sprache_aendern}
+\end{figure}
+
+Im Hauptfenster erscheinen nach dem Klick die unterstützten Sprachen, hier “German” suchen und zuerst mittels einem Klick auf das Plus-Symbol links von der Sprache die Sprache aktivieren, dabei erscheint oben rechts eine grüne Meldung mit “Success, language was successfully activated.”. Als nächstes muss die aktivierte Sprache mittels Klick auf das Download-Symbol rechts von der Sprache heruntergeladen werden. War der Download erfolgreich, so erscheint oben rechts eine grüne Meldung mit “Success. The translation update has been successfully completed.”.
+
+\subsection{Anpassung}
+
+Im Kopfbereich können die TYPO3-Benutzereinstellungen konfiguriert werden. Dazu wird im Kopfbereich oben rechts zuerst der Benutzer ausgewählt. Bei der Erstinstallation ist es der “admin”, dabei wird ein Menü aufgeklappt, aus welchem die “User settings” ausgewählt werden (siehe Abbildung \ref{img:benutzereinstellungen}).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/benutzereinstellungen.png}
+\caption{Konfiguration der Benutzereinstellungen}
+\label{img:benutzereinstellungen}
+\end{figure}
+
+Jetzt erscheinen im Hauptbereich die User Settings, welche in dieser Maske konfiguriert werden können. Jetzt kann zuerst die Sprache umgestellt werden. Dies kann gleich im ersten Raster “Personal data”, im unteren Bereich unter Languages geändert werden (siehe Abbildung \ref{img:benutzereinstellungen_sprache}). Hier kann die heruntergeladene Sprache mittels Dropdown ausgewählt werden. Damit die Auswahl auch gespeichert und angewendet wird, muss auf das Speicher-Symbol (Diskette) ganz oben links im Hauptfenster geklickt werden. Nur durch diesen Klick werden die User Settings upgedated und die Sprache auch angewendet. Jetzt erscheinen oben im Hauptfenster drei Meldungen. Die grüne Meldung besagt, dass die Settings upgedated wurden. Die blaue Meldung sagt, dass die Seite (localhost:80/typo3/) neu geladen werden muss, um die Veränderungen zu aktivieren. Die rote Meldung sagt, dass das neue Passwort nicht upgedated wurde, da es nicht zweimal eingegeben wurde.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/benutzereinstellungen_sprache.png}
+\caption{Änderung der Benutzereinstellungen und der Sprache}
+\label{img:benutzereinstellungen_sprache}
+\end{figure}
+
+
+
+
+
 
 
 \cite{anno4j1}
