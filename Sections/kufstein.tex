@@ -237,9 +237,73 @@ Im rechten Teil des Hauptfensters erscheinen vier Möglichkeiten der Inhaltsposi
 \label{img:auswahl_plugins}
 \end{figure}
 
+\subsection{Das Karten-Plug-In}
+
+Im Raster “Plug-Ins” die “Karte - Dieses Plugin einfügen um eine Karte anzuzeigen” auswählen und oben auf das Speicher-Symbol klicken, damit die Änderungen gespeichert werden. Nach dem Speichern kann die Seite mit dem X-Symbol über der Überschrift geschlossen werden. Danach erscheint die Übersicht über die erzeugte Seite, hier sieht man, dass das Karten-Plugin eingebunden wurde (siehe Abbildung \ref{img:einbindung_plugins}).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/einbindung_plugin.png}
+\caption{Einbindung eines Plug-Ins}
+\label{img:einbindung_plugins}
+\end{figure}
+
+Wenn jetzt die soeben erstellte Seite in der linken Spalte des Hauptfensters, also da wo die Weltkugel ist, mit Rechtsklick ausgewählt, kommt ein Dropdown-Menü. Jetzt den ersten Eintrag “Ansehen” aus der Liste auswählen und die Seite kann im Browser angesehen werden.
+
+\subsection{Erstellung eines Templates}
+
+Wenn ein neuer Raum hinzugefügt wird, wird ein neuer Webroot benötigt, dieser wird mittels Template erzeugt und stellt den Seitenanfang der Webseite dar. Sollen mehrere gleiche Applikationen laufen, dann wird für jede einzelne Applikation ein eigenes Template benötigt.
+Für die Darstellung der Inhalte auf der Webseite werden Templates verwendet. Ein Template ist eine Design- und Formatierungsvorlage für ein Dokument, es ist das Grundgerüst, welches mit Inhalten gefüllt werden muss//.
+Um ein Template in TYPO3 zu erstellen, muss im ersten Schritt unter WEB das “Template” aus der Modul-Liste auf der linken Seite ausgewählt werden. Danach erscheinen die Template-Werkzeuge in der rechten Hälfte des Hauptfensters, hier kann “Template für neue Website erstellen” ausgewählt werden. Jetzt kann in der Werkzeugleiste des Hauptbereichs das Dropdown-Feld aufgemacht und “Info/Bearbeiten” ausgewählt werden. In der Übersicht im Hauptbereich erscheinen die wichtigsten Template-Informationen. Danach “Vollständigen Template-Datensatz bearbeiten” auswählen. Hier kann im Raster “Allgemeines” der Titel des Templates hinzugefügt werden, des weiteren muss der Inhalt aus “Setup” gelöscht werden.\\
+Danach ins Raster “Enthält” wechseln, hier können verschiedene Objekte aus der rechten Spalte “Verfügbare Objekte” in die linke Spalte “Ausgewählte Objekte” verschoben werden, hier muss jedoch auf die Reihenfolge dieser Objekte geachtet werden. Hier zuerst auf “Fluid Content Elements (fluid\_styled\_content)” klicken, dann wandert dieses Objekt in die linke Spalte. Das gleiche mit dem Objekt “tablets (visit\_tablets)”. Jetzt befinden sich beide Objekte in der linken Spalte unter “Ausgewählte Objekte”. Damit diese Änderungen gespeichert werden, muss wieder auf das Speichern-Symbol über der Überschrift im Hauptbereicht geklickt werden. Wenn die Webseite auf dem localhost:80/ aufgerufen wird, erscheint die Karte.
 
 
+\section{Karten-Applikation}
 
+\subsection{Einpflegen der Daten in die Karten-Applikation}
+
+Dazu aus der Modulleiste links unter der Obergruppe VISIT TABLET die Karte auswählen. Im linken Teil des Hauptfensters ist der Seitenbaum zu sehen und rechts befindet sich die Kartenübersicht. Oben links im rechten Teil des Hauptfensters befindet sich ein Menü-Button, wird dieser angeklickt, wird eine weitere dunkelblaue Spalte zwischen dem Seitenbaum und dem Arbeitsbereich im Hauptfenster sichtbar (siehe Abbildung \ref{img:kartenapp}).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/kartenapp.png}
+\caption{Leere Kartenübersicht}
+\label{img:kartenapp}
+\end{figure}
+
+\subsection{Erstellung der Startseite für die Karten-Applikation}
+
+Dazu in der dunkelblauen Leiste “Einstellungen” auswählen (siehe Abbildung \ref{img:startseite_karte}).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/startseite_karte.png}
+\caption{Erstellung der Startseite für die Karten-Applikation}
+\label{img:startseite_karte}
+\end{figure}
+
+Die Startseite wird dem Besucher als erstes angezeigt, auf dieser kann der Besucher die gewünschte Sprache auswählen. Damit das Design des Textes immer gleich aussieht, gibt es unter \url{https://github.com/ViSIT-Dev/appbundle} in der README.md ein Beispiel für die Startseite der Tablets (siehe Abbildung \ref{img:github_link}).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/github_link.png}
+\caption{Text für die Startseite der Applikationen, zu finden auf \url{https://github.com/ViSIT-Dev/appbundle}}
+\label{img:github_link}
+\end{figure}
+
+Für jede Sprache wird ein Titel sowie der Impressumstext benötigt. Jetzt werden die beiden Texte aus der zuvor genannten Github-Seite benötigt (siehe Abbildung \ref{img:github_link}). Der erste Text ist der Starttext, dieser beinhaltet die HTML-Elemente Überschrift, Paragraph und Buttons über welche die gewünschte Sprache gewählt werden kann. Die einzelnen Texte in den Tags können mit dem gewünschten Text überschrieben werden (siehe Abbildung \ref{img:befuellte_startseite_karte}).\\
+Wenn weitere Sprachen außer Deutsch und Englisch verfügbar sind, können weitere Sprachauswahl-Buttons durch das Markieren des gesamten <button>-Tags ausgewählt werden, dann kopieren und darunter einfügen, erstellt werden. Zwei Sachen müssen beachtet werden: einerseits muss in der \textit{onclick="initMap('...')}-Methode die der Sprache entsprechende ID eingegeben werden und für den Button der Pfad für die Flagge im Image-Tag angegeben werden. Dazu muss zuvor im das benötigte Flaggen-Icon vorzugsweise im PNG-Format im entsprechenden Ordner gespeichert werden und der Pfad angepasst werden\\ \textit{src="/typo3/sysext/core/Resources/Public/Icons/Flags/PNG/DE.png">}. 
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/befuellte_startseite_karte.png}
+\caption{Erstellung der Startseite für die Karten-Applikation}
+\label{img:befuellte_startseite_karte}
+\end{figure}
+
+\section{Neues Kartenelement hinzufügen}
+
+Mit einem Klick auf “Neu” kann ein neues Kartenelement - Point of Interest - hinzugefügt werden.
 
 
 
