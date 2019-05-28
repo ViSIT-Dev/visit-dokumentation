@@ -34,16 +34,96 @@ Erklärung der einzelnen Befehle:\\
 docker run -d --name visit -p 80:80 -p 22000:22000 -p 21027:21027 
 \end{lstlisting}
 
+\begin{lstlisting}[style=MyBashStyle]
+docker run 
+\end{lstlisting}
+ startet den Container und mit den mit den Parametern \begin{lstlisting}[style=MyBashStyle]
+-d 
+\end{lstlisting} gibt man an, dass der Container im Hintergrund dauerhaft laufen soll (Daemonmode). Weiters wird mit \begin{lstlisting}[style=MyBashStyle]
+--name visit
+\end{lstlisting} der Name des Containers festgelegt, in diesem Fall heißt der Container visit. Der Container kann im weiteren Verlauf auch über diesen Namen angesprochen werden.
+Mit dem Parameter
+\begin{lstlisting}[style=MyBashStyle]
+-p 80:80
+\end{lstlisting} werden die Ports vom Host an den Container gebunden. Hier wird der lokale Hostport 80 auf den Containerport 80 gemappt. Die weiteren Ports 
+\begin{lstlisting}[style=MyBashStyle]
+-p 22000:22000 -p 21027:21027 
+\end{lstlisting} werden für das Syncthing und für das Peer to Peer-Netzwerk benötigt.
+Als nächstes folgt der Befehl 
+\begin{lstlisting}[style=MyBashStyle]
+-v visit-syncthing:/var/syncthing
+\end{lstlisting}
+Mit dem Parameter \begin{lstlisting}[style=MyBashStyle]
+-v
+\end{lstlisting}
+ wird ein Verzeichnis (Volume) auf dem Hostrechner zu einem Verzeichnis innerhalb des Containers verbunden, auf diese Weise werden die Daten persistent gespeichert, das heißt, dass ein Ordner auf dem Hostsystem auf einen Ordner im Container gemappt wird. Das bedeutet, dass die Daten in beiden Ordnern immer inhaltsgleich sind. Ohne dem Mapping zu einen Ordner auf dem Hostsystem, wären alle Daten aus dem Docker Container, wenn dieser Container gelöscht wird, ebenfalls gelöscht. Um die Daten persistent, also dauerhaft zu speichern, wird immer ein Ordner im Hostsystem mit dem entsprechenden Ordner im Docker Container gemappt.
+Zuerst wird das Verzeichnis auf dem Hostrechner angegeben, hier \begin{lstlisting}[style=MyBashStyle]
+visit-syncthing
+\end{lstlisting}
+und nach dem Doppelpunkt steht das Verzeichnis innerhalb des Containers, hier \begin{lstlisting}[style=MyBashStyle]
+/var/syncthing
+\end{lstlisting}
 
-docker run startet den Container und mit den mit den Parametern -d gibt man an, dass der Container im Hintergrund dauerhaft laufen soll (Daemonmode). Weiters wird mit --name visit der Name des Containers festgelegt, in diesem Fall heißt der Container visit. Der Container kann im weiteren Verlauf auch über diesen Namen angesprochen werden.
-Mit dem Parameter -p 80:80 werden die Ports vom Host an den Container gebunden. Hier wird der lokale Hostport 80 auf den Containerport 80 gemappt. Die weiteren Ports -p 22000:22000 -p 21027:21027 werden für das Syncthing und für das Peer to Peer-Netzwerk benötigt.
-Als nächstes folgt der Befehl -v visit-syncthing:/var/syncthing. Mit dem Parameter -v wird ein Verzeichnis (Volume) auf dem Hostrechner zu einem Verzeichnis innerhalb des Containers verbunden, auf diese Weise werden die Daten persistent gespeichert, das heißt, dass ein Ordner auf dem Hostsystem auf einen Ordner im Container gemappt wird. Das bedeutet, dass die Daten in beiden Ordnern immer inhaltsgleich sind. Ohne dem Mapping zu einen Ordner auf dem Hostsystem, wären alle Daten aus dem Docker Container, wenn dieser Container gelöscht wird, ebenfalls gelöscht. Um die Daten persistent, also dauerhaft zu speichern, wird immer ein Ordner im Hostsystem mit dem entsprechenden Ordner im Docker Container gemappt.
-Zuerst wird das Verzeichnis auf dem Hostrechner angegeben, hier visit-syncthing, und nach dem Doppelpunkt steht das Verzeichnis innerhalb des Containers, hier /var/syncthing. 
-Im nächsten Teil des Befehls -v s:/p2p/visit:/var/p2p wird ebenfalls zuerst das Verzeichnis auf dem Hostrechner angegeben, s:/p2p/visit und dann das Verzeichnis innerhalb des Containers /var/p2p.
-Im nächsten Befehl -v visit-database:/var/lib/mysql geht es um die Verbindung zur Datenbank. Hier wird ebenfalls zuerst das Verzeichnis auf dem Hostrechner angegeben visit-database und nach dem Doppelpunkt steht das Verzeichnis innerhalb des Containers /var/lib/mysql.
-Zuletzt wird mittels --restart unless-stopped visitapp/maincontainer dem System mitgeteilt, dass der Docker Container visitapp/maincontainer automatisch gestartet werden soll außer, wenn er manuell oder anderweitig gestoppt wird.
+Im nächsten Teil des Befehls \begin{lstlisting}[style=MyBashStyle]
+-v s:/p2p/visit:/var/p2p
+\end{lstlisting}
+ wird ebenfalls zuerst das Verzeichnis auf dem Hostrechner angegeben, \begin{lstlisting}[style=MyBashStyle]
+s:/p2p/visit
+\end{lstlisting} und dann das Verzeichnis innerhalb des Containers \begin{lstlisting}[style=MyBashStyle]
+/var/p2p
+\end{lstlisting}
+Im nächsten Befehl \begin{lstlisting}[style=MyBashStyle]
+-v visit-database:/var/lib/mysql
+\end{lstlisting} geht es um die Verbindung zur Datenbank. Hier wird ebenfalls zuerst das Verzeichnis auf dem Hostrechner angegeben \begin{lstlisting}[style=MyBashStyle]
+visit-database
+\end{lstlisting} und nach dem Doppelpunkt steht das Verzeichnis innerhalb des Containers \begin{lstlisting}[style=MyBashStyle]
+/var/lib/mysql
+\end{lstlisting}
+Zuletzt wird mittels \begin{lstlisting}[style=MyBashStyle]
+--restart unless-stopped visitapp/maincontainer
+\end{lstlisting} dem System mitgeteilt, dass der Docker Container \begin{lstlisting}[style=MyBashStyle]
+visitapp/maincontainer
+\end{lstlisting} automatisch gestartet werden soll außer, wenn er manuell oder anderweitig gestoppt wird.
 
-Wenn der Vorgang abgeschlossen ist, kann über Lokalhost im Browser unter localhost:80/typo3/ das Backend aufgegerufen werden. Das erstmalige einloggen in das Backend (TYPO3) erfolgt mit dem Benutzername: admin und Passwort: visit-admin.
+Wenn der Vorgang abgeschlossen ist, kann über Lokalhost im Browser unter \textbf{localhost:80/typo3/} das Backend aufgegerufen werden. Das erstmalige einloggen in das Backend (TYPO3) erfolgt mit dem \textbf{Benutzername: admin} und \textbf{Passwort: visit-admin}.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/typo_3_login.png}
+\caption{Das Login-Fenster für TYPO3}
+\label{img:typo_3_login}
+\end{figure}
+
+\section{TYPO3}
+\subsection{Allgemein}
+
+TYPO3 ist ein freies Content-Management-System für Webseiten, es wird in Frontend und Backend getrennt. Als Frontend wird die Präsentationsebene bezeichnet, das ist der Teil einer Applikation, den der Betrachter sehen kann. Als Backend hingegen, bezeichnet man die Datenzugriffsebene, das ist der Teil einer Applikation, welcher nicht für den Besucher sichtbar ist. Das Backend ist der Verwaltungsbereich einer Webseite. TYPO3 wird auf einem Webserver installiert und über den Webbrowser benutzt.
+Das Backend kann man sich als eine Werkstatt vorstellen in der Sachen produziert und gelagert werden und wenn sie fertig sind, ins Schaufenster, dem Frontend, gestellt werden und von Besuchern bestaunt werden können.
+
+\subsection{Login}
+
+Damit niemand unbefugter im Frontend sowie Backend etwas verändern kann, muss man sich zuerst ins Backend einloggen. Dies geschieht über den Aufruf der Domain \textbf{localhost:80/typo3/} im Webbrowser.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/login_TYPO3.png}
+\caption{Das Login-Fenster für TYPO3}
+\label{img:typo_3_logIn}
+\end{figure}
+
+Im Login-Fenster kann der Benutzername sowie das Passwort eingetragen werden. Beim ersten Login ist der \textbf{Benutzername: admin} und das \textbf{Passwort: visit-admin}, dieser muss in weiterer Folge verändert werden. Mehr dazu siehe Anpassung.
+Nach einem erfolgreichen Login wird das Backend mit den dazugehörigen Modulen im Browser geladen.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/aufbau_TYPO3.png}
+\caption{Aufbau des TYPO3-Backends}
+\label{img:typo_3_backend}
+\end{figure}
+
+\subsection{Aufbau von TYPO3}
+
+Das TYPO3-Backend besteht aus einem Kopfbereich (grün eingerahmt) und einem Hauptbereich (rot eingerahmt), welcher aus drei Spalten besteht. Im Kopfbereich kann der Administrator seine TYPO3-Benutzerenstellungen konfigurieren. Im Hauptbereich werden Webdokumente bearbeitet. Das TYPO3-Backend wird von links nach rechts abgearbeitet.
 
 
 \cite{anno4j1}
