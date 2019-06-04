@@ -174,47 +174,93 @@ Die wichtigsten Endpunkte bzw. Konfigurationsmöglichkeiten sind die folgenden (
 
 \paragraph{\wisski Ontology}
 
-In diesem Teil der Konfiguration kann die unterliegende Ontologie bzw. das Metadatenmodell für das System definiert werden. Dazu wird zunächst in einem Drop-Down Menu der Adapter ausgewählt, für den dies getan werden soll. Weiterhin muss dann eine RDFS oder OWL Schema Datei in das \wisski System hochgeladen werden.
+In diesem Teil der Konfiguration kann die unterliegende Ontologie bzw. das Metadatenmodell für das System definiert werden. Dazu wird zunächst in einem Drop-Down Menu der Adapter ausgewählt, für den dies getan werden soll. Weiterhin muss dann eine RDFS oder OWL Schema Datei in das \wisski System hochgeladen werden. Dazu ist ein entsprechender Button vorgesehen.
 
-Wenn bereits eine Ontologie für einen Adapter existiert, wird diese bzw. vielmehr dessen enthaltene Namensräume angezeigt. Zusätzlich gibt es dann die Möglichkeit, die aktuelle Ontologie 
+Wenn bereits eine Ontologie für einen Adapter existiert, wird diese bzw. vielmehr dessen enthaltene Namensräume angezeigt. Zusätzlich gibt es dann die Möglichkeit, die aktuelle Ontologie zu löschen, womit wieder zum ursprünglichen Zustand - einer nicht vorhandenen Ontologie samt Upload Button - zurückgekehrt wird.
 
---------------------------------------------------
+Auf diese Weise kann eine Ontologie ausgetauscht werden. Vorsicht jedoch hier: Beim Austauschen einer Ontologie sollte darauf geachtet werden, dass die alte Ontologie in der neuen Ontologie enthalten ist, damit die aktuell definierten Pfade (siehe nächsten Unterabschnitt) nicht invalidiert werden.
 
-zur auswahl der aktuellen ontologie
-
-vorsicht: wenn die ontologie ausgetauscht wird, sollte die "neue" ontologie auf der alten basieren, damit vorher getätigte konfigurationen nicht hopps gehen
-
-auswahl des adapters -> anzeigen der aktuellen ontologie
-
-wenn sie ausgetauscht werden soll -> delete ontology -> upload new ontology (nur über einen direkten URL pfad möglich, tipp: temporärer upload)
+Ein Beispiel für das VisMo Modell, welches für das \visit Projekt im entsprechenden \wisski Modul definiert ist, ist in \autoref{fig:wisskiontology} im Appendix zu sehen.
 
 \paragraph{Pathbuilders}
 
-verweis aus wisski homepage bzw. dessen entwickler, die eine viel bessere erklärung geben
+Die Pfade des \wisski Moduls bilden das eigentliche Herzstück, da ausgehend von diesen Pfaden alle weiteren Komponenten, wie zum Beispiel die Eingabe- sowie Ausgabeinterfaces, generiert werden. Dieser Unterabschnitt wird einen Einblick in die Konfiguration des \visit Projekts geben. Wie eingangs zu diesem Kapitel jedoch bereits erwähnt, kann dieser Einblick nie alle Details des Moduls abdecken. Deswegen sei hier nochmals auf \url{http://wiss-ki.eu/} für detailliertere und ausführlichere Erklärungen verwiesen.
 
-aktueller "visittestrepo\_pathes"
+Die erste Übersicht beim Navigieren auf das Pathbuilders Menü listet alle vorhandenen Pathbuilder auf, die aktuell im entsprechenden \wisski System definiert sind. Genauso wie für die Salz Adapter und die Ontologie genügt es aber auch hier, einen Pathbuilder zu benutzen. Der für das \visit Projekt konfigurierte Pathbuilder trägt den Namen \texttt{\q{visittestrepo\_pathes}}.
 
-übersicht: auflistung aller ids, pfade, datentypen und möglichkeit zum bearbeiten
+Wird dieser editiert, gelangt man in die Übersicht aller in diesem Pathbuilder befindlichen Pfade. Dies ist beispielhaft in \autoref{fig:pathbuilder} zu sehen.
 
-erzeugen neuer pfade: path oder group (+ erklärung), anlegen des pfads, mark feature, relationship oder property
+Ein \wisski Pfad kann intern eine Gruppe (zur Gruppierung mehrerer Pfade für das selbe Objekt) oder ein wirklicher Pfad sein und besteht prinzipiell aus drei wichtigen Komponenten:
 
-------------------------------------------
+\begin{description}
+	\item[ID] Eindeutiger Identifikator für den gesamten Pfad innerhalb des \wisski Sytems.
+	\item[Pfad] Einzelner Knoten für eine Gruppe, oder eine Folge von RDF Knoten, Relationen und Eigenschaften, die den Pfad im RDF Graphen widerspiegeln sollen.
+	\item[Datentyp] Definition des Werts des jeweiligen Pfades. Bei primitiven Datentypen endet der Pfad in einer RDF Eigenschaft, während eine sogenannte \texttt{\q{entity reference}} eine Relation, also einer Verbindung zu einem weiteren Knoten bzw. einer \wisski Entität entspricht.
+\end{description}
 
-pfade
+Drei Beispiele sollen diesen Sachverhalt weiter erklären. \autoref{fig:paths1} zeigt zwei Pfade, wie sie für das \visit Projekt definiert wurden: der obere \q{Pfad} ist eine Gruppe für das allgemeine Museumsobjekt. Dessen ID ist \texttt{\q{Object}}, während der Pfad nur auf \texttt{\q{http://\-visit.\-de/\-ont\-o\-lo\-gies/\-vis\-mo/\-Ob\-ject}} gesetzt ist. Dies lässt sich dadurch erklären, dass die Gruppe für den Ursprungsknoten eines dieser Entitäten steht, welcher den RDF Typen \texttt{\q{http://\-visit.\-de/\-ont\-o\-lo\-gies/\-vis\-mo/\-Ob\-ject}} besitzen soll. Weiterhin benötigt eine Gruppe keinen Datentypen.
 
-konfiguration
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/berndl/paths1}
+    \caption{\label{fig:paths1} Zwei Beispiel-Pfade aus der \wisski Konfiguration des \visit Projekts.}
+\end{figure}
+
+Der zweite Pfade in \autoref{fig:paths1} ist nun ein wirklicher Pfad und steht high-level für den bezeichnenden Titel eines Ausstellungsobjekts. Die ID des Pfads ist \texttt{\q{Object\_identifiedBy\_Title}}, während der Pfad aus zwei Knoten und einer Relation besteht:
+
+\begin{itemize}
+	\item Da sich der Pfad bzw. der zugehörige Titel auf ein Ausstellungsobjekt beziehen soll, ist der erste Knoten von dem der Pfad ausgeht \texttt{\q{http://\-visit.\-de/\-ont\-o\-lo\-gies/\-vis\-mo/\-Ob\-ject}}.
+	\item An diesen Knoten schließt sich dann die Relation \texttt{\q{ecrm:P1\_is\_i\-den\-ti\-fied\_by}} an.
+	\item Der Zielknoten dieses Pfads ist ein weiterer Knoten: \texttt{\q{ecrm:E35\_Title}}.
+\end{itemize}
+
+Was für den zweiten Pfad noch fehlt ist der zugehörige Datentyp, welcher in der Ansicht in \autoref{fig:paths1} ebenfalls zu sehen ist: da ein Titel angegeben werden soll, definiert der Pfad eine Eigenschaft am Ende des Pfades (nicht in der Übersicht zu sehen) und benötigt damit einen primitiven Datentypen \texttt{\q{text/plain}}. Editiert man diesen Pfad, öffnet sich die Maske, die in \autoref{fig:pathsDetails1} zu sehen ist. Dort können viele Einstellungen zum Pfad editiert werden und zusätzlich ist die Angabe der letztendlichen Eigenschaft durch die Eingabe \texttt{\q{Datatype Property}} möglich. In diesem Beispiel ist der letzte Teil des Pfads somit \texttt{\q{http://erlangen-crm.org/170309/P3\_has\_note}}.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/berndl/pathsDetails1}
+    \caption{\label{fig:pathsDetails1} Erste Maske zum Editieren eines \wisski Pfads.}
+\end{figure}
+
+Wird die aktuelle Einstellung des Pfads gespeichert, öffnet sich die zweite Maske zur Konfiguration eines \wisski Pfads. Ausgehend von dem aktuellen Beispiel eines Objekt-Titels ist dies in \autoref{fig:pathsDetails2} zu sehen. Die ersten vier Einstellungen werden automatisch vom System gesetzt, und sollten in der Regel nicht angepasst werden müssen. Wichtig sind die vier unteren Einstellungen, welche den Datentypen des aktuell betrachteten Pfads definieren, indem zuerst der allgemeine Datentyp gesetzt wird und in den folgenden drei Einstellungen lässt sich einstellen, wie dieser Datentyp später in der Eingabemaske des \wisski Systems aussehen soll. In unserem Beispiel kann ein Text in einem einfachen Textfeld angelegt werden. Zusätzlich dazu kann die Kardinalität für das entsprechende Feld festgelegt werden.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/berndl/pathsDetails2}
+    \caption{\label{fig:pathsDetails2} Zweite Maske zum Editieren eines \wisski Pfads.}
+\end{figure}
+
+\autoref{fig:paths2} zeigt weiterhin ein Beispiel für einen Pfad, welcher eine Relation zwischen zwei Datenbankobjekten definiert. In diesem Falle handelt es sich semantisch um eine Beziehung zwischen Teilobjekten, also dass ein Objekt ein Teil eines zweiten Objekts ist. Um dies zu tun ist der Datentyp \texttt{\q{Entity reference}} nötig, und dass der Pfad in der entsprechend zu referenzierenden Klasse endet: wie in diesem Fall \texttt{\q{http://\-visit.\-de/\-ont\-o\-lo\-gies/\-vis\-mo/\-Ob\-ject}}.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/berndl/paths2}
+    \caption{\label{fig:paths2} Beispiel-Pfad aus der \wisski Konfiguration des \visit Projekts für eine Relation zwischen zwei Entitäten der Datenbank.}
+\end{figure}
+
+Zwei weitere wichtige Punkte der \wisski Konfiguration sind in obigen Beispielen zu sehen:
+
+\begin{description}
+	\item[Anordnung der Pfade] Die Anordnung der Pfade spielt eine wichtige Rolle in der Konfiguration eines \wisski Systems. Dies ist auf der linken Seite in \autoref{fig:pathbuilder} und der Übersicht der Pfade eines Pathbuilders zu sehen. Die Pfade können dort (durch drag\&drop der \q{Kreuzchen} links neben einer Pfad-ID) in verschiedene Reihenfolgen bzw. Gruppierungen gebracht werden, um somit die Zugehörigkeit eines Pfads zu einer Gruppe, bzw. sogar einer Gruppe zu einer Obergruppe zu definieren. Dies wird getan, indem ein Pfad \q{unter} und dann \q{eine Ebene nach rechts} geschoben wird, wie dies im Beispiel für die ersten beiden Pfade zu sehen ist (ebenfalls in \autoref{fig:paths1} zu sehen). Eine Untergruppe zum Objekt bildet zum Beispiel der Pfad mit der ID \texttt{\q{Object\_Dating}}, welche ihrerseits wieder vier Pfade unter sich zusammen führt. Dies ist wichtig, da das Setzen eines dieser Pfade nicht jeweils einen eigenen Zwischenknoten (mit dem RDF Typen \texttt{\q{http://\-visit.\-de/\-ont\-o\-lo\-gies/\-vis\-mo/\-Da\-ting}}) erzeugen soll, sondern alle vier Pfade den selben Zwischenknoten benutzen sollen.
+	\item[Disambiguierung] Die Disambiguierung bezieht sich - seicht formuliert - ähnlich wie die oben beschriebene Anordnung und Untergruppen indirekt auf die korrekte Zuweisung von Knoten zu ihren entsprechenden Objekten. Die Disambiguierung ist in den Pfaden durch die rot geschriebenen Teile zu sehen. Sie weißt das hinterliegende System an, dass alles was ab diesem Punkt im Pfad definiert ist, einzigartig im System gespeichert werden soll. Dadurch können keine Duplikate mit genau der selben Konfiguration entstehen. Dies lässt sich einfach am obigen Beispiel erläutern: die Disambiguierung für den Objekttitel beginnt ab dem \texttt{\q{ecrm:E35\_Title}} Knoten, der weiterhin nur die RDF Eigenschaft \texttt{\q{http://erlangen-crm.org/170309/P3\_has\_note}} besitzt. Durch die Disambiguierung an dieser Stelle wird das System keinen zweiten Knoten erstellen, der den selben Titel in der Notiz-Eigenschaft besitzt. Damit wird sichergestellt, dass zum Beispiel keine zwei Objekte mit dem Titel \q{Mona Lisa} erstellt werden können. Technisch verweist das System im Hintergrund bei verweis auf diesen Knoten somit immer auf genau diesen einen Knoten - wie beschrieben werden \textit{keine} Duplikate davon erstellt. Die Disambiguierung eines Pfads kann in der Maske mit dem Feld \texttt{\q{Disambiguation Point}} vorgenommen werden, die in \autoref{fig:pathsDetails1} zu sehen ist.
+\end{description}
+
+Die Informationen und die Konfiguration des Pathbuilders wird vom \wisski System weiterhin genutzt, um Ein- sowie Ausgabeinterfaces für die Hauptobjekte des Pathbuilders zu erzeugen. Über die Create-Seite des \wisski Systems (zu sehen in \autoref{fig:wisskiCreate} im Appendix) ist unter anderem das Eingabe-Interface für die Ausstellungsobjekte (Object) zu erreichen, dieses ist in \autoref{fig:wisskiCreateObject} im Appendix zu sehen. Nachdem Objekte über dieses erstellt wurden, können diese per Navigate- und Find-Seite des \wisski Systems eingesehen werden. Ein Beispiel für das Ausgabeinterface einer Partisane aus dem \visit Projekt ist in \autoref{fig:wisskiViewObject} im Appendix zu sehen.
 
 \subsection{Technischer Zugang zu den Metadaten - die ViSIT REST API}\label{sec:rest}
 
-aufhänger: technischer Zugang im gegensatz zum allgemeinen zugang
+Das oben beschriebene \wisski System ist entworfen, um im \visit Kontext Zugang für Geisteswissenschaftler, Museumsmitarbeiter und allgemein forschenden Personen zu schaffen. Weiterhin war es im \visit Projekt aber ebenfalls nötig, einen technischen Zugang zu den über \wisski erzeugten Daten zu gewährleisten. Diesen technischen Zugang verwenden weiter verarbeitende Komponenten des Projekts, beschrieben in den Kapiteln 4 bis 8. Ziel ist es ebenfalls, die Informationen der RDF Daten zu vermitteln, ohne dass der Empfänger mit RDF oder anderen semantischen Technologien in Berührung kommen muss.
+% TODO insert \autoref{} bis \autoref{}.
 
-allgemeine beschreibung
+Um dies auf standardisierte Weise durchzuführen, ist die Wahl auf eine serverseitige REST API gefallen, die mit den weiteren technischen Komponenten via HTTP kommunizieren kann. Die REST API ist in Java geschrieben und mit dem Spring Framework\footnote{\url{https://spring.io/}} umgesetzt. Die Entwicklung hat ein Repository im allgemeinen \visit Projekt Bitbucket: \url{https://bitbucket.org/visit2016/metadb-rest-api/}.
+
+Die wichtigsten Details zur Verwendung der \visit REST API sind in \autoref{sec:features} beschrieben.
 
 \subsection{Wichtige Technische Charakteristika der Entwicklung und den Betrieb der Semantischen Datenbank}\label{sec:features}
 
 alle sachen wie scripte und details für die lauffähige API und DB erklären 
 
-deployment der REST API: ändern der pom.xml und application.properties
+deployment der REST API: ändern der pom.xml und application.properties, dadurch offline und online schaltung
 
 \subsection{Zusatzfeatures - Erweiterung der Bedienbarkeit der Semantischen Datenbank}\label{sec:additional_features}
 
