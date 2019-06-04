@@ -512,6 +512,30 @@ Das Dateimanagement ist eine Applikation, mit der die Daten in der ViSIT Medien-
 \caption{Einstellung der ViSIT App Extension}
 \label{img:einstellung_extension}
 \end{figure}
+Diese Login Daten sind sensibel, da sie Zugang zum Peer-to-Peer-Netzwerk geben, deshalb sind sie nicht im Docker angeführt. Sie bekommen diese Zugangsdaten (API User, Password for API User sowie die Syncthing Master ID) entweder von der betreuenden Firma oder von einem anderen ViSIT-Partner \ref{img:extensions}.\\
 
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/dateiverwaltung/extensions.png}
+\caption{ViSIT App Extensions}
+\label{img:extensions}
+\end{figure}
+
+Ist aber ein ViSIT-Partner nicht am Hochladen von Dateien interessiert, dann werden die Zugangsdaten zum Dateisystem nicht benötigt.
+
+\subsection{ViSIT-Partner-Liste}
+
+Um zu sehen, welche Partner Zugriff zum Peer-to-Peer-Netzwerk haben, muss zuerst aus der Modulleiste unter VISIT DATEIEN die Verwaltung ausgewählt werden. In weiterer Folge  aus der dunkelblauen Leiste die Partner Liste auswählen. Hier sind alle ViSIT-Partner, die Zugang zum Dateiverwaltungssystem haben, aufgelistet.
+
+Diese Partner haben Zugriff auf die bereits abgelegten Dateien in der Mediendatenbank im Peer-to-Peer-Netzwerk. Diese Dateien können in weiterer Folge beim Anlegen von Objekten ausgewählt werden. Ist eine benötigte Datei noch nicht vorhanden, so muss sie in die Datenbank eingepflegt werden. Dies geschieht über Verwaltung und dann Datei hochladen.\\
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/dateiverwaltung/visit_partner.png}
+\caption{Ansicht der ViSIT-Partner mit Zugang zur Mediendatenbank im Peer-to-Peer-Netzwerk}
+\label{img:visit_partner}
+\end{figure}
+
+In der Abbildung \ref{img:visit_partner} ist ersichtlich, dass es drei Benutzer gibt, die Zugriff auf die Mediendatenbank haben (K***, M*** und P***), im Feld ID ist ihre ViSIT-Zugangs-ID ebenfalls ersichtlich. Die einzelnen Partner sind im Grunde nur Verzeichnis mit Namen und der entsprechenden Partner-ID. Der Benutzer Öffentlich ist ein öffentliches Verzeichnis, er besitzt keine ID, er entspricht sozusagen einem virtuellen Benutzer, er ist nur aus organisatorischen Gründen angeführt.
 
 \cite{anno4j1}
