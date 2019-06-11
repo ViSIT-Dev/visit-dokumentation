@@ -538,4 +538,53 @@ Diese Partner haben Zugriff auf die bereits abgelegten Dateien in der Mediendate
 
 In der Abbildung \ref{img:visit_partner} ist ersichtlich, dass es drei Benutzer gibt, die Zugriff auf die Mediendatenbank haben (K***, M*** und P***), im Feld ID ist ihre ViSIT-Zugangs-ID ebenfalls ersichtlich. Die einzelnen Partner sind im Grunde nur Verzeichnis mit Namen und der entsprechenden Partner-ID. Der Benutzer Öffentlich ist ein öffentliches Verzeichnis, er besitzt keine ID, er entspricht sozusagen einem virtuellen Benutzer, er ist nur aus organisatorischen Gründen angeführt.
 
+\subsection{Upload von 3D-Objekten und Bildern, Videos und anderen Dateien}
+
+Damit eine Datei in die Datenbank geladen werden kann, muss zuerst in der Modulleiste unter der Obergruppe VISIT DATEIEN die Verwaltung ausgewählt werden. Danach erscheint im Hauptfenster die Datei Liste über alle bereits verfügbaren Dateien \ref{img:dateiliste}. Der Zugriffsmodifikator der bereits hochgeladenen Dateien kann entweder \textit{public}, \textit{visit} oder \textit{private} sein.\\
+Zugriff \textit{public} bedeutet, dass jeder diese Datei sehen und verwenden kann. Bei Zugriff \textit{visit} hat jeder ViSIT-Partner Zugang zu der Datei, wohingegen Zugriff \textit{private} nur für die eine Installation zugänglich ist.\\
+Die Dateien mit dem Zugriffsmodifikatior \textit{public} und \textit{visit} können mit einem Klick auf das blaue Downloadsymbol in der entsprechenden Zeile heruntergeladen werden.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/dateiverwaltung/dateiliste.png}
+\caption{Ansicht der bereits verfügbaren Dateien in der Dateiliste}
+\label{img:dateiliste}
+\end{figure}
+
+\subsection{Hochladen von Dateien}
+
+Für das Hochladen eines Medienobjekts ist das Ausfüllen des Titels, des Urhebers, die ViSIT Partner ID sowie der ViSIT Partner Name zwingend erforderlich. Die Beschreibung sowie Hochgeladen von sind optional.\\
+Im nächsten Schritt muss der Dateipfad für die Datei (entweder 3D Objekt oder Bild, Video und weitere Dateien) angegeben werden.\\
+Als nächstes muss die Datei einem bereits angelegten Objekt (Entität) zugeordnet werden. Dies wird in der rechten Spalte des Hauptfensters gemacht. Hier sieht man die Visit Database, hier muss das entsprechende Objekt ausgewählt werden. Klickt man beispielsweise auf "Place", dann öffnen sich alle bereits angelegten Orte, aus diesen kann dann ein Ort ausgewählt werden. Wird ein Ort ausgewählt, dann erscheinen die Detailinformationen zu diesem in der gleichen Spalte.\\
+
+Hat man zufällig ein falsches Objekt ausgewählt, kann mittels Klick entweder auf das Burger-Menü rechts neben Visit Databese geklickt werden und dann Navigate ausgewählt werden oder unter Visit Database im Breadcrumb-Menü auf Navigate klicken, dann kommt man ebenfalls zur Übersicht.\\
+
+Wurde das korrekte Objekt gefunden, dann können die Daten übernommen werden. Dies geschieht mittels Klick auf "Daten übernehmen"\ref{img:datei_hochladen_ausgefuellt}. Nach dem Klick wird das Feld oben rechts bei "Gewählte Entität*:" automatisch ausgefüllt. Danach kann das Objekt zur ViSIT Datenbank hinzugefügt werden. Dies geschieht mittels Klick auf "Medienobjekt zur ViSIT Datenbank hinzufügen". Danach kommen zwei Meldungen, einerseits eine Meldung, dass die Kompression des Medienobjektes wurde erfolgreich gestartet und dass die Datei erfolgreich hinzugefügt wurde \ref{img:bestaetigung_nach_hochladen}.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/dateiverwaltung/datei_hochladen_ausgefuellt.png}
+\caption{Ansicht des ausgefüllten Formulars für den Dateiupload}
+\label{img:datei_hochladen_ausgefuellt}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/dateiverwaltung/bestaetigung_nach_hochladen.png}
+\caption{Bestätigungsnachrichten nach einem erfolgreichen Upload}
+\label{img:bestaetigung_nach_hochladen}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/dateiverwaltung/datei_in_listenuebersicht.png}
+\caption{Hochgeladene Datei in der Listenübersicht}
+\label{img:datei_in_listenuebersichtn}
+\end{figure}
+
+Nachdem die Datei in der ViSIT Datenbank gespeichert wurde, kann sie in der Dateiliste angesehen werden \ref{img:datei_in_listenuebersichtn}. Der Zugriff auf die hochgeladene Datei ist per default immer \textit{private}. Will man die Datei verwenden, muss sie zuerst heruntergeladen werden. Dies geschieht mit einem Klick auf das blaue Download-Symbol, jetzt ist die Datei lokal gespeichert. lokale kopie, falls partner löscht
+
+\subsection{Veröffentlichung einer Datei im ViSIT-Netzwerk}
+
+Wenn eine Datei hochgeladen wurde, welche für alle ViSIT-Partner zur Verfügung stehen soll, dann muss diese Datei explizit freigegeben bzw. veröffentlicht werden. Dies
 \cite{anno4j1}
