@@ -252,9 +252,16 @@ Die Informationen und die Konfiguration des Pathbuilders wird vom \wisski System
 Das oben beschriebene \wisski System ist entworfen, um im \visit Kontext Zugang für Geisteswissenschaftler, Museumsmitarbeiter und allgemein forschenden Personen zu schaffen. Weiterhin war es im \visit Projekt aber ebenfalls nötig, einen technischen Zugang zu den über \wisski erzeugten Daten zu gewährleisten. Diesen technischen Zugang verwenden weiter verarbeitende Komponenten des Projekts, beschrieben in den Kapiteln 4 bis 8. Ziel ist es ebenfalls, die Informationen der RDF Daten zu vermitteln, ohne dass der Empfänger mit RDF oder anderen semantischen Technologien in Berührung kommen muss.
 % TODO insert \autoref{} bis \autoref{}.
 
-Um dies auf standardisierte Weise durchzuführen, ist die Wahl auf eine serverseitige REST API gefallen, die mit den weiteren technischen Komponenten via HTTP kommunizieren kann. Die REST API ist in Java geschrieben und mit dem Spring Framework\footnote{\url{https://spring.io/}} umgesetzt. Die Entwicklung hat ein Repository im allgemeinen \visit Projekt Bitbucket: \url{https://bitbucket.org/visit2016/metadb-rest-api/}.
+Um dies auf standardisierte Weise durchzuführen, ist die Wahl auf eine serverseitige REST API gefallen, die mit den weiteren technischen Komponenten via HTTP kommunizieren kann. Die REST API ist in Java geschrieben und mit dem Spring Framework\footnote{\url{https://spring.io/}} umgesetzt. Die Entwicklung ist in einem Repository im allgemeinen \visit Projekt Bitbucket: \url{https://bitbucket.org/visit2016/metadb-rest-api/}. Eine direkte Kommunikation der aktuell installierten Version der REST API ist stets (sowohl auf dem produktiven Server als auch dem Testsystem) unter der URL Endung \texttt{\q{.../\-me\-ta\-d\-b-rest-api/\-swagger-ui.html}} zu finden.
 
-Die wichtigsten Details zur Verwendung der \visit REST API sind in \autoref{sec:features} beschrieben.
+Dieses Kapitel beschreibt weiterhin die allgemeine Umsetzung der API, dessen Hintergründe, sowie technische Eigenheiten wie Datenmodelle usw. Jedoch sind \textit{die wichtigsten technischen Details zur Verwendung der \visit REST API} in \autoref{sec:features} beschrieben. Dort werden unter anderem wichtige Skripte zur Inbetriebnahme der API erklärt, sowie der Prozess des Deployments erläutert.
+
+
+------------------------------
+
+teilaufgaben: digitalrepresentation, object, und import
+
+Excel Erweiterung erwähnen?
 
 \subsection{Wichtige Technische Charakteristika der Entwicklung und den Betrieb der Semantischen Datenbank}\label{sec:features}
 
