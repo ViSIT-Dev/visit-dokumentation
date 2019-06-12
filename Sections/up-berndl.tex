@@ -86,6 +86,19 @@ In der aktuellen Hauptversion 6.2\footnote{\url{http://www.cidoc-crm.org/Version
 
 Aufbauend auf dem CIDOC CRM wurde eine Ontologie entwickelt, die den kompletten Anwendungsfall des ViSIT Projekt abbilden kann: das \textbf{ViSIT Model VisMo}. Der Fokus liegt dabei auf der Darstellung von Architektur-Objekten und Ausstellungsobjekten, die mit Personen oder Gruppen von Personen, Orten sowie zeitlichen Events in Verbindung gesetzt werden, um eine Wissensbasis zu kreieren.
 
+Diesbezüglich sind die Hauptentitäten, die in der \visit Datenbank angelegt werden können, die folgenden:
+
+\begin{description}
+	\item[Ereignis (Activity):] Diese Entität umfasst alle vergangenen und zukünftigen Vorgänge und Geschehnisse in kulturellen, sozialen und physischen Systemen, analog zum \texttt{\q{E5\_Event}}\footnote{\url{http://www.cidoc-crm.org/Entity/E5-Event/Version-6.2}} des CIDOC CRM.
+	\item[Bauwerk (Architecture):] Diese Entität bezeichnet alle Arten von Bauten, die wie die Objekte als Informationsträger (vgl. \texttt{\q{E84\_\-In\-for\-ma\-tion\_Car\-rier}}\footnote{\url{http://www.cidoc-crm.org/Entity/E84-Information-Carrier/Version-6.2}} des CIDOC CRM) betrachtet werden.
+	\item[Gruppe (Group):] Diese Entität bezeichnet mehrere Personen, die sich zu einer Gruppierung zusammengeschlossen haben und durch eine gleiche oder ähnliche Tätigkeit miteinander verbunden sind (vgl. \texttt{\q{E74\_\-Group}}\footnote{\url{http://www.cidoc-crm.org/Entity/E74-Group/Version-6.2}} des CIDOC CRM).
+	\item[Institution (Institution):] Diese Entität bezeichnet hier alle Arten von organisierten Einrichtungen, die keine natürlichen Personen oder Personengruppen sind, z.B. Museen, Archive, Bibliotheken, Universitäten usw.
+	\item[Objekt (Object):] Diese Entität bezeichnet alle Arten von Ausstellungsobjekten aus den Sammlungen von musealen oder museumsähnlichen Institutionen, Archiven etc. , die wie Bauwerke als Informationsträger betrachtet werden (vgl. \texttt{\q{E84\_\-In\-for\-ma\-tion\_Car\-rier}}\footnote{\url{http://www.cidoc-crm.org/Entity/E84-Information-Carrier/Version-6.2}} des CIDOC CRM).
+	\item[Person (Person):] Diese Entität bezeichnet analog zur Definition im CIDOC CRM der \texttt{\q{E21\_Person}}\footnote{\url{http://www.cidoc-crm.org/Entity/E21-Person/Version-6.2)}} alle natürlichen Personen, die leben oder bereits verstorben sind sowie Personen, von denen angenommen wird, dass sie lebten. Dazu zählen historische Persönlichkeiten als auch Personen aus Legenden, Mythen und Sagen.
+	\item[Ort (Place):] Diese Entität bezeichnet hier ausschließlich über Koordinaten lokalisierbare verschwundene und bestehende Dörfer und Städte.
+	\item[Literatur (Reference):] Diese Entität bezeichnet alle Arten von niedergeschriebenen und veröffentlichen Texten.
+\end{description}
+
 Dabei erfüllt VisMo genau den Zweck, den sich das CIDOC CRM als Ziel gesetzt hat: als eine semantische \q{Erweiterung} des CIDOC CRM ist der Inhalt, der für VisMo produziert wird, direkt zum größten Teil verständlich und Leser oder Benutzer des Modells können dies intuitiver, auf der Basis der Beschreibungen des CIDOC CRM, verstehen, lesen und benutzen. Dies ist dadurch begründet, dass alle Klassen und viele der Relationen und Eigenschaften durch Vererbung speziellere Konzepte der CIDOC CRM Klassen und Relationen/Eigenschaften sind. Nur einzelne Teile des VisMo sind speziell für die Ontologie hinzugefügt worden, immer wenn kein Konzept aus dem CIDOC CRM passend für eine Vererbung war. \autoref{fig:modelworkflow} visualisiert den Entwicklungsprozess hinter VisMo.
 
 \begin{figure}[htb]
@@ -256,10 +269,73 @@ Um dies auf standardisierte Weise durchzuführen, ist die Wahl auf eine serverse
 
 Dieses Kapitel beschreibt weiterhin die allgemeine Umsetzung der API, dessen Hintergründe, sowie technische Eigenheiten wie Datenmodelle usw. Jedoch sind \textit{die wichtigsten technischen Details zur Verwendung der \visit REST API} in \autoref{sec:features} beschrieben. Dort werden unter anderem wichtige Skripte zur Inbetriebnahme der API erklärt, sowie der Prozess des Deployments erläutert.
 
+Thematisch lässt sich die REST API in folgende Teile aufteilen, die unterschiedliche Aufgabenbereiche übernehmen:
+
+\begin{description}
+	\item[Digital Representations:] Die Digital Representations - zu deutsch digitale Repräsentationen - stellen die Verbindungen zwischen Metadaten und zugehörigen Mediendaten dar. Hierzu sind sie ein Eintrag in der Metadatenbank, die zu entsprechenden Entitäten hinzugefügt werden, und dabei verschiedene technische Details zu den Mediendaten beinhaltet. Die REST API bietet hierfür die Möglichkeiten, über HTTP entsprechende Digital Representations zu erzeugen, schreiben, bearbeiten, und zu löschen. Den Repräsentationen liegt folgendes (RDF) Modell, aufgezeigt in \autoref{fig:digrep}, zugrunde:
+	
+	\begin{figure}[htb]
+    	\centering
+	    \includegraphics[width=\textwidth]{Figures/berndl/digrep}
+    	\caption{\label{fig:digrep} Modell der digitalen Repräsentationen.}
+	\end{figure}
+	
+	Die möglichen API Funktionen sind, in \autoref{tab:digrepapi} die folgenden (die API Pfade sind relativ zur jeweiligen REST API angegeben):
+	
+	\begin{table}[htb]
+		\centering
+		\begin{tabular}{|l|l|p{1.5cm}|p{5cm}|}
+			\hline
+			\texttt{HTTP} & \texttt{API Pfad} & \texttt{Request Params} & \texttt{Kurzbeschreibung} \\
+			\hline
+			\hline
+			GET & /digrep/media & id & Gibt TM String des mit der \q{id} spezifizierten DigRep Knotens zurück. \\
+			\hline
+			PUT & /digrep/media & id, newData & Updated den TM String durch \q{newData} des per \q{id} spezifizierten DigRep Knotens. \\
+			\hline
+			DELETE & /digrep/media & id & Löscht den durch die \q{id} spezifizierten DigRep Knoten. \\
+			\hline
+			GET & /digrep/object & id & Gibt alle TM Strings und deren DigRep Knoten IDs zurück. \\
+			\hline
+			POST & /digrep/object & id & Legt einen neuen DigRep Knoten für das Objekt mit der gegebenen \q{id} an. \\
+			\hline
+			DELETE & /digrep/object & mediaId, objectId & Löscht den DigRep Knoten mit der ID \q{mediaID}, zugehörig zum Objekt mit der ID \q{objectID}. \\
+			\hline
+		\end{tabular}
+		\caption{API Funktionen für die Digital Representations.}
+		\label{tab:digrepapi}
+	\end{table}
+
+	\item[Objekte:] Dieser Bereich der API dient hauptsächlich zum Auslesen der Datenbankobjekte bzw. Entitäten, die über \wisski in der Metadatenbank angelegt wurden. Diese API Schnittstelle erfüllt die Anforderung, die bereits am Anfang dieses Unterkapitels beschrieben wurde: die Gewährleistung des technischen Auslesens der Metadaten in einem \textit{nicht}-Semantic Web Format, in diesem Falle JSON. Dieses JSON beinhaltet alle Informationen, die entsprechend als RDF Metadaten auf der Datenbank vorhanden sind. \autoref{lst:json} im Appendix gibt eine Art Schema für diesen Output an. Dort werden alle möglichen Felder mit ID, Datentyp und den potenziell referenzierten Typen einer Referenz angegeben. Zum Auslesen der Objekte bietet die API zwei mögliche API Funktionen aus \autoref{tab:objectapi}:
+	
+	\begin{table}[htb]
+		\centering
+		\begin{tabular}{|l|l|p{2cm}|p{5cm}|}
+			\hline
+			\texttt{HTTP} & \texttt{API Pfad} & \texttt{Request Params} & \texttt{Kurzbeschreibung} \\
+			\hline
+			\hline
+			GET & /object & id & Gibt die JSON Repräsentation des Objekts mit der ID \q{id} zurück. \\
+			\hline
+			GET & /wisskiobject & wisskipath & Gibt die JSON Repräsentation des Objekts zurück, welches dem \wisski View Path \q{wisskipath} entspricht. \\
+			\hline
+		\end{tabular}
+		\caption{API Funktionen zum Auslesen von Objekten.}
+		\label{tab:objectapi}
+	\end{table}
+	
+	Wichtig zu wissen beim Auslesen der Objekte ist, dass die angesprochene ID der API die RDF ID des Knotens der entsprechenden Entität ist (z.B. \texttt{\q{http://visit.de/data/5c4ae02a2d569}}), während der sogenannte \q{\wisski View Path} derjenige URL Pfad ist, der angezeigt wird, wenn eine Entität per \wisski Oberfläche betrachtet wird (z.B. \texttt{\q{https://\-da\-ta\-base.\-vi\-sit.\-u\-ni-pas\-sau.\-de/\-dru\-pal/\-wis\-ski/\-na\-vi\-gate/\-405/\-view}}).
+	
+	Weiterhin bietet dieser Bereich der API noch ein zusätzliches Quality of Life Feature: das Zurückgeben der Anzahl an vorhandenen Digital Representations und damit vorhandenen Mediendaten, bezogen auf ein Objekt. Dieses Objekt kann der API, wie beim Auslesen, per RDF ID oder per \wisski View Pfad übergeben werden.
+	
+	\item[(Upload und Download für Excel:)] TODO add?
+\end{description}
 
 ------------------------------
 
 teilaufgaben: digitalrepresentation, object, und import
+
+WICHTIG: Verschlüsselung erwähnen! basic auth auf teile der schreibenden API, welche Benutzer/Applikationen darauf Zugang haben, wird in der users.csv am Server konfiguriert. Diese muss VOR START der REST API bestehen
 
 Excel Erweiterung erwähnen?
 
@@ -268,6 +344,8 @@ Excel Erweiterung erwähnen?
 alle sachen wie scripte und details für die lauffähige API und DB erklären 
 
 deployment der REST API: ändern der pom.xml und application.properties, dadurch offline und online schaltung
+
+paths.xml muss aus wisski exportiert werden und für das templates script zur verfügung gestellt werden
 
 \subsection{Zusatzfeatures - Erweiterung der Bedienbarkeit der Semantischen Datenbank}\label{sec:additional_features}
 
