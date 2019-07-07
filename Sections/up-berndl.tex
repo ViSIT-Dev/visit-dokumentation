@@ -331,21 +331,61 @@ Thematisch lässt sich die REST API in folgende Teile aufteilen, die unterschied
 	\item[(Upload und Download für Excel:)] TODO add?
 \end{description}
 
-------------------------------
+Für die REST API ist eine Verschlüsselung umgesetzt, die dem Konzept der \q{basic authentication}\footnote{Erklärt z.B. auf \url{https://swagger.io/docs/specification/authentication/basic-authentication/}} folgt. Mit dieser werden die sogenannten \q{unsicheren} Operationen der API, also diejenigen, die Daten verändern, erzeugen, und löschen dürfen, von unzulässigem Zugriff geschützt. Diese sind im \visit Kontext diejenigen Operationen, die sich auf die DigitalRepresentations beziehen. Alle rein lesenden Zugriffe auf die Metadatenbank sind gemäß dem Linked Open Data Gedanken offen nach aussen.
 
-teilaufgaben: digitalrepresentation, object, und import
-
-WICHTIG: Verschlüsselung erwähnen! basic auth auf teile der schreibenden API, welche Benutzer/Applikationen darauf Zugang haben, wird in der users.csv am Server konfiguriert. Diese muss VOR START der REST API bestehen
-
-Excel Erweiterung erwähnen?
+Für die gesicherten Zugänge der API sind auf dem \visit Server verschiedene \q{User} samt Passwort angelegt, welche auf die jeweils verarbeitenden Applikationen gemünzt werden, dementsprechend die Tablet und Fernrohr Apps, sowie die Kompressions-Komponente. Diese Liste an Usern und Passwort sind am entsprechenden Server im eigenen Bereich des \q{visit} Accounts zu finden und nur für entsprechende Administratoren zugänglich. Die Datei hat den Namen \texttt{\q{users.csv}} und muss \textbf{vor dem Start bzw. dem Deployment} der REST API vorhanden sein, damit diese darauf Zugriff hat.
 
 \subsection{Wichtige Technische Charakteristika der Entwicklung und den Betrieb der Semantischen Datenbank}\label{sec:features}
 
-alle sachen wie scripte und details für die lauffähige API und DB erklären 
+In diesem Unterabschnitt werden wichtige technische Details zum Betrieb der \visit REST API erläutert. Diese sind wichtig für die Nutzung der API.
 
-deployment der REST API: ändern der pom.xml und application.properties, dadurch offline und online schaltung
+\paragraph{Python Script zum Generieren der SPARQL Query Templates}
 
-paths.xml muss aus wisski exportiert werden und für das templates script zur verfügung gestellt werden
+\textbf{WICHTIG:} Das im Folgenden beschriebene Script muss \textbf{vor} Deployment der REST API ausgeführt werden.
+
+Für den Betrieb der REST API, vor allem zum Auslesen der unterliegenden Metadaten, sind sogenannte SPARQL Query Templates von Nöten. Diese können als Vorlagen für die Abfrage aus der Metadatenbank verstanden werden. Diese Query Templates werden automatisch aufbauend auf dem in \wisski definierten Paths erstellt. So kann, wenn sich die \wisski Pfad Konfiguration ändert, das Script erneut angestoßen werden, um auf die Veränderung zu reagieren und damit die neu hinzugefügten Pfade mit in die Anfragen aufgenommen werden. Dieser Prozess ist in einem Phyton Script gekapselt, welches auf dem \visit Server ausgeführt werden kann.
+
+Wichtigste Information die das Script benötigt sind die Pfad Konfigurationen des \wisski Systems. Diese können als Datei direkt im \wisski System, im Pathbuilder downgeloadet werden. \autoref{fig:download} zeigt diese Funktionalität mit dem \texttt{\q{Create Exportfile}} Button.
+
+	\begin{figure}[htb]
+    	\centering
+	    \includegraphics[width=\textwidth]{Figures/berndl/wisskiPathDownload}
+    	\caption{\label{fig:download} \wisski Pathbuilder Ansicht, die den Download der Pfad-Datei anbietet.}
+	\end{figure}
+	
+Nach Betätigen des Buttons wird eine aktuelle Datei in die darüber stehende Liste aufgenommen. Durch Drücken dieser kann die Datei anschließend gespeichert werden.
+
+Das Python Script befindet sich auf dem Server im Account \texttt{\q{visit}} im Ordner \texttt{\q{python}} und heißt \texttt{\q{CreateSPARQLTemplatesFromPathsXML.py}}. \textbf{Die Pfad-Datei muss umbenannt werden zu \texttt{\q{paths.xml}} und muss sich im selben Ordner befinden}. Das Ausführen des Scripts kann mit folgendem Befehl ausgeführt werden:
+
+\begin{lstlisting}[style=MyBashStyle, caption={Befehl zum Starten des Python Script zum Erstellen der Query Templates der \visit Metadatenbank.}]
+sudo python3 CreateSPARQLTemplatesFromPathsXML.py
+\end{lstlisting}
+
+Die Ergebnisse des Scripts werden automatisch in den Ordner \texttt{\q{Templates}} im Hauptordner des Accounts \texttt{\q{visit}} gespeichert, und automatisiert von der REST API benutzt.
+
+\paragraph{Einstellungen zum Deployment der REST API}
+
+Wie oben bereits beschrieben, ist die REST API in einem Repository\footnote{\url{https://bitbucket.org/visit2016/metadb-rest-api/src/master/}} des \visit Haupt-Repositories angelegt.
+
+In der Regel ist das entsprechende Projekt in einem \q{offline Teststatus} bezüglich seiner Konfiguration. Dies bedeutet, dass lokale Tests ausgeführt werden können, um die Funktionen der API lokal zu überprüfen. Sollte die REST API produktiv auf einem Server deployed werden, müssen folgende Änderungen in der Konfiguration durchgeführt werden:
+
+\begin{itemize}
+	\item Einbinden der springframework Dependency: In der \texttt{\q{pom.xml}} Maven Konfigurationsdatei des Projekts muss die Dependency für das Artefakt \texttt{\q{spring-boot-starter-tomcat}} auf den scope \texttt{\q{provided}} gesetzt werden. Die entsprechende Einstellung ist in \autoref{fig:springdependency} zu sehen. Wichtig ist, dass Zeile 4 \textbf{nicht} kommentiert ist.
+	
+	\begin{figure}[htb]
+    	\centering
+	    \includegraphics[width=\textwidth]{Figures/berndl/springDependency}
+    	\caption{\label{fig:springdependency} pom.xml Konfiguration zum produktiven Deployment der REST API.}
+	\end{figure}
+	
+	\item Verbindung zum entsprechenden Triplestore: Weiterhin ist es nötig, die REST API mit dem Triplestore zu verbinden, mit dem das aktuell verwendete System, im speziellen das \wisski System, arbeitet. Diese Verbindung wird in der REST API in der Konfigurationsdatei \texttt{\q{application.properties}} gesetzt. Dabei muss der query und der update Endpunkt URLs des jeweiligen Triplestores angegeben werden. Im offline Modus sind die beiden URLs auf \texttt{\q{none}} gesetzt, während sie für den Produktiv-Modus der API auf den entsprechenden Triplestore eingestellt werden müssen. In \autoref{fig:triplestoreconfig} ist die Konfiguration für den offline Modus zu sehen, während ebenfalls zwei vordefinierte URL Pärchen zu sehen sind, welche für den \visit Test- und Produktiv-Server stehen.
+	
+	\begin{figure}[htb]
+    	\centering
+	    \includegraphics[width=\textwidth]{Figures/berndl/triplestoreConfig}
+    	\caption{\label{fig:triplestoreconfig} Einstellungen zum Verbinden des Triplestores.}
+	\end{figure}
+\end{itemize}
 
 \subsection{Zusatzfeatures - Erweiterung der Bedienbarkeit der Semantischen Datenbank}\label{sec:additional_features}
 
