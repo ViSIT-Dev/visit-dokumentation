@@ -34,3 +34,15 @@
 \.texpadtmp/visitTechnischeDokumentation\.toc
 
 \.texpadtmp/Sections/appendix\.aux
+
+*.aux
+*.blg
+*.lof
+*.lot
+*.synctex.gz
+*.bbl
+*-blx.bib
+*.log
+*.out
+*.run.xml
+*.toc
