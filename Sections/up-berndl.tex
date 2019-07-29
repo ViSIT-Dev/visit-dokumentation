@@ -383,7 +383,7 @@ In der Regel ist das entsprechende Projekt in einem \q{offline Teststatus} bezü
 	\begin{figure}[htb]
     	\centering
 	    \includegraphics[width=\textwidth]{Figures/berndl/triplestoreConfig}
-    	\caption{\label{fig:triplestoreconfig} Einstellungen zum Verbinden des Triplestores.}
+    	\caption{\label{fig:triplestoreconfig} Einstellungen zum Verbinden des Triplestores. Hier gezeigt: lokale Konfiguration, während die Konfiguration für Produktiv- und Testsystem oben vorhanden aber auskommentiert ist.}
 	\end{figure}
 \end{itemize}
 
@@ -395,6 +395,13 @@ excel importer
 
 \subsection{Semantische Datenbank - FAQ und häufig auftretende Probleme}\label{sec:faqSW}
 
+Nachdem bis jetzt alle Details bezüglich der Metadatenbank und dessen Umgang erläutert wurden, führt dieses Unterkapitel eine Zusammenfassung von bekannten \q{Problemen} in Kombination mit Lösungen an, die im produktiven Betrieb der Datenbank entstehen können. Bei Auftreten eines dieser Probleme sollte die Datenbank durch Einsatz der aufgeführten Lösung wieder in einen funktionierenden Zustand überführt werden können.
+
+\paragraph{WissKI Cache Flush}
+
+
+-----------------------------------------------------------------
+
 generell gut: flush von wisski cashes sowie drupal per drush cc/cr
 
 neue ontologie in wisski eingefügt: zum adapter gehen und recompute hierarchy
@@ -404,6 +411,8 @@ drupal update (manuell per hand und composer, manchmal per update dialog von dru
 seite schaltet sich selbst in maintenance mode -> meistens ein wichtiges drupal update -> drupal per composer updaten, dann sollte wieder gehen. wenn nicht, seite per drush aus maintenance nehmen, dann ist wieder zugreifbar
 
 rdf4j zugriff: manchmal kommt der \q{connect to rdf4j Server} prompt, bevor man auf den triplestore kann. hier kann man normal nur \q{change} drücken, um fortzufahren. da die rdf4j jedoch lokal am server läuft, passt die URL oben nicht -> http auf https ändern, dann geht
+
+im API Project: ab und an erkennt er die abhängigkeiten aus irgendeinem grund nicht -> zur parent pom.xml gehen und reimport maven dependencies drücken, nach kurzer dauer sollte das dann wieder funktionieren
 
 
 
