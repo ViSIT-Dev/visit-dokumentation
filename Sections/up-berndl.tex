@@ -399,26 +399,32 @@ Nachdem bis jetzt alle Details bezüglich der Metadatenbank und dessen Umgang er
 
 \paragraph{WissKI Cache Flush}
 
+Bei manchen Konfigurations-Änderungen kann es passieren, dass diese erst \q{online} geschaltet werden, wenn der Cache des Drupal Systems geleert wird. Dies ist zum Beispiel der Fall, wenn ein Thumbnail für ein Objekt in der Metadatenbank hochgeladen wird. Der produktive Server ist so konfiguriert, dass einmal am Tag ein solcher Cache Flush durchgeführt wird. Sollten die jeweiligen Informationen durch die Konfiguration jedoch sofort benötigt werden, kann ein Cache Flush auch per Hand am Server ausgeführt werden. Dazu muss in das Verzeichnis der Drupal Installation gewechselt werden (\texttt{/var/www/html/drupal}) und folgender Befehl ausgeführt werden:
 
------------------------------------------------------------------
+\begin{lstlisting}[style=MyBashStyle, caption={Befehl für einen Cache Flush eines Drupal Systems.}]
+drush cr 
+\end{lstlisting}
 
-generell gut: flush von wisski cashes sowie drupal per drush cc/cr
+\paragraph{Recompute Hierarchy in WissKI}
 
-neue ontologie in wisski eingefügt: zum adapter gehen und recompute hierarchy
+Wenn die dem WissKI System unterliegende Ontologie ausgetauscht oder upgedated wird, kann es sein, dass das System über diese Ontologie eine neue Hierarchie generieren muss. Das neue Berechnen der Ontologie kann in der Übersicht des SALZ Adapters (siehe \autoref{sec:wisski}, Funktionalität ganz unten aufklappbar) angestoßen werden.
 
-drupal update (manuell per hand und composer, manchmal per update dialog von drupal automatisch möglich)
+\paragraph{Updates von Drupal, Maintenance Mode}
 
-seite schaltet sich selbst in maintenance mode -> meistens ein wichtiges drupal update -> drupal per composer updaten, dann sollte wieder gehen. wenn nicht, seite per drush aus maintenance nehmen, dann ist wieder zugreifbar
+Von Zeit zu Zeit wird eine neue Version von Drupal released. Dies ist für die Metadatenbank theoretisch irrelevant, wenn es nur ein Minor Update ist (diese sollten aber im Bezug auf aktuelle Software trotzdem eingespielt werden). Ein Major Update führt in der Regel jedoch dazu, dass das Drupal System in den Maintenance Mode versetzt wird - ein Status in dem das System aus Sicherheitsgründen offline geschaltet wird. Deswegen ist hier ein Update durchzuführen.
 
-rdf4j zugriff: manchmal kommt der \q{connect to rdf4j Server} prompt, bevor man auf den triplestore kann. hier kann man normal nur \q{change} drücken, um fortzufahren. da die rdf4j jedoch lokal am server läuft, passt die URL oben nicht -> http auf https ändern, dann geht
+Updates des Drupal Systems können (in seltenen Fällen) entweder im Drupal Interface selbst durchgeführt werden (Reiter \q{Extend}, dann auf Link für \q{available updates} drücken). In der Regel führt man die Updates (auch von anderen Modulen) direkt am Server durch. Dafür in das Verzeichnis der Drupal Installation wechseln (\texttt{/var/www/html/drupal}) und folgenden Befehl ausführen:
 
-im API Project: ab und an erkennt er die abhängigkeiten aus irgendeinem grund nicht -> zur parent pom.xml gehen und reimport maven dependencies drücken, nach kurzer dauer sollte das dann wieder funktionieren
+\begin{lstlisting}[style=MyBashStyle, caption={Befehl zum Updaten einer Drupal Installation.}]
+sudo composer update --with-all-dependencies 
+\end{lstlisting}
 
+Möglicherweise müssen im Konflikt stehende Abhängigkeiten von Hand gelöst werden. Dazu Schritt für Schritt die einzelnen Dependencies updaten und am Ende nochmals obigen Befehl ausführen.
 
+\paragraph{RDF4J Workbench Access}
 
+Um direkt auf dem unterliegenden Triplestore zu arbeiten, kann auf die RDF4J Workbench zugegriffen werden (URL: \texttt{\url{https://database.visit.uni-passau.de/rdf4j-workbench}}. In manchen Fällen leitet das Aufrufen der Homepage zu einem Prompt, der nach der URL, sowie Benutzer und Passwort verlangt. Für den Server ist kein User angelegt, deswegen können die beiden Felder für Benutzer und Passwort leer gelassen werden. Jedoch ist manchmal die angegebene URL inkorrekt, da \texttt{\q{http}} anstatt \texttt{\q{https}} in der URL steht. Dieses muss angepasst werden, dann kann auf den Triplestore zugegriffen werden.
 
+\paragraph{Maven Abhängigkeiten im REST API Projekt}
 
-
-
-
-
+Im Java Projekt für die ViSIT REST API passiert ab und an der Fall, dass die Abhängigkeiten des Projekts nicht richtig interpretiert werden, was dazu führt, dass einige Packages in den implementierten Klassen als \q{nicht vorhanden} angezeigt werden. Durch ein erneutes Downloaden der Abhängigkeiten (durch das Kommando \texttt{\q{Reimport}} oder falls dies nicht hilft \texttt{\q{Update Maven Indices}} in der obersten \texttt{pom.xml} des Projekts) sollte sich dieses Problem lösen lassen.
