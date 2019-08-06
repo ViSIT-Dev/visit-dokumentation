@@ -17,8 +17,9 @@ In diesem Kapitel wird nach einer kurzen Erläuterung der theoretischen Grundlag
 Bei 3D-Modellen gilt es grundsätzlich zwischen der Geometrie, durch welche die Form der Oberfläche eines Objekts beschrieben wird, und der Textur, durch welche die Färbung der Oberfläche ausgedrückt wird, zu unterscheiden. Während die Geometrie obligatorisch für ein 3D-Modell ist, muss nicht zwangsläufig eine Textur existieren. Nicht jedes Digitalisierungsverfahren ist in der Lage, Texturdaten zu erfassen, wie beispielsweise ein Laserscanner. Im Folgenden werden Aufbau und Kompression dieser beiden Bestandteile eines 3D-Modells behandelt.
 
 \subsubsection{Geometrie von 3D-Modellen}
+\label{schlenke:chp:fundamentalsGeometry}
 
-Herkömmliche 3D"=Modelle, die ausschließlich die Oberfläche eines Objekts und nicht dessen Inneres beschreiben, bestehen aus mehreren Punkten im dreidimensionalen Raum, die \emph{Vertices} genannt werden. Diese Punkte werden zu Flächen, den sogenannten \emph{Faces} verbunden, wobei es sich hier in vielen Fällen um Dreiecke handelt. Die Anzahl der Ecken eines Faces wird als dessen \emph{Ordnung} bezeichnet. Die Kanten dieser Flächen, die Verbindungen zwischen zwei Vertices darstellen, werden \emph{Edges} genannt. Die Gesamtheit aller Vertices und Faces eines 3D"=Modells wird auch als \emph{Mesh} bezeichnet. Die soeben genannten Begriffe werden in Abbildung \ref{schlenke:fig:fundamentals:geo} grafisch dargestellt.
+Herkömmliche 3D"=Modelle, die ausschließlich die Oberfläche eines Objekts und nicht dessen Inneres beschreiben, bestehen aus mehreren Punkten im dreidimensionalen Raum, die \emph{Vertices} genannt werden. Diese Punkte werden zu Flächen, den sogenannten \emph{Faces} verbunden, wobei es sich hier in vielen Fällen um Dreiecke handelt. Die Anzahl der Ecken eines Faces wird als dessen \emph{Ordnung} bezeichnet. Die Kanten dieser Flächen, die Verbindungen zwischen zwei Vertices darstellen, werden \emph{Edges} genannt. Die Gesamtheit aller Vertices und Faces eines 3D"=Modells wird auch als \emph{Mesh} bezeichnet. Die soeben genannten Begriffe werden in \autoref{schlenke:fig:fundamentals:geo} grafisch dargestellt.
 
 \begin{figure}
 \centering
@@ -55,15 +56,74 @@ Der Algorithmus aus \cite{garland1997} ist jedoch nur auf nicht-texturierte Mesh
 
 \subsubsection{Kompression der Textur}
 
-Während die Kompression der Modellgeometrie insbesondere bei texturierten Meshes nichttrivial ist, gestaltet sich die Kompression der Texturdaten relativ einfach. Die Textur wird in einer herkömmlichen Bilddatei gespeichert, deren Dateigröße direkt von der Auflösung des darin gespeicherten Bildes abhängt. Wird die Auflösung des Bildes verringert, was der Funktionsumfang eines jeden brauchbaren Bildbearbeitungsprogramms zulässt, schlägt sich dies auch in der Größe der Texturdatei nieder. Darüber hinaus sind weitere aus der Bildverarbeitung bekannte Kompressionsverfahren einsetzbar, wie zum Beispiel die JPEG-Komprimierung [TODO Referenz]
+Während die Kompression der Modellgeometrie insbesondere bei texturierten Meshes nichttrivial ist, gestaltet sich die Kompression der Texturdaten relativ einfach. Die Textur wird in einer herkömmlichen Bilddatei gespeichert, deren Dateigröße direkt von der Auflösung des darin gespeicherten Bildes abhängt. Wird die Auflösung des Bildes verringert, was der Funktionsumfang eines jeden brauchbaren Bildbearbeitungsprogramms zulässt, schlägt sich dies auch in der Größe der Texturdatei nieder. Darüber hinaus sind weitere aus der Bildverarbeitung bekannte Kompressionsverfahren einsetzbar, wie zum Beispiel die JPEG-Komprimierung\footnote{https://www.ece.ucdavis.edu/cerl/reliablejpeg/compression/}.
 
 Allerdings muss darauf geachtet werden, dass die zusammen mit der Modellgeometrie gespeicherten Texturkoordinaten auch nach der Kompression der Textur wohldefiniert sind. Besonders angenehm ist hier jedoch die Tatsache, dass diese Texturkoordinaten sich nicht auf die Pixel beziehen, sondern stets im Interval von null bis eins liegen, wobei sich null auf den oberen bzw. linken Rand und eins auf den unteren bzgl. rechten Rand der Texturdatei bezieht. Aus diesem Grund sind die Texturkoordinaten gänzlich unabhängig von der Auflösung der die Textur beinhaltenden Bilddatei und diese Datei kann ohne Modifizierung der Geometriedatei komprimiert werden. Diese Aussage gilt nicht nur für die Anpassung der Auflösung, sondern auch für andere Kompressionsverfahren aus der Bildverarbeitung.
 
-\subsection{Installation (?)}
+\subsection{Voraussetzungen}
+
+Die Kompressions-Komponente dient zur Kompression von Mediendaten, die im Dateimanagement auf dem Lokalen Anwendungsserver registriert sind. Die Kompressions"=Komponente läuft innerhalb eines separaten Docker"=Containers auf dem Server. Eine direkte Interaktion des Benutzers mit der Kompressions-Komponente findet in der Regel nicht statt. Es wird jedoch eine Web-Oberfläche zur Administration und Konfiguration des Systems bereitgestellt.
+
+\subsubsection{Hardwarevoraussetzungen}
+\label{schlenke:chp:info:hardware}
+
+Die Anforderungen an die Ressourcen, die sich für den LAS bzw. den Docker"=Container der Kompressions"=Komponente ergeben, hängen in erster Linie von der Größe der zu komprimierenden Mediendateien ab. Während die Prozessorleistung primär die Dauer der Kompressions"=Prozesse bedingt, beschränkt der zur Verfügung stehende Arbeitsspeicher die maximale Größe der Eingabedaten nach oben.
+Da der Algorithmus zur Kompression von 3D-Modellen kaum Parallelisierungs"=Möglichkeiten bietet, werden die Berechnungen derzeit nicht auf mehrere Prozessorkerne oder auf die Grafikkarte verlagert. 
+Experimente während der Implementierung haben gezeigt, dass Modelle mit ca. 8 Mio. Dreiecken auf einem aktuellen gut ausgestatteten Bürorechner (Intel-Core-i7-Prozessor, 32 GB RAM) komprimiert werden können. Da insbesondere der Arbeitsspeicher der limitierende Faktor ist, spielt jedoch der Speicherbedarf der anderen auf dem System laufenden Anwendungen eine wichtige Rolle.
+
+\subsubsection{Softwarevoraussetzungen}
+
+Die Kompressions-Komponente wurde in der Programmiersprache Java implementiert, weshalb zur Ausführung ein Java Runtime Environment (JRE) im Docker-Container installiert sein muss. Für die Kompression von Bild- und Texturdateien wird im Hintergrund die Software ImageMagick verwendet. Es ergeben sich also die folgenden beiden Software-Abhängigkeiten:
+\begin{itemize}
+\item Java Runtime Environment\footnote{\url{https://java.com/de/download/}} (getestet mit Version 1.8.0)
+\item ImageMagick\footnote{\url{https://imagemagick.org/index.php}} (getestet mit Version 7.0.8)
+\end{itemize}
+Da diese Software"=Produkte jedoch bei der Installtion des entsprechenden Docker"=Containers automatisch installiert werden, muss dies nicht manuell durch den Benutzer vollzogen werden.
+
+\subsubsection{Abgrenzungskriterien}
+
+Das Absetzen eines Kompressions-Auftrags wird in der Regel von der Medien"=Datenbank"=Komponente angestoßen. Dennoch wird eine Benutzeroberfläche zum manuellen Absetzen von Kompressions"=Aufträgen zur Verfügung gestellt, die jedoch aufgrund der Notwendigkeit der manuellen Angabe von Identifikatoren keinen hohen Bedienkomfort bietet.
+
+An Medientypen werden Bilder und 3D-Modelle unterstützt. Andere Medientypen können mit dieser Komponente nicht komprimiert werden. An Bilddaten können alle Bildformate komprimiert werden, die von der Software ImageMagick unterstützt werden. An 3D"=Modellen können texturierte und nicht-texturierte Modelle komprimiert werden, die im OBJ"=Format\footnote{\url{http://www.martinreddy.net/gfx/3d/OBJ.spec}} gespeichert werden. Andere Dateien müssen zunächst manuell durch Drittsoftware in das OBJ-Format übersetzt werden. Pro Modell ist aufgrund von Limitierungen in der Medien"=Datenbank maximal eine Material- und eine Texturdatei zulässig. Genauere Informationen über die für ein 3D"=Modell notwendigen und möglichen Dateien sind in folgender \autoref{schlenke:tbl:3d-files} dargestellt. Der implementierte Algorithmus wäre jedoch prinzipiell in der Lage, auch Objekte mit mehreren Texturdateien zu komprimieren.
+
+\begin{table}
+\begin{center}
+{\footnotesize
+\begin{tabular}{llll}
+Dateiendung & Informationen & Optional & Notwendigkeit \\
+\hline
+.obj & Geometriedaten & Nein & Genau eine Datei erforderlich \\
+.mtl & Materialdefinitionen & Ja & Maximal eine Datei möglich \\
+.jpg/.jpeg/.png & Texturdaten & Ja & Maximal eine Datei, nur falls auch \\
+& & & MTL-Datei spezifiziert wird \\
+\end{tabular}}
+\caption{Für ein 3D"=Modell notwendige und optionale Dateien}
+\label{schlenke:tbl:3d-files}
+\end{center}
+\end{table}
+
+Die in Abschnitt \ref{schlenke:chp:info:hardware} benannten Hardware"=Voraussetzungen gilt es zu beachten.
+
+Bei 3D-Modellen wird vorausgesetzt, dass die Eingabedaten den Voraussetzungen mannigfaltigen Meshes, wie sie in Abschnitt \ref{schlenke:chp:fundamentalsGeometry} beschrieben wurden, genügen. Für Modelle, welche diese Eigenschaft nicht aufweisen, wird keine Garantie bezüglich des Ergebnisses des Kompressionsvorgangs gegeben. Mögliche Konsequenzen sind ein Fehlschlagen des Kompressionsvorgangs oder unbrauchbare Resultate, auch wenn ein Fehlschlagen in den Experimenten nicht beobachtet wurde. Das Eingabemodell sollte möglichst ausschließlich aus Dreiecken bestehen. Faces höherer Ordnung werden beim Einlesen naiv in Dreiecke umgewandelt, wobei auch hier keine Garantie bezüglich der Qualität des Ergebnisses gegeben werden kann. 
+
+Eine Darstellung der Eingangsdaten oder deren komprimierter Versionen findet innerhalb der Kompressions"=Komponente nicht statt. Die Resultate des Kompressionsvorgangs werden lediglich als Datei im System abgelegt.
+
+Die Kompressions"=Komponente bietet keinerlei Benutzerauthentifizierung oder sonstige Zugriffsbeschränkungen. Die Komponente muss anderweitig vor dem Zugriff Dritter geschützt werden. Für den Zugriff auf die API und die Konfigurations- und Administrationsoberfläche kann lediglich eine Whitelist mit IP"=Adressen hinterlegt werden, für welche der Zugriff exklusiv gewährt wird.
+
+\subsection{Installation und Steuerung }
+
+TODO Installation
+
+Die Kompressions"=Komponente startet automatisch nach dem Start des entsprechenden Docker"=Containers. Je nach Konfiguration wird daraufhin unmittelbar mit dem Abarbeiten von Kompressions"=Aufträgen begonnen. 
+
+Die Kompressions"=Komponente lässt sich über entsprechende API"=Aufrufe in unterschiedlichen Modi herunterfahren, wobei für Details auf die API"=Spezifikation in Kapitel (TODO) verwiesen wird. Diese Funktion sollte aber im Normalfall nicht verwendet werden, weshalb sie auch über die Web"=Oberfläche nicht zur Verfügung steht. Durch das Beenden der Komponente wird nämlich der sie enthaltende Docker"=Container nicht automatisch auch beendet, was jedoch das wünschenswerte Verhalten darstellen würde. Aus diesem Grund ist die empfohlene Vorgehensweise, den Docker"=Container zu beenden, was automatisch das Beenden der Kompressions"=Komponente einschließt. 
+
+Ausstehende Kompressionsaufträge bleiben beim erneuten Starten der Komponente erhalten. Jedoch werden Aufträge, die sich während des Beendens in der Verarbeitung befanden, als \glqq{}Fehlerhaft abgeschlossen\grqq{} markiert.
 
 \subsection{Konfiguration}
+\label{schlenke:chp:configuration}
 
-Beim Starten des Kompressions-Systems wird automatisch eine Konfigurationsdatei (TODO wo?) mit den Standardwerten angelegt, sofern eine solche nicht bereits existiert. Einige der Werte lassen sich nur manuell über diese Datei anpassen. Auf die wichtigsten Konfigurationsmöglichkeiten kann jedoch auch von außen über die API und die Web-Oberfläche sowohl lesend als auch schreibend zugegriffen werden. Beim manuellen Anpassen der Konfigurationsdatei muss darauf geachtet werden, dass innerhalb der Variablenwerte die Zeichen \glqq{}:\grqq{}, \glqq{}=\grqq{} und \glqq{}\textbackslash\grqq{} mit einem vorgestellten Backslash versehen werden müssen, also beispielsweise durch \glqq{}https\textbackslash ://\grqq{}. Für Details diesbezüglich wird auf die entsprechende Java-Dokumentation\footnote{\url{https://docs.oracle.com/javase/7/docs/api/java/util/Properties.html\# load(java.io.Reader)}} verwiesen. Tabelle \ref{schlenke:tbl:configOptions} gibt Aufschluss über alle Konfigurationsmöglichkeiten, welche in den folgenden Abschnitten detailliert erläutert werden.
+Beim Starten des Kompressions-Systems wird automatisch eine Konfigurationsdatei (TODO wo?) mit den Standardwerten angelegt, sofern eine solche nicht bereits existiert. Einige der Werte lassen sich nur manuell über diese Datei anpassen. Auf die wichtigsten Konfigurationsmöglichkeiten kann jedoch auch von außen über die API und die Web-Oberfläche sowohl lesend als auch schreibend zugegriffen werden. Beim manuellen Anpassen der Konfigurationsdatei muss darauf geachtet werden, dass innerhalb der Variablenwerte die Zeichen \glqq{}:\grqq{}, \glqq{}=\grqq{} und \glqq{}\textbackslash\grqq{} mit einem vorgestellten Backslash versehen werden müssen, also beispielsweise durch \glqq{}https\textbackslash ://\grqq{}. Für Details diesbezüglich wird auf die entsprechende Java-Dokumentation\footnote{\url{https://docs.oracle.com/javase/7/docs/api/java/util/Properties.html\# load(java.io.Reader)}} verwiesen. \autoref{schlenke:tbl:configOptions} gibt Aufschluss über alle Konfigurationsmöglichkeiten, welche in den folgenden Abschnitten detailliert erläutert werden.
 
 \begin{table}
 \begin{center}
@@ -74,7 +134,7 @@ Variable & Standard & Web\\
 \hline
 \multicolumn{3}{c}{Verwaltung von Kompressionsaufträgen} \\
 \hline
-{\lstinline|accessWhiteListIps|} & {\lstinline|[127.0.0.1, *]|} & {\footnotesize Ja} \\
+{\lstinline|accessWhiteListIps|} & {\lstinline|[127.0.0.1,*]|} & {\footnotesize Ja} \\
 {\lstinline|apiPort|} & {\lstinline|1613|} & {\footnotesize Ja} \\
 {\lstinline|archiveDisplayLength|} & {\lstinline|250|} & {\footnotesize Nein} \\
 {\lstinline|autostart|} & {\lstinline|true|} & {\footnotesize Ja} \\
@@ -130,7 +190,7 @@ Zur Verwaltung der eingehenden Kompressionsaufträge und für die dazu notwendig
 
 Folgende Optionen stehen zur Konfiguration des Kompressions-Algorithmus für 3D-Modelle zur Verfügung:
 
-\paragraph{Standard-Kompressionsstufen} Der Wert für die Option {\ttfamily default\-Levels} legt fest, welche Auflösungsstufen für 3D-Modelle standardmäßig erzeugt werden sollen. Jede Auflösungsstufe wird dabei durch eine Ganzzahl beschrieben, welche die gewünschte Anzahl an Vertices des komprimierten Modells festlegt. Diese Stufen werden durch Kommata voneinander getrennt und insgesamt von eckigen Klammern umrahmt, wie auch durch den in Listing \ref{schlenke:lst:defaultLevelsDefault} aufgeführten Standardwert 
+\paragraph{Standard-Kompressionsstufen} Der Wert für die Option {\ttfamily default\-Levels} legt fest, welche Auflösungsstufen für 3D-Modelle standardmäßig erzeugt werden sollen. Jede Auflösungsstufe wird dabei durch eine Ganzzahl beschrieben, welche die gewünschte Anzahl an Vertices des komprimierten Modells festlegt. Diese Stufen werden durch Kommata voneinander getrennt und insgesamt von eckigen Klammern umrahmt, wie auch durch den in \autoref{schlenke:lst:defaultLevelsDefault} aufgeführten Standardwert 
 \begin{lstlisting}[caption={Standardwert für die Konfigurationsoption {\ttfamily default\-Levels}},label=schlenke:lst:defaultLevelsDefault]
 	[500, 1000, 5000, 20000, 50000, 200000, 500000, 2000000, 5000000, 20000000, 50000000]
 \end{lstlisting}
@@ -146,7 +206,7 @@ Folgende Optionen stehen zur Konfiguration des Kompressions-Algorithmus für 3D-
 
 \paragraph{Texturkompression} Durch die Textur eines 3D"=Modells kann ein relevanter Anteil des insgesamt notwendigen Speicherbedarfs verursacht werden, weshalb es auch diesen Bestandteil zu komprimieren gilt. Dies sollte je nach gewählter Vertexanzahl in einem ähnlichen Ausmaß geschehen. Allerdings können viele Programme nur Texturdateien mit einer Zweierpotenz als Seitenlänge verarbeiten oder erweitern die gegebene Textur durch Padding zu einer solchen Größe. Aus diesem Grund ist eine pixelgenaue Wahl der Texturauflösung nur bedingt sinnvoll. Stattdessen kann einem bestimmten Intervall an Vertexanzahlen eine bestimmte Texturauflösung zugewiesen werden. Dies lässt sich über die beiden Parameter {\ttfamily texture\-Limits} und{\ttfamily textur\-Sizes} konfigurieren, wobei beide Parameter Listen mit ganzzahligen Einträgen als Werte akzeptieren. Die Einträge in diesen Listen werden wie bereits bei anderen Konfigurationsoptionen durch Kommata getrennt, während die ganze Liste durch eckige Klammern eingefasst wird. Zu beachten ist jedoch, dass die Anzahl an Einträgen in {\ttfamily texture\-Sizes} stets um genau eins größer sein muss, als die Anzahl der Einträge in {\ttfamily texture\-Limits}. 
 
-Hat ein Modell nun weniger Vertices, als der erste Eintrag in der Schwellwert-Liste {\ttfamily texture\-Limits}, so wird eine Textur erzeugt, deren Auflösung dem ersten Eintrag in {\ttfamily texture\-Sizes} entspricht. Hat es stattdessen mindestens so viele Vertices wie der erste Eintrag in {\ttfamily texture\-Limits}, jedoch weniger Vertices als der zweite Eintrag in {\ttfamily texture\-Limits} vorgibt, so wird eine Textur mit einer Seitenlänge entsprechend des zweiten Eintrags in {\ttfamily texture\-Sizes} erzeugt. Diese Regel gilt entsprechend für jeden Eintrag in {\ttfamily texture\-Limits}. Standardmäßig sind die Schwellwerte {\ttfamily texture\-Limits} festgelegt durch {\ttfamily [5000, 50000]}, während die dazugehörigen Auflösungen durch {\ttfamily [1024, 2048, 8192]} gegeben sind. Bei Bedarf lässt sich diese Konfiguration feiner gestalten und dabei insbesondere auch ein Intervall festlegen, das Texturdateien mit einer Seitenlänge von 4096 Pixeln erzeugt. Tabelle \ref{schlenke:tbl:textureResolutionExamples} veranschaulicht die resultierenden Texturauflösungen abhängig von unterschiedlichen Vertexanzahlen für die Standardkonfiguration. 
+Hat ein Modell nun weniger Vertices, als der erste Eintrag in der Schwellwert-Liste {\ttfamily texture\-Limits}, so wird eine Textur erzeugt, deren Auflösung dem ersten Eintrag in {\ttfamily texture\-Sizes} entspricht. Hat es stattdessen mindestens so viele Vertices wie der erste Eintrag in {\ttfamily texture\-Limits}, jedoch weniger Vertices als der zweite Eintrag in {\ttfamily texture\-Limits} vorgibt, so wird eine Textur mit einer Seitenlänge entsprechend des zweiten Eintrags in {\ttfamily texture\-Sizes} erzeugt. Diese Regel gilt entsprechend für jeden Eintrag in {\ttfamily texture\-Limits}. Standardmäßig sind die Schwellwerte {\ttfamily texture\-Limits} festgelegt durch {\ttfamily [5000, 50000]}, während die dazugehörigen Auflösungen durch {\ttfamily [1024, 2048, 8192]} gegeben sind. Bei Bedarf lässt sich diese Konfiguration feiner gestalten und dabei insbesondere auch ein Intervall festlegen, das Texturdateien mit einer Seitenlänge von 4096 Pixeln erzeugt. \autoref{schlenke:tbl:textureResolutionExamples} veranschaulicht die resultierenden Texturauflösungen abhängig von unterschiedlichen Vertexanzahlen für die Standardkonfiguration. 
 
 Ist die Auflösung der ursprünglichen Texturdatei jedoch kleiner als die sich bei der Kompression ergebende Größe, so wird die Textur nicht vergrößert, sondern es wird die Datei in der ursprünglichen Auflösung unverändert übernommen.
 
@@ -167,7 +227,7 @@ Vertexanzahl & Texturauflösung \\
 
 \subsubsection{Bildkompression}
 
-Ähnlich wie bei den 3D"=Modellen sollen auch bei Bildern unterschiedliche Auflösungen vorgehalten werden, um für verschiedene Anwendungsfälle eine passende Größe zur Verfügung zu haben. Welche Auflösungen bei der Kompression einer Bilddatei erstellt werden sollen, wird durch die Konfigurationsoption {\ttfamily image\-Compression\-Levels} festgelegt. Aufgrund der Komplexität dieses Parameters muss dieser im JSON"=Format\footnote{\url{http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf}} angegeben werden. Der Wert der Konfigurationsoption muss einem Array aus Objekten entsprechen, wobei jedes Objekt die in Tabelle \ref{schlenke:tbl:imageCompressionLevelDecl} dargestellten Eigenschaften aufzuweisen hat. Jeder Eintrag des Arrays definiert auf diese Art eine Kompressions-Stufe für ein Bild. Ist das Bild in mindestens einer Dimension kleiner als eine bestimmte Kompressionsstufe, so wird die Erzeugung einer Version mit dieser Auflösung komplett übersprungen, es wird also im Gegensatz zur Texturkompression nicht die ursprüngliche Auflösung verwendet. Der Standardwert für diesen Parameter ist in Listing \ref{schlenke:lst:imageCompressionLevelsDefault} dargestellt.
+Ähnlich wie bei den 3D"=Modellen sollen auch bei Bildern unterschiedliche Auflösungen vorgehalten werden, um für verschiedene Anwendungsfälle eine passende Größe zur Verfügung zu haben. Welche Auflösungen bei der Kompression einer Bilddatei erstellt werden sollen, wird durch die Konfigurationsoption {\ttfamily image\-Compression\-Levels} festgelegt. Aufgrund der Komplexität dieses Parameters muss dieser im JSON"=Format\footnote{\url{http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf}} angegeben werden. Der Wert der Konfigurationsoption muss einem Array aus Objekten entsprechen, wobei jedes Objekt die in \autoref{schlenke:tbl:imageCompressionLevelDecl} dargestellten Eigenschaften aufzuweisen hat. Jeder Eintrag des Arrays definiert auf diese Art eine Kompressions-Stufe für ein Bild. Ist das Bild in mindestens einer Dimension kleiner als eine bestimmte Kompressionsstufe, so wird die Erzeugung einer Version mit dieser Auflösung komplett übersprungen, es wird also im Gegensatz zur Texturkompression nicht die ursprüngliche Auflösung verwendet. Der Standardwert für diesen Parameter ist in \autoref{schlenke:lst:imageCompressionLevelsDefault} dargestellt.
 
 \begin{table}
 \begin{center}
@@ -191,7 +251,7 @@ title & A bis Z, a bis z, Binde-, Unterstriche & \glqq{}FullHD\grqq{} \\
 
 Um die während des Kompressionsvorgangs erstellen Modelle im ViSIT"=System zu registrieren, müssen die zu der Mediendatei gehörigen technischen Metadaten [TODO Wo werden diese definiert?] in der Meta"=Datenbank aktualisiert werden. Hierzu muss auf diese Datenbank zugegriffen werden können, wofür die nachfolgend erläuterten Parameter anzugeben sind. Alle in diesem Abschnitt angegebenen Konfigurations"=Optionen müssen nach der Installation angepasst werden, um die Integration in das Gesamtsystem zu ermöglichen. In sämtlichen Standardwerten ist {\ttfamily DOMAIN} durch die jeweilige Domain, über welche auf die Meta"=Datenbank zugegriffen werden kann, zu ersetzen.
 
-\paragraph{Authorisierung zum Zugriff auf die Metadaten} Um die Meta-Datenbank durch unbefugten Zugriff zu schützen, müssen sich zugelassene Benutzer oder Systeme authentifizieren. Diese Authentifizierung erfolgt durch das \emph{HTTP Basic Authentication}-Verfahren \footnote{\url{https://tools.ietf.org/html/rfc2617}}. Der dafür notwendige Base64-codierte Authentifizierungs-String, dem die Zeichenfolge {\ttfamily Basic } vorausgeht, muss in der Konfigurationsoption {\ttfamily metadb\-Api\-Auth\-String} angegeben werden, welche nach der Installation der Kompressions-Komponente auf einen gültigen Wert zu setzen ist. Der (ungültige) Standardwert ist in Listing \ref{schlenke:lst:metadbApiAuthStringDefault} dargestellt.
+\paragraph{Authorisierung zum Zugriff auf die Metadaten} Um die Meta-Datenbank durch unbefugten Zugriff zu schützen, müssen sich zugelassene Benutzer oder Systeme authentifizieren. Diese Authentifizierung erfolgt durch das \emph{HTTP Basic Authentication}-Verfahren \footnote{\url{https://tools.ietf.org/html/rfc2617}}. Der dafür notwendige Base64-codierte Authentifizierungs-String, dem die Zeichenfolge {\ttfamily Basic } vorausgeht, muss in der Konfigurationsoption {\ttfamily metadb\-Api\-Auth\-String} angegeben werden, welche nach der Installation der Kompressions-Komponente auf einen gültigen Wert zu setzen ist. Der (ungültige) Standardwert ist in \autoref{schlenke:lst:metadbApiAuthStringDefault} dargestellt.
 
 \begin{lstlisting}[caption={Standardwert für die Konfigurationsoption {\ttfamily metadb\-Api\-Auth\-String}},label=schlenke:lst:metadbApiAuthStringDefault]
 	Basic XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\=\=
@@ -201,29 +261,82 @@ Um die während des Kompressionsvorgangs erstellen Modelle im ViSIT"=System zu r
 
 \paragraph{Endpunkt zum Schreiben der Metadaten} In der Konfigurationsoption {\ttfamily metadb\-Api\-Endpoint\-Send\-Url} kann der Endpunkt der API zur Meta-Datenbank spezifiziert werden, über den technische Metadaten gespeichert werden können. Dieser Wert ist standardmäßig festgelegt auf {\ttfamily https\textbackslash ://DOMAIN/metadb-rest-api/digrep/media} und stimmt in der Regel mit dem Wert für {\ttfamily metadb\-Api\-Endpoint\-Fetch\-Url} überein.
 
-\paragraph{Präfix der Medien-UIDs} Jede in der Meta-Datenbank registrierte mediale Repräsentation wird durch eine eindeutige UID identifiziert. Jede UID beginnt mit einem allen Mediendateien gemeinsamen Präfix, auf welches ein für das Objekt spezifischer alphanummerischer Identifikator folgt. Da zum Starten eines Kompressionsvorgangs durch die Medien-Datenbank nur das alphanummerische Suffix übermittelt wird, muss in der Konfigurationsoption {\ttfamily metadb\-Api\-Media\-Uid\-Prefix} das konstante Präfix festgelegt werden. Der Standardwert {\ttfamily http\textbackslash ://DOMAIN/metadb/} muss vor dem ersten Start der Kompressionskomponente geeignet angepasst werden.
+\paragraph{Präfix der Medien-UIDs} Jede in der Meta-Datenbank registrierte mediale Repräsentation wird durch eine eindeutige sogenannte UID identifiziert. Jede UID beginnt mit einem allen Mediendateien gemeinsamen Präfix, auf welches ein für das Objekt spezifischer alphanummerischer Identifikator folgt. Da zum Starten eines Kompressionsvorgangs durch die Medien-Datenbank nur das alphanummerische Suffix übermittelt wird, muss in der Konfigurationsoption {\ttfamily metadb\-Api\-Media\-Uid\-Prefix} das konstante Präfix festgelegt werden. Der Standardwert, der gegeben ist durch {\ttfamily http\textbackslash ://DOMAIN/metadb/}, muss vor dem ersten Start der Kompressionskomponente geeignet angepasst werden.
 
 \subsection{Zugriff über die Web-Oberfläche}
 
-Auf die Web"=Oberfläche kann über jeden Browser zugegriffen werden, indem eine Verbindung mit dem Docker"=Container auf dem in der Konfiguration festgelegten Port aufgebaut wird. Auf dem Server kann beispielsweise in der Standardkonfiguration, und sofern der Port durch die Docker"=Konfiguration nicht umgeleitet wird, durch die Eingabe der in Listing \ref{schlenke:lst:webAccessUrl} dargestellten Zeichenfolge die Startseite der Kompressions"=Komponente aufgerufen werden.
+Auf die Web"=Oberfläche kann über jeden Browser zugegriffen werden, indem eine Verbindung mit dem Docker"=Container auf dem in der Konfiguration festgelegten Port aufgebaut wird. Auf dem Server kann beispielsweise in der Standardkonfiguration, und sofern der Port durch die Docker"=Konfiguration nicht umgeleitet wird, durch die Eingabe der in \autoref{schlenke:lst:webAccessUrl} dargestellten Zeichenfolge die Startseite der Kompressions"=Komponente aufgerufen werden.
 \begin{lstlisting}[caption={Zugriff auf die Web-Oberfläche der Kompressions-Komponente},label=schlenke:lst:webAccessUrl]
 	http://localhost:1613
 \end{lstlisting}
-Die Web-Oberfläche bietet vier verschiedene Ansichten, welche im Folgenden erläutert werden. Zwischen diesen Ansichten kann über die Einträge in der linken Seitenleiste bzw. über das Aufklapp"=Menü auf der linken Seite (bei kleinen Bildschirmen) navigiert werden.
+Die Web-Oberfläche bietet vier verschiedene Ansichten, welche im Folgenden erläutert werden. Zwischen diesen Ansichten kann über die Navigation in der linken Seitenleiste bzw. über das Aufklapp"=Menü auf der linken Seite gewechselt werden.
 
 \subsubsection{Startseite}
 
+Die Startseite hat zwei wichtige Funktionen. Zum einen erlaubt sie das Pausieren oder Fortführen der Auftragsverarbeitung, zum anderen gibt sie einen Überblick über die aktuell ausstehenden Kompressions-Aufträge, die sich dort auch abbrechen lassen. Wie in \autoref{schlenke:fig:webuiOverview} deutlich wird, werden zu jedem ausstehenden Auftrag mehrere Informationen angezeigt. Diese umfassen neben dem aktuellen Status des Auftrags der Titel, UID und Dateityp des Objekts, die gewünschten Kompressionsstufen, sowie die Zeitpunkte der Absetzung des Auftrags und der letzten Statusänderung. Über die rote Schaltfläche im rechten oberen Bereich eines Auftrags wird dieser nach dem Bestätigen einer Sicherheitsabfrage abgebrochen, sofern sich dieser noch nicht in Verarbeitung befindet. Kompressionsaufträge, die bereits ausgeführt werden, lassen sich nicht abbrechen. Die Auflistung der ausstehenden Kompressionsaufträge erfolgt aufsteigend nach dem Zeitpunkt der Absetzung.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.55\textwidth]{Figures/schlenker/webui/overview.png}
+\caption{Startseite, unter anderem mit einem Überblick über die laufenden und anstehenden Kompressions-Aufträge}
+\label{schlenke:fig:webuiOverview}
+\end{center}
+\end{figure}
+
 \subsubsection{Neuer Auftrag}
+
+Über diese Seite, welche in \autoref{schlenke:fig:webuiDispatch} dargestellt ist, lassen sich manuelle Kompressionsaufträge absetzen, wobei dies normalerweise direkt beim Hochladen der Medien"=Datei von der Medien"=Datenbank übernommen wird. Soll dennoch manuell ein Auftrag abgesetzt werden, so müssen in dieser Ansicht die UID des Metadatums (Objekt-Identifikator, {\ttfamily objectID}) und die UID der digitalen Repräsentation (Medien-Identifikator, {\ttfamily mediaID}), deren Beziehung in Abbildung \autoref{fig:digrep} veranschaulicht wird, angegeben werden. Zusätzlich kann ein Unterverzeichnis angegeben werden (Basis-Pfad), in dem sich die zu komprimierende Datei befindet, wobei dieser Pfad stets in Bezug auf das in der Konfiguration angegebene {\ttfamily media\-File\-Root\-Directory} interpretiert wird. Außerdem muss ein Titel für die Datei angegeben werden, der beliebig gewählt werden kann und lediglich zur leichteren Identifizierung des Auftrags innerhalb des Kompressions-Systems dient. Des weiteren ist der Dateityp zu spezifizieren, wobei hier die Optionen PNG"=Bild, JPEG"=Bild und OBJ"=3D"=Modell zur Auswahl stehen. 
+
+Für den Fall, dass ein 3D"=Modell komprimiert wird, können im darauffolgenden Abschnitt die gewünschten Kompressionsstufen festgelegt werden. Zum Einen steht die Option \glqq{}Automatisch\grqq{} zur Verfügung, die standardmäßig ausgewählt ist und alle in der Konfiguration spezifizierten Standard"=Kompressionsstufen umfasst. Weitere oder alternative Auflösungsstufen können durch die Wahl des Eintrags \glqq{}Feste Größe\grqq{} und die Angabe der gewünschten Vertex"=Anzahl hinzugefügt werden. Sämtliche derzeit angegebenen Auflösungsstufen werden aufgelistet und lassen sich mit Klick auf das Mülltonnen"=Symbol wieder entfernen.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.55\textwidth]{Figures/schlenker/webui/dispatch2.png}
+\caption{Ansicht zum Absetzen eines neuen Kompressions-Auftrags}
+\label{schlenke:fig:webuiDispatch}
+\end{center}
+\end{figure}
 
 \subsubsection{Archiv}
 
+Über diese Ansicht lässt sich ein Überblick über die zuletzt abgearbeiteten Kompressions"=Aufträge erhalten, unabhängig davon, ob die Ausführung erfolgreich war oder fehlgeschlagen ist. Die Einträge werden nach der letzten Statusänderung absteigend sortiert, wobei die Anzahl der dargestellten Einträge in der Konfiguration festgelegt werden kann. Ein Beispiel für diese Ansicht ist in \autoref{schlenke:fig:webuiArchive} zu sehen.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.55\textwidth]{Figures/schlenker/webui/archive.png}
+\caption{Archiv-Ansicht mit einem Überblick über die ausgeführten Kompressions-Aufträge}
+\label{schlenke:fig:webuiArchive}
+\end{center}
+\end{figure}
+
 \subsubsection{Einstellungen}
+
+Auf dieser Seite lassen sich die wichtigsten Konfigurations"=Optionen anpassen, wie in \autoref{schlenke:fig:webuiConfig} zu sehen ist. Alle Einstellungen, die auf dieser Seite nicht verfügbar sind, müssen manuell in der Konfigurationsdatei angepasst werden. Für Details zu den einzelnen Optionen wird auf Abschnitt \ref{schlenke:chp:configuration} verwiesen.
+
+Die über die Web"=Oberfläche verfügbaren Konfigurationsmöglichkeiten werden im Folgenden aufgeführt, wobei auch die Entsprechung in der Konfigurationsdatei benannt wird. Sämtliche Angaben werden jedoch erst durch das Betätigen der Schaltfläche \glqq{}Einstellungen speichern\grqq{} am Ende der Seite zum Server übertragen und übernommen.
+\begin{itemize}
+\item \emph{Portnummer der API-Schnittstelle: } {\ttfamily apiPort}
+\item \emph{Maximale Länge der Auftragsliste: } {\ttfamily queueMaxLength}
+\item \emph{Abarbeitung automatisch beim Starten des Servers beginnen: } {\ttfamily autostart}
+\item \emph{API"=Zugriffsberechtigte IP-Adressen: }{\ttfamily access\-White\-List\-Ips}. Die berechtigten IP-Adressen sind einzeln anzugeben und über die Schaltfläche \glqq{}IP-Adresse hinzufügen\grqq{} zu bestätigen. Durch einen Klick auf das Mülltonnen"=Symbol können Einträge wieder entfernt werden. Auch hier entspricht die Angabe eines Asterisks (\glqq{}$\ast$\grqq{}) einer Zugriffsgenehmigung für alle Hosts.
+\item \emph{Standard-Kompressionsstufen für 3D-Modelle: }{\ttfamily defaultLevels}. Die Anzahl der Vertices der komprimierten Modelle, die bei der Kompression von 3D"=Modellen standardmäßig erstellt werden sollen, sind an dieser Stelle einzeln anzugeben und über die Schaltfläche \glqq{}Kompressionsstufe hinzufügen\grqq{} hinzuzufügen. Auch hier können einzelne Kompressionsstufen durch Betätigen des Mülleimer"=Symbols entfernt werden.
+\item \emph{Kompression der Textur von 3D-Modellen: }{\ttfamily textureLimits}, {\ttfamily textureSizes}. Die Anzahl der Schwellwerte und demzufolge unterschiedlicher Textur-Auflösungen lässt sich über die beiden Schaltflächen \glqq{}Unterscheidung hinzufügen\grqq{} bzw. \glqq{}Unterscheidung entfernen\grqq{} kontrollieren. Die Texturgröße ist als Anzahl der Pixel pro Dimension zu verstehen.
+\item \emph{Aktionen für die Kompression von Bildern: }{\ttfamily imageCompressionLevels}. Die für eingehende Bild"=Kompressions"=Aufträge zu erstellenden Auflösungsstufen sind hier aufgelistet, wobei sich einzelne Einträge durch das Betätigen des Mülleimer"=Symbols entfernen lassen. Weitere Kompressionsstufen lassen sich durch die Angabe eines beliebigen Titels, der nur aus Groß- oder Kleinbuchstaben, Ziffern und Binde- oder Unterstrichen bestehen darf, sowie der maximalen Breite und maximalen Höhe des komprimierten Bildes in Pixeln und anschließendes Betätigen der Schaltfläche \glqq{}Kompressionsstufe hinzufügen\grqq{} hinzufügen.
+\end{itemize}
+
+\begin{figure}
+\centering
+\subfloat{\includegraphics[width=0.45\textwidth]{Figures/schlenker/webui/config1.png}}
+\qquad
+\subfloat{\includegraphics[width=0.45\textwidth]{Figures/schlenker/webui/config2.png}}
+\caption{Einstellungsmöglichkeiten über die Web-Oberfläche}
+\label{schlenke:fig:webuiConfig}
+\end{figure}
 
 \subsection{Zugriff über die API}
 
-[TODO Infos / Einschränkungen aus Anforderungs-Dokument]
 [TODO Generelle Funktionsweise, insbesondere Technische Metadaten]
-
-
+[TODO Installation, Hochfahren, Herunterfahren]
+[TODO Log]
 
 
