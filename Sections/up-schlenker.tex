@@ -10,7 +10,7 @@ Dieser Kompromis besteht darin, die 3D"=Modelle nicht in der höchsten verfügba
 
 Die eben beschriebene Problematik tritt nicht nur bei 3D"=Modellen auf, sondern auch bei herkömmlichen zweidimensionalen Bildern. Da auch solche Medien in der Medien"=Datenbank gespeichert werden sollen, sind auch Bilddateien zu komprimieren, was sich sehr einfach durch das Verringern der Auflösung bewerkstelligen lässt. Von jedem hochgeladenen Bild werden also komprimierte Versionen in verschiedenen Auflösungsstufen erstellt, auf welche anschließend zugegriffen werden kann.
 
-In diesem Kapitel wird nach einer kurzen Erläuterung der theoretischen Grundlagen auf die an die ViSIT"=Medien"=Datenbank angebundene Kompressions"=Komponente und deren Bedienung, die über eine Web-Oberfläche erfolgt, eingegangen. Abschließend wird die Schnittstelle, über welche die Kompressions"=Komponente unabhängig von der dafür verfügbaren Web-Oberfläche oder der ViSIT"=Medien"=Datenbank angesprochen werden kann, spezifiziert.
+In diesem Kapitel wird nach einer kurzen Erläuterung der theoretischen Grundlagen auf die an die ViSIT"=Medien"=Datenbank angebundene Kompressions"=Komponente und deren Voraussetzungen, ihre Funktionsweise, die Installation und die Bedienung, die über eine Web-Oberfläche erfolgt, eingegangen. Außerdem werden die zur Verfügung stehenden Konfigurationsoptionen eingehend erläutert. Abschließend wird die Schnittstelle (API), über welche die Kompressions"=Komponente unabhängig von der dafür verfügbaren Web-Oberfläche oder der ViSIT"=Medien"=Datenbank angesprochen werden kann, spezifiziert.
 
 \subsection{Grundlagen}
 
@@ -48,7 +48,16 @@ Manchem Leser stellt sich hier die Frage, ob generell die Verwendung von einem P
 
 Eine der wichtigsten Herangehensweisen zur Kompression von 3D"=Modellen ist die Reduktion von Vertices und damit einhergehend die Verringerung der Anzahl an Faces. Ausgehend von einem hoch aufgelösten Modell mit einer hohen Anzahl an Vertices ist die auf den ersten Blick einfachste Vorgehensweise das Entfernen eines möglichst unwichtigen Vertices. Das dadurch entstehende Loch im Mesh muss anschließend geschlossen werden. Dadurch entsteht jedoch im Allgemeinen ein Face mit einer höheren Ordnung, was oft unerwünscht ist. In diesem Fall muss das entstehende Loch mit Dreiecken gefüllt werden, wofür es keine eindeutige und daher auch unterschiedlich gute Lösungen gibt. Stattdessen verwenden viele Kompressionsverfahren, wie auch der in dieser Kompressions-Komponente verwendete Algorithmus, sogenannte \emph{Edge-Collapse}-/\emph{Half-Edge-Collapse}-Operationen.
 
-Bei einer solchen Edge-Collapse-Operation, wie sie in Abbildung [TODO] dargestellt ist, werden zwei durch ein Edge verbundene Vertices zu einem neuen Vertex verschmolzen. Dabei degenerieren die an dieses Edge angrenzende Faces und werden entfernt. Zusätzlich lassen sich neben dem kontrahierten Edge noch weitere Edges entfernen. Entspricht der Mesh lokal einer Mannigfaltigkeit, werden durch eine Edge-Collapse-Operation also zwei Faces, drei Edges und ein Vertex entfernt. Vor dem Durchführen einer derartigen Operation muss jedoch überprüft werden, ob die in \cite[S.~118f]{botsch2010} erläuterte \emph{Link Condition} erfüllt ist, da andernfalls die Topologie des Meshes durch die Operation verändert werden kann. Entspricht der neue Vertex einem der beiden ursprünglichen Vertices, so spricht man von einem Half-Edge-Collapse.
+Bei einer solchen Edge-Collapse-Operation, wie sie in Abbildung \ref{schlenke:fig:fundamentals:edgecollapse} dargestellt ist, werden zwei durch ein Edge verbundene Vertices zu einem neuen Vertex verschmolzen. Dabei degenerieren die an dieses Edge angrenzende Faces und werden entfernt. Zusätzlich lassen sich neben dem kontrahierten Edge noch weitere Edges entfernen. Entspricht der Mesh lokal einer Mannigfaltigkeit, werden durch eine Edge-Collapse-Operation also zwei Faces, drei Edges und ein Vertex entfernt. Vor dem Durchführen einer derartigen Operation muss jedoch überprüft werden, ob die in \cite[S.~118f]{botsch2010} erläuterte \emph{Link Condition} erfüllt ist, da andernfalls die Topologie des Meshes durch die Operation verändert werden kann. Entspricht der neue Vertex einem der beiden ursprünglichen Vertices, so spricht man von einem Half-Edge-Collapse.
+
+\begin{figure}
+\centering
+\subfloat[Situation vor der Operation]{\includegraphics[width=0.45\textwidth]{Figures/schlenker/fundamentals/edgeCollapseACropped.pdf}}
+\qquad
+\subfloat[Situation nach der Operation]{\includegraphics[width=0.45\textwidth]{Figures/schlenker/fundamentals/edgeCollapseBCropped.pdf}}
+\caption{Beispiel einer Edge-Collapse-Operation. Die Zielposition der beiden an das Edge angrenzenden Vertices ist \emph{rot} markiert.}
+\label{schlenke:fig:fundamentals:edgecollapse}
+\end{figure}
 
 Es verbleibt jedoch die Frage, welche Paare von Vertices verschmolzen werden sollen. Hierfür wird in \cite{garland1997} ein Verfahren vorstellt, das mithilfe von Quadriken jeder möglichen Edge-Collapse-Operation einen Wert für die damit verbundenen Kosten zuweist. Iterativ werden nun die Vertices aus Operationen mit den geringsten Kosten verschmolzen, woraufhin die Kosten der Operationen, die sich auf die umliegenden Vertices beziehen, aktualisiert werden müssen.
 
@@ -62,7 +71,9 @@ Allerdings muss darauf geachtet werden, dass die zusammen mit der Modellgeometri
 
 \subsection{Voraussetzungen}
 
-Die Kompressions-Komponente dient zur Kompression von Mediendaten, die im Dateimanagement auf dem Lokalen Anwendungsserver registriert sind. Die Kompressions"=Komponente läuft innerhalb eines separaten Docker"=Containers auf dem Server. Eine direkte Interaktion des Benutzers mit der Kompressions-Komponente findet in der Regel nicht statt. Es wird jedoch eine Web-Oberfläche zur Administration und Konfiguration des Systems bereitgestellt.
+Die Kompressions-Komponente dient zur Kompression von Mediendaten, die im Dateimanagement auf dem Lokalen Anwendungsserver registriert sind. Die Kompressions"=Komponente läuft innerhalb eines separaten Docker"=Containers auf dem Server, wofür die Software Docker \footnote{\url{https://www.docker.com/}} auf dem als Host"=System fungierenden Server installiert sein muss. Eine direkte Interaktion des Benutzers mit der Kompressions-Komponente findet in der Regel nicht statt. Es wird jedoch eine Web"=Oberfläche zur Administration und Konfiguration des Systems bereitgestellt. 
+
+Da die zu komprimierenden Dateien auf dem Host"=System gespeichert sind, worauf sowohl von der Medien"=Datenbank als auch von der Kompressions"=Komponente zugegriffen wird, ist es nicht möglich, das Kompressions"=System unabhängig von der Medien"=Datenbank auszuführen. Andernfalls würden in der Medien"=Datenbank hochgeladene Dateien der Kompressions"=Komponente nicht zur Verfügung stehen. 
 
 \subsubsection{Hardwarevoraussetzungen}
 \label{schlenke:chp:info:hardware}
@@ -78,7 +89,7 @@ Die Kompressions-Komponente wurde in der Programmiersprache Java implementiert, 
 \item Java Runtime Environment\footnote{\url{https://java.com/de/download/}} (getestet mit Version 1.8.0)
 \item ImageMagick\footnote{\url{https://imagemagick.org/index.php}} (getestet mit Version 7.0.8)
 \end{itemize}
-Da diese Software"=Produkte jedoch bei der Installtion des entsprechenden Docker"=Containers automatisch installiert werden, muss dies nicht manuell durch den Benutzer vollzogen werden.
+Da diese Software"=Produkte jedoch bei der Installtion des entsprechenden Docker"=Containers automatisch installiert werden, muss dies nicht manuell durch den Benutzer vollzogen werden. 
 
 \subsubsection{Abgrenzungskriterien}
 
@@ -110,20 +121,157 @@ Eine Darstellung der Eingangsdaten oder deren komprimierter Versionen findet inn
 
 Die Kompressions"=Komponente bietet keinerlei Benutzerauthentifizierung oder sonstige Zugriffsbeschränkungen. Die Komponente muss anderweitig vor dem Zugriff Dritter geschützt werden. Für den Zugriff auf die API und die Konfigurations- und Administrationsoberfläche kann lediglich eine Whitelist mit IP"=Adressen hinterlegt werden, für welche der Zugriff exklusiv gewährt wird.
 
+\subsection{Funktionsweise}
+\label{schlenke:chp:funktionsweise}
+
+Die Kompressions"=Komponente dient zum Abarbeiten von Kompressions"=Aufträgen, wobei letztere die Kompression \emph{einer} medialen Repräsentation eines Objekts in \emph{mehreren} Auflösungsstufen umfasst. Die Medien"=Dateien stehen dem Kompressions"=System über das Dateisystem zur Verfügung. In der Regel wird ein Kompressions"=Auftrag direkt nach dem Hochladen einer Medien"=Datei in die ViSIT"=Medien"=Datenbank abgesetzt.
+
+Bei Abarbeitung eines Kompressions"=Auftrags werden zunächst die technischen Metadaten aus der Meta"=Datenbank abgerufen. Diese technischen Metadaten werden für jede mediale Repräsentation gespeichert und umfassen wichtige Informationen über die dazugehörigen Medien"=Dateien und die bestehenden Kompressionsstufen. Sie können außerdem Kontext"=Informationen über eine mediale Repräsentation beinhalten, so speichert beispielsweise die Kompressions"=Komponente bei 3D"=Modellen die Anzahl der Vertices und der Faces. Die technischen Metadaten liegen in der Meta"=Datenbank im JSON-Format\footnote{\url{http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf}} vor, wobei hierfür die in Listing \ref{schlenke:lst:technicalMetaSpec} dargestellte Spezifikation gilt. Im Anschluss wird unterschieden, ob es sich bei der zu komprimierenden Medien"=Datei um ein Bild oder ein 3D"=Modell handelt. Ausschlaggebend hierfür ist der im Kompressions"=Auftrag angegebene MIME"=Typ.
+
+\begin{lstlisting}[float, caption={Spezifikation des die technischen Metadaten beinhaltenden JSON-Objekts},label=schlenke:lst:technicalMetaSpec]
+{
+		"title"	: string,
+		"description" : string,
+		"objectTripleID" : string,
+		"objectTripleURL" : string,
+		"mediaTripleID" : string,
+		"mediaTripleURL" : string,
+		"MIMEtype" : string
+		"createDate" : timestamp,
+		"creatorID" : string,
+		"creatorName" : string,
+		"rightholder" : string,
+		"uploader" : string, 
+		"files" : {
+				"origin" : {
+						"uploadDate" : timestamp,
+						"accessLevel" : string,
+						"license" : string,
+						"fileSize" : long,
+						"paths" : [string],
+						"fileTypeSpecificMeta" : object
+				},
+				...
+		}
+}
+\end{lstlisting}
+
+Die beiden in diesem Objekt verwendeten URLs bezeichnen die ID des Metadatums, welches durch die mediale Repräsentation beschrieben wird, in der Meta"=Datenbank ({\ttfamily object\-Triple\-URL}) bzw. die ID der digitalen Repräsentation selbst ({\ttfamily media\-Triple\-URL}), wie in Abbildung \autoref{fig:digrep} veranschaulicht wird. Diese beiden Werte haben die Form einer URL und können somit nicht als Dateinamen verwendet werden, wie es in der Medien"=Datenbank geschieht. Jedoch verwenden alle in diesem Kontext auftretenden URLs das gleiche Präfix, wodurch die Eindeutigkeit auch bei einer Beschränkung auf das Suffix gewährleistet bleibt, welches sich als Dateiname eignet. Das Suffix der {\ttfamily object\-Triple\-URL} wird als {\ttfamily object\-Triple\-ID}, das der {\ttfamily media\-Triple\-URL} als {\ttfamily media\-Triple\-ID} bezeichnet. Ein Beispiel hierzu ist in Abbildung \ref{schlenke:fig:IdAndUrlExample} zu sehen.
+
+\begin{figure}
+\[\underbrace{\mbox{\ttfamily http://visit.de/metadb/}\underbrace{\mbox{\ttfamily 7dde4f1c-022f-4489-9f13-d568ab3c7905}}_{\mbox{mediaTripleID}}}_{\mbox{mediaTripleURL}}\] 
+\caption{Beziehung von mediaTripleID und mediaTripleURL anhand eines Beispiels}
+\label{schlenke:fig:IdAndUrlExample}
+\end{figure}
+
+Die Dateien werden in der Medien"=Datenbank im Format
+\begin{lstlisting}[caption={Schema der Dateinamen in der Medien-Datenbank, das ebenfalls durch das Kompressions-System verwendet wird}]
+objectTripleID.mediaTripleID.compressionLevelID.Dateiendung
+\end{lstlisting}
+abgespeichert, worauf ebenfalls durch das Kompressions"=System zugegriffen wird. Hierbei bezeichnet {\ttfamily compressionLevelID} die Bezeichnung für die jeweilige Kompressions"=Stufe. Für die Originaldatei wird hierbei {\ttfamily origin} verwendet, für 3D"=Modelle die Vertexanzahl und für Bilder der in der Konfiguration festgelegte Titel für die jeweilige Auflösungsstufe.
+
+Im folgenden wird auf die Semantik der einzelnen Werte dieses JSON-Objekts eingegangen:
+\begin{itemize}
+\item {\ttfamily title}: Ein vom Benutzer festgelegter Titel des Objekts
+\item {\ttfamily description}: Eine vom Benutzer festgelegte Beschreibung des Objekts
+\item {\ttfamily objectTripleID}: Wie oben beschrieben
+\item {\ttfamily objectTripleURL}: Wie oben beschrieben
+\item {\ttfamily mediaTripleID}: Wie oben beschrieben
+\item {\ttfamily mediaTripleURL}: Wie oben beschrieben
+\item {\ttfamily createDate}: Der UNIX-Timestamp, an dem die Datei in die Medien"=Datenbank geladen wurde
+\item {\ttfamily creatorID}: Die Syncthing-ID des Netzwerkteilnehmers, von dem die Datei hochgeladen wurde
+\item {\ttfamily creatorName}: Der Name des Netzwerkteilnehmers, von dem die Datei hochgeladen wurde
+\item {\ttfamily rightholder}: Der Rechteinhaber an der Medien"=Datei
+\item {\ttfamily uploader}: Name der Person, welche die Datei in die Medien"=Datenbank geladen hat
+\item {\ttfamily MIMEtype}: MIME-Typ der Medien-Datei (z.~B. \glqq{}image/png\grqq{} für ein PNG"=Bild oder \glqq{}text/plain\grqq{} für ein 3D"=Modell
+\item {\ttfamily files}: Ein Objekt, das für jede zur Verfügung stehende Kompressions"=Stufe (inklusive der Originaldatei) weiterführende Informationen bereitstellt. Diese werden als Objekt in einer Eigenschaft gespeichert, deren Titel der Bezeichnung der jeweiligen Kompressions"=Stufe entspricht, also beispielsweise {\ttfamily origin} für die Originaldatei. Dieses Objekt weist das folgende Schema auf
+	\begin{itemize}
+	\item {\ttfamily uploadDate}: Der UNIX-Timestamp, an dem diese Kompressions"=Stufe erstellt wurde
+	\item {\ttfamily accessLevel}: Zugriffsberechtigung für die Kompressions"=Stufe in der Medien"=Datenbank, kann entweder {\ttfamily public}, {\ttfamily private} oder {\ttfamily visit} sein
+	\item {\ttfamily license}: Lizenz, unter dem die Mediendatei in dieser Kompressions"=Stufe verfügbar ist
+	\item {\ttfamily fileSize}: Größe der Mediendatei in Bytes (bei 3D"=Modellen mit mehreren Dateien die Summe aller Dateien)
+	\item {\ttfamily paths}: Array mit den internen Dateinamen aller zu dieser medialen Repräsentation gehöriger Dateien
+	\item {\ttfamily fileTypeSpecificMeta}: Weitere unspezifizierte Informationen zu dieser Kompressions"=Stufe
+	\end{itemize}
+\end{itemize}
+
+\paragraph{Bilddatei}
+
+Zur Kompression von Bildateien wird im Hintergrund die Software ImageMagick verwendet. Für jede der in der Konfiguration festgelegten Auflösungsstufen, die kleiner als die Originalgröße des Bildes ist, wird damit eine verkleinerte Version des Bildes erstellt. Laut den technischen Metadaten bereits existierende Auflösungsstufen werden dabei übersprungen. Die neu erstellten Auflösungsstufen werden nun den technischen Metadaten hinzugefügt und in die Meta"=Datenbank überführt.
+
+\paragraph{3D-Modell}
+
+Ein texturiertes 3D"=Modell besteht in der Regel aus drei Dateien. Die OBJ"=Datei mit den Geometriedaten verweist auf eine MTL"=Datei, welche die Materialeigenschaften der Oberfläche beschreibt und insbesondere vorhandene Textur"=Dateien referenziert. Beim Hochladen eines 3D"=Modells in die Medien"=Datenbank werden die Dateien dort automatisch umbenannt. Die Referenzen, die zwischen den Dateien bestehen, werden dabei jedoch nicht angepasst und daher ungültig. Im ersten Schritt der Kompression werden diese Verweise in den Originaldateien repariert, indem sie an die neuen Dateinamen angepasst werden. Auch die zum unkomprimierten Modell gehörenden technischen Metadaten werden angepasst.
+
+Nachdem das unkomprimierte Modell repariert wurde, kann die mit der eigentlichen Kompression begonnen werden. Zunächst werden die Geometriedaten (OBJ"=Dateien) und ggf. auch die Material"=Datei komprimiert und abgespeichert, wobei auch hier laut den technischen Metadaten bereits existierende Auflösungsstufen übersprungen werden. Nachdem alle Varianten der Geometriedaten erstellt wurden, erfolgt bei texturierten Modellen die Kompression der Textur separat für jede Auflösungsstufe, erneut unter der Zuhilfenahme der Software ImageMagick. Die zuvor erstellten Material"=Dateien verweisen bereits auf die nun erstellten Bilddateien. Wie bereits bei den Bilddateien werden abschließend die um die neuen Auflösungsstufen erweiterten technischen Metadaten an die Meta"=Datenbank übertragen.
+
 \subsection{Installation und Steuerung }
 
-TODO Installation
+\subsubsection{Installation}
+
+Zur Installation des Kompressions"=Systems muss zunächst über den Befehl 
+\begin{lstlisting}[caption=Befehl zum Erstellen des Docker-Images]
+docker build -t "visitapp/compression" https://github.com/ViSIT-Dev/compressioncontainer.git
+\end{lstlisting}
+ein Docker"=Image erstellt werden. Nun muss ein Verzeichnis gewählt werden, über das von außen auf die das Kompressions"=System betreffende Dateien, wie die Log"=Dateien oder die Konfiguration zugegriffen wird. Hier werde beispielsweise das Verzeichnis {\ttfamily /etc/visit-compression} gewählt. Anschließend kann über den Befehl
+\begin{lstlisting}[caption=Befehl zum Erstellen des Docker-Containers]
+docker run -d --name compression -p 1613:1613 -v visit-p2p-private:/var/www/Private -v /etc/visit-compression:/root/compression visitapp/compression
+\end{lstlisting}
+aus dem soeben erstellten Docker"=Image ein ausführbarer Docker"=Container generiert werden, sofern {visit-p2p-private} das Docker"=Volume bezeichnet, in welchem die Medien"=Dateien gespeichert sind. Die einzelnen Bestandteile dieses Befehls werden im folgenden kurz erläutert:
+\begin{itemize}
+\item {\ttfamily docker run}: Dies ist der Befehl zum Erstellen eines Docker"=Images.
+\item {\ttfamily -d}: Der Container soll im Hintergrund ausgeführt werden.
+\item {\ttfamily -p 1613:1613}: Der Port 1613 innerhalb des Docker"=Containers soll zum Host"=System durchgeschleift werden. Sollen andere Ports verwendet werden, muss dieser Bestandteil entsprechend angepasst werden.
+\item {\ttfamily -v visit-p2p-private:/var/www/Private}: Das beim Einrichten der Medien"=Datenbank erzeugte Docker"=Volume {\ttfamily visit-""p2p-""private}, in dem die Medien"=Dateien gespeichert sind, soll innerhalb des Docker"=Containers unter dem Pfad {\ttfamily /var/www/Private} verfügbar sein.
+\item {\ttfamily -v /etc/visit-compression:/root/compression}: Auf dem Host"=System soll unter dem Container"=Verzeichnis {\ttfamily /etc/visit"=compression} auf die Dateien zugegriffen werden können, welche sich im Docker"=Container im Verzeichnis {\ttfamily /root/compression} befinden.
+\item {\ttfamily visitapp/compression}: Dies ist die gewählte Bezeichnung für das eben erstellte Docker"=Image.
+\end{itemize}
+Nach dem Erstellen des Docker"=Containers wird dieser automatisch gestartet und kann, wie im folgenden Abschnitt erläutert wird, beendet oder neu gestartet werden. Bei gestartetem Container ist die Web"=Oberfläche in der Standardkonfiguration unter \url{http://localhost:1613} erreichbar, während die API unter \url{http://localhost:1613/api} zur Verfügung steht.
+
+\subsubsection{Steuerung des Docker-Containers}
+
+Der die Kompressions"=Komponente beinhaltende Docker"=Container kann wie jeder andere Container mit den Befehlen
+\begin{lstlisting}[caption={Kommando zum Beenden des Docker-Containers der Kompressions-Komponente},label=schlenke:lst:dockerstop]
+docker stop compression
+\end{lstlisting}]
+gestoppt und mit dem Befehl
+\begin{lstlisting}[caption={Kommando zum Starten des Docker-Containers der Kompressions-Komponente}]
+docker start compression
+\end{lstlisting}
+wieder gestartet werden. Alle Einstellungen bleiben dabei erhalten. Über das bei der Installation angegebene Verzeichnis (standardmäßig {\ttfamily /etc/visit-compression}) kann auch außerhalb des Containers auf das Kompressions"=System betreffende Dateien zugegriffen werden. So kann durch Editieren der Datei {\ttfamily config.ini} die Konfiguration angepasst werden, wobei für ein Aktivieren der aktualisierten Einstellungen ein Neustart des Docker"=Containers erforderlich ist. Außerdem kann auf die Log"=Datei {compression.log} zugegriffen werden, die insbesondere bei fehlgeschlagenen Kompressions"=Aufträgen oder bei unerwartetem Beenden des Kompressions"=Systems wichtige Informationen über die zugrunde liegende Ursache liefern kann. Da die Ausgabe dieser Informationen zusätzlich über die Standardausgabe erfolgt, besteht eine weitere Möglichkeit des Zugriffs im Ausführen des Kommandos
+\begin{lstlisting}[caption={Kommando zum Anzeigen der Ausgaben des Kompressions-Systems}]
+docker logs compression
+\end{lstlisting}
+Für fortgeschrittene Benutzer, welche Anpassungen direkt im Docker"=Container vornehmen möchten, kann über den Befehl
+\begin{lstlisting}[caption={Befehl zum Öffnen einer Kommandozeile im Kompressions-Container}]
+docker exec -it compression /bin/bash
+\end{lstlisting}
+eine Kommandozeile geöffnet werden.
+
+\subsubsection{Steuerung der Kompressions-Komponente}
+
+Sämtliche Kommunikation mit der Kompressions"=Komponente selbst erfolgt über die bereitgestellte API. Die zur Verfügung stehende Web"=Oberfläche greift ebenfalls über diese API auf das System zu. Für Details zur Web"=Oberfläche und zur API wird auf die Abschnitte \ref{schlenke:chp:webui} und \ref{schlenke:chp:api} verwiesen.
 
 Die Kompressions"=Komponente startet automatisch nach dem Start des entsprechenden Docker"=Containers. Je nach Konfiguration wird daraufhin unmittelbar mit dem Abarbeiten von Kompressions"=Aufträgen begonnen. 
 
-Die Kompressions"=Komponente lässt sich über entsprechende API"=Aufrufe in unterschiedlichen Modi herunterfahren, wobei für Details auf die API"=Spezifikation in Kapitel (TODO) verwiesen wird. Diese Funktion sollte aber im Normalfall nicht verwendet werden, weshalb sie auch über die Web"=Oberfläche nicht zur Verfügung steht. Durch das Beenden der Komponente wird nämlich der sie enthaltende Docker"=Container nicht automatisch auch beendet, was jedoch das wünschenswerte Verhalten darstellen würde. Aus diesem Grund ist die empfohlene Vorgehensweise, den Docker"=Container zu beenden, was automatisch das Beenden der Kompressions"=Komponente einschließt. 
+Die Kompressions"=Komponente lässt sich über entsprechende API"=Aufrufe in unterschiedlichen Modi herunterfahren. Diese Modi umfassen
+\begin{itemize}
+\item das Abarbeiten aller noch ausstehender Aufträge vor dem Beenden,
+\item das Abarbeiten nur des sich aktuell in Verarbeitung befindlichen Auftrags und
+\item das sofortige Beenden des Systems ohne Rücksichtnahme auf die ausstehenden Kompressions"=Aufträge.
+\end{itemize} 
+In jedem Fall werden keine weiteren Kompressions"=Aufträge angenommen. Ausstehende Kompressionsaufträge bleiben beim erneuten Starten der Komponente erhalten. Jedoch wird ein etwaiger Auftrag, der sich während des Beendens in der Verarbeitung befand, als \glqq{}Fehlerhaft abgeschlossen\grqq{} markiert.
 
-Ausstehende Kompressionsaufträge bleiben beim erneuten Starten der Komponente erhalten. Jedoch werden Aufträge, die sich während des Beendens in der Verarbeitung befanden, als \glqq{}Fehlerhaft abgeschlossen\grqq{} markiert.
+Diese Methode des Herunterfahrens erlaubt im Gegensatz zum Stoppen des Docker"=Containers die kontrollierte Handhabung noch ausstehender oder sich in Verarbeitung befindlicher Kompressions"=Aufträge. Allerdings wird durch das Herunterfahren der Kompressions"=Komponente der sie enthaltende Docker"=Container nicht automatisch mit beendet. Dies muss separat durch das Kommando in \autoref{schlenke:lst:dockerstop} erfolgen. Wird der Container mit diesem Kommando ohne vorheriges Herunterfahren des Kompressions"=Systems ausgeführt, entspricht dies dem sofortigen Beenden des Systems ohne Rücksichtnahme auf die ausstehenden Kompressions"=Aufträge.
 
 \subsection{Konfiguration}
 \label{schlenke:chp:configuration}
 
-Beim Starten des Kompressions-Systems wird automatisch eine Konfigurationsdatei (TODO wo?) mit den Standardwerten angelegt, sofern eine solche nicht bereits existiert. Einige der Werte lassen sich nur manuell über diese Datei anpassen. Auf die wichtigsten Konfigurationsmöglichkeiten kann jedoch auch von außen über die API und die Web-Oberfläche sowohl lesend als auch schreibend zugegriffen werden. Beim manuellen Anpassen der Konfigurationsdatei muss darauf geachtet werden, dass innerhalb der Variablenwerte die Zeichen \glqq{}:\grqq{}, \glqq{}=\grqq{} und \glqq{}\textbackslash\grqq{} mit einem vorgestellten Backslash versehen werden müssen, also beispielsweise durch \glqq{}https\textbackslash ://\grqq{}. Für Details diesbezüglich wird auf die entsprechende Java-Dokumentation\footnote{\url{https://docs.oracle.com/javase/7/docs/api/java/util/Properties.html\# load(java.io.Reader)}} verwiesen. \autoref{schlenke:tbl:configOptions} gibt Aufschluss über alle Konfigurationsmöglichkeiten, welche in den folgenden Abschnitten detailliert erläutert werden.
+Beim Starten des Kompressions-Systems wird automatisch eine Konfigurationsdatei mit den Standardwerten  unter dem Pfad
+\begin{lstlisting}
+/root/compression/config.ini
+\end{lstlisting} 
+angelegt, sofern eine solche nicht bereits an dieser Position existiert. Einige der Werte lassen sich nur manuell über diese Datei anpassen. Auf die wichtigsten Konfigurationsmöglichkeiten kann jedoch auch von außen über die API und die Web-Oberfläche sowohl lesend als auch schreibend zugegriffen werden. Beim manuellen Anpassen der Konfigurationsdatei muss darauf geachtet werden, dass innerhalb der Variablenwerte die Zeichen \glqq{}:\grqq{}, \glqq{}=\grqq{} und \glqq{}\textbackslash\grqq{} mit einem vorgestellten Backslash versehen werden müssen, also beispielsweise durch \glqq{}https\textbackslash ://\grqq{}. Für Details diesbezüglich wird auf die entsprechende Java-Dokumentation\footnote{\url{https://docs.oracle.com/javase/7/docs/api/java/util/Properties.html\# load(java.io.Reader)}} verwiesen. \autoref{schlenke:tbl:configOptions} gibt Aufschluss über alle Konfigurationsmöglichkeiten, welche in den folgenden Abschnitten detailliert erläutert werden.
 
 \begin{table}
 \begin{center}
@@ -177,7 +325,7 @@ Zur Verwaltung der eingehenden Kompressionsaufträge und für die dazu notwendig
 
 \paragraph{Serverport} Der Wert für die Variable {\ttfamily api\-Port} muss einer Ganzzahl im Intervall von 1 bis 65535 entsprechen und legt den Port fest, über welchen sowohl auf die API als auch auf die Web-Oberfläche der Kompressions-Komponente zugegriffen werden kann. Der Standardwert für diese Variable ist {\ttfamily 1613}.
 
-\paragraph{Länge der Archiv-Anzeige} Über die Konfigurationsoption {\ttfamily archive\-Display\-Leng\-th} lässt sich festlegen, wie viele Einträge in dem über die Web-Oberfläche zugänglichen Archiv der letzten Kompressions-Aufträge angezeigt werden sollen. Auch dieser Wert muss einer positiven Ganzzahl entsprechen und beträgt standardmäßig {\ttfamily 250}.
+\paragraph{Länge der Archiv-Anzeige} Über den Parameter {\ttfamily archive\-Display\-Leng\-th} lässt sich festlegen, wie viele Einträge in dem über die Web-Oberfläche zugänglichen Archiv der letzten Kompressions-Aufträge angezeigt werden sollen. Auch dieser Wert muss einer positiven Ganzzahl entsprechen und beträgt standardmäßig {\ttfamily 250}.
 
 \paragraph{Automatischer Start} Der Wert der Eigenschaft {\ttfamily autostart} kann entweder {\ttfamily true} oder {\ttfamily false} entsprechen und legt fest, ob direkt nach dem Starten der Kompressions-Komponente mit der Abarbeitung eingehender Kompressions-Aufträge begonnen werden soll, wobei dieser Fall dem Standard entspricht.
 
@@ -202,7 +350,7 @@ Folgende Optionen stehen zur Konfiguration des Kompressions-Algorithmus für 3D-
 
 \paragraph{Bestrafungen entlang von Texture Seams} Wie in Abschnitt \ref{schlenke:chp:fundamentals:geocomp} erläutert wurde, sorgen Edge"=Collapse"=Operationen entlang von Texture Seams nicht nur zu Verzerrungen in der Textur, sondern können auch die Darstellung von eigentlich nicht parametrisierten Bereichen in der Texturdatei zur Folge haben, was es möglichst zu vermeiden gilt. Aus diesem Grund werden Kompressionsoperationen entlang von Texture Seams mit einem Faktor bestraft, der sich im Wesentlichen aus dem Produkt des Quadrats der an die kollabierende Kante angrenzenden Texturpartitionen und des Werts der Eigenschaft {\ttfamily target\-Size\-Partition\-Penalization} ergibt, wobei letzterer standardmäßig auf {\ttfamily 10.0} festgelegt ist.
 
-\paragraph{Schwellwert für die Begünstigung wohlgeformter Faces} Bei einem Mesh werden in der Regel möglichst gleichmäßige Faces angestrebt, während hingegen sehr lange aber dünne Dreiecke unerwünscht sind. Als Maß für diese \glqq{}Schönheit\grqq{} eines Faces wird der Quotient aus Fläche und maximaler Seitenlänge betrachtet. Die Kosten einer Edge"=Collapse"=Operation werden durch die minimale Qualität der durch diese Operation entstehenden Faces dividiert, wodurch allerdings bei sehr wohlgeformten Faces und demzufolge hoher Qualität die Kosten der gesamten Operation unerwünscht stark sinken können. Aus diesem Grund lässt sich durch den Paramter {\ttfamily target\-Size\-Quality\-Threshold} der Divisor nach oben beschränken, wobei der Standardwert {\ttfamily 0.3} beträgt und somit auch nicht perfekt geformte Dreiecke ohne Erhöhung der Kosten zulässt.
+\paragraph{Schwellwert für die Begünstigung wohlgeformter Faces} Bei der Erzeugung von Meshes werden in der Regel möglichst gleichmäßige Faces angestrebt, während hingegen sehr lange aber dünne Dreiecke unerwünscht sind. Als Maß für diese \glqq{}Schönheit\grqq{} eines Faces wird der Quotient aus Fläche und maximaler Seitenlänge betrachtet. Die Kosten einer Edge"=Collapse"=Operation werden durch die minimale Qualität der durch diese Operation entstehenden Faces dividiert, wodurch allerdings bei sehr wohlgeformten Faces und demzufolge hoher Qualität die Kosten der gesamten Operation unerwünscht stark sinken können. Aus diesem Grund lässt sich durch den Paramter {\ttfamily target\-Size\-Quality\-Threshold} der Divisor nach oben beschränken, wobei der Standardwert {\ttfamily 0.3} beträgt und somit auch nicht perfekt geformte Dreiecke ohne Erhöhung der Kosten zulässt.
 
 \paragraph{Texturkompression} Durch die Textur eines 3D"=Modells kann ein relevanter Anteil des insgesamt notwendigen Speicherbedarfs verursacht werden, weshalb es auch diesen Bestandteil zu komprimieren gilt. Dies sollte je nach gewählter Vertexanzahl in einem ähnlichen Ausmaß geschehen. Allerdings können viele Programme nur Texturdateien mit einer Zweierpotenz als Seitenlänge verarbeiten oder erweitern die gegebene Textur durch Padding zu einer solchen Größe. Aus diesem Grund ist eine pixelgenaue Wahl der Texturauflösung nur bedingt sinnvoll. Stattdessen kann einem bestimmten Intervall an Vertexanzahlen eine bestimmte Texturauflösung zugewiesen werden. Dies lässt sich über die beiden Parameter {\ttfamily texture\-Limits} und{\ttfamily textur\-Sizes} konfigurieren, wobei beide Parameter Listen mit ganzzahligen Einträgen als Werte akzeptieren. Die Einträge in diesen Listen werden wie bereits bei anderen Konfigurationsoptionen durch Kommata getrennt, während die ganze Liste durch eckige Klammern eingefasst wird. Zu beachten ist jedoch, dass die Anzahl an Einträgen in {\ttfamily texture\-Sizes} stets um genau eins größer sein muss, als die Anzahl der Einträge in {\ttfamily texture\-Limits}. 
 
@@ -249,7 +397,7 @@ title & A bis Z, a bis z, Binde-, Unterstriche & \glqq{}FullHD\grqq{} \\
 
 \subsubsection{Schnittstelle Meta-Datenbank}
 
-Um die während des Kompressionsvorgangs erstellen Modelle im ViSIT"=System zu registrieren, müssen die zu der Mediendatei gehörigen technischen Metadaten [TODO Wo werden diese definiert?] in der Meta"=Datenbank aktualisiert werden. Hierzu muss auf diese Datenbank zugegriffen werden können, wofür die nachfolgend erläuterten Parameter anzugeben sind. Alle in diesem Abschnitt angegebenen Konfigurations"=Optionen müssen nach der Installation angepasst werden, um die Integration in das Gesamtsystem zu ermöglichen. In sämtlichen Standardwerten ist {\ttfamily DOMAIN} durch die jeweilige Domain, über welche auf die Meta"=Datenbank zugegriffen werden kann, zu ersetzen.
+Um die während des Kompressionsvorgangs erstellen Modelle im ViSIT"=System zu registrieren, müssen die zu der Mediendatei gehörigen technischen Metadaten, die in Listing \ref{schlenke:lst:technicalMetaSpec} spezifiziert wurden, in der Meta"=Datenbank aktualisiert werden. Hierzu muss auf diese Datenbank zugegriffen werden können, wofür die nachfolgend erläuterten Parameter anzugeben sind. Alle in diesem Abschnitt angegebenen Konfigurations"=Optionen müssen nach der Installation angepasst werden, um die Integration in das Gesamtsystem zu ermöglichen. In sämtlichen Standardwerten ist {\ttfamily DOMAIN} durch die jeweilige Domain, über welche auf die Meta"=Datenbank zugegriffen werden kann, zu ersetzen.
 
 \paragraph{Authorisierung zum Zugriff auf die Metadaten} Um die Meta-Datenbank durch unbefugten Zugriff zu schützen, müssen sich zugelassene Benutzer oder Systeme authentifizieren. Diese Authentifizierung erfolgt durch das \emph{HTTP Basic Authentication}-Verfahren \footnote{\url{https://tools.ietf.org/html/rfc2617}}. Der dafür notwendige Base64-codierte Authentifizierungs-String, dem die Zeichenfolge {\ttfamily Basic } vorausgeht, muss in der Konfigurationsoption {\ttfamily metadb\-Api\-Auth\-String} angegeben werden, welche nach der Installation der Kompressions-Komponente auf einen gültigen Wert zu setzen ist. Der (ungültige) Standardwert ist in \autoref{schlenke:lst:metadbApiAuthStringDefault} dargestellt.
 
@@ -259,11 +407,12 @@ Um die während des Kompressionsvorgangs erstellen Modelle im ViSIT"=System zu r
 
 \paragraph{Endpunkt zum Abrufen der Metadaten} In der Konfigurationsoption {\ttfamily metadb\-Api\-Endpoint\-Fetch\-Url} kann der Endpunkt der API zur Meta-Datenbank spezifiziert werden, über den technische Metadaten abgerufen werden können. Dieser Wert ist standardmäßig festgelegt auf {\ttfamily https\textbackslash ://DOMAIN/metadb-rest-api/digrep/media}.
 
-\paragraph{Endpunkt zum Schreiben der Metadaten} In der Konfigurationsoption {\ttfamily metadb\-Api\-Endpoint\-Send\-Url} kann der Endpunkt der API zur Meta-Datenbank spezifiziert werden, über den technische Metadaten gespeichert werden können. Dieser Wert ist standardmäßig festgelegt auf {\ttfamily https\textbackslash ://DOMAIN/metadb-rest-api/digrep/media} und stimmt in der Regel mit dem Wert für {\ttfamily metadb\-Api\-Endpoint\-Fetch\-Url} überein.
+\paragraph{Endpunkt zum Schreiben der Metadaten} Mithilfe der Konfigurationsoption {\ttfamily metadb\-Api\-Endpoint\-Send\-Url} kann der Endpunkt der API zur Meta-Datenbank spezifiziert werden, über den technische Metadaten gespeichert werden können. Auch hier wird der Wert {\ttfamily https\textbackslash ://DOMAIN/metadb-rest-api/digrep/media} als Standard verwendet, da er in der Regel mit dem Wert für {\ttfamily metadb\-Api\-Endpoint\-Fetch\-Url} übereinstimmt.
 
 \paragraph{Präfix der Medien-UIDs} Jede in der Meta-Datenbank registrierte mediale Repräsentation wird durch eine eindeutige sogenannte UID identifiziert. Jede UID beginnt mit einem allen Mediendateien gemeinsamen Präfix, auf welches ein für das Objekt spezifischer alphanummerischer Identifikator folgt. Da zum Starten eines Kompressionsvorgangs durch die Medien-Datenbank nur das alphanummerische Suffix übermittelt wird, muss in der Konfigurationsoption {\ttfamily metadb\-Api\-Media\-Uid\-Prefix} das konstante Präfix festgelegt werden. Der Standardwert, der gegeben ist durch {\ttfamily http\textbackslash ://DOMAIN/metadb/}, muss vor dem ersten Start der Kompressionskomponente geeignet angepasst werden.
 
 \subsection{Zugriff über die Web-Oberfläche}
+\label{schlenke:chp:webui}
 
 Auf die Web"=Oberfläche kann über jeden Browser zugegriffen werden, indem eine Verbindung mit dem Docker"=Container auf dem in der Konfiguration festgelegten Port aufgebaut wird. Auf dem Server kann beispielsweise in der Standardkonfiguration, und sofern der Port durch die Docker"=Konfiguration nicht umgeleitet wird, durch die Eingabe der in \autoref{schlenke:lst:webAccessUrl} dargestellten Zeichenfolge die Startseite der Kompressions"=Komponente aufgerufen werden.
 \begin{lstlisting}[caption={Zugriff auf die Web-Oberfläche der Kompressions-Komponente},label=schlenke:lst:webAccessUrl]
@@ -334,9 +483,213 @@ Die über die Web"=Oberfläche verfügbaren Konfigurationsmöglichkeiten werden 
 \end{figure}
 
 \subsection{Zugriff über die API}
+\label{schlenke:chp:api}
 
-[TODO Generelle Funktionsweise, insbesondere Technische Metadaten]
-[TODO Installation, Hochfahren, Herunterfahren]
-[TODO Log]
+Sämtliche Funktionen der API stehen bei der standardmäßigen Konfiguration unter dem Basispfad \url{http://localhost:1613/api} zur Verfügung. Die API bietet unterschiedliche Module an, auf deren Funktionen in diesem Abschnitt eingegangen wird. POST"=Parameter sind stets als JSON"=Objekt übergeben, ebenso erfolgt die Antwort in Form eines JSON"=Objekts. 
+
+\subsubsection{Aktuelle Kompressions-Aufträge}
+
+Für Informationen zu den IDs, dem MIME"=Typen oder den Kompressions"=Stufen wird auf Abschnitt \ref{schlenke:chp:funktionsweise} verwiesen. Beim Absetzen wird jedem Kompressions"=Auftrag eine ID zugewiesen, welche zum Löschen des Auftrags angegeben werden muss. Der Status eines Auftrags kann einen der folgenden Werte annehmen:
+\begin{itemize}
+\item {\ttfamily ENQUEUED}: Der Auftrag wurde abgesetzt, mit der Abarbeitung wurde jedoch noch nicht begonnen.
+\item {\ttfamily PROCESSING}: Der Auftrag wurde abgesetzt und befindet sich derzeit in Verarbeitung.
+\item {\ttfamily ERROR}: Die Verarbeitung des Auftrags wurde fehlerhaft abgeschlossen.
+\item {\ttfamily COMPLETED}: Die Verarbeitung des Auftrags wurde erfolgreich abgeschlossen.
+\end{itemize}
+
+\noindent\textbf{Funktion: }Absetzen eines Kompressions-Auftrags\\
+\textbf{HTTP-Methode: } {\ttfamily POST} \\
+\textbf{Pfad: } {\ttfamily /jobs/dispatch} \\
+\textbf{POST-Paramter: }
+\begin{lstlisting}[caption={POST-Parameter zum Absetzen eines Kompressions-Auftrags}]
+{
+		basePath : string, 	/* Unterverzeichnis, in welchem die Datei abgelegt ist, ansonsten "" */
+		objectUid : string, /* objectTripleID (nicht objectTripleURL) der Medien-Datei */
+		mediaUid : string, 	/* mediaTripleID (nicht mediaTripleURL) der zu komprimierenden Medien-Datei */
+		title : string, 	  /* Beliebiger Titel zur Identifizierung des Kompressions-Auftrags */
+		mimeType : string, 	/* MIME-Typ der zu komprimierenden Datei */
+		levels : [string], 	/* Array mit den Bezeichnern aller gewuenschten Kompressions-Stufen */
+}
+\end{lstlisting}
+\textbf{Antwort: }
+\begin{lstlisting}[caption={Antwort auf das Absetzen eines Kompressions-Auftrags}]
+{
+		success : boolean,
+		message : string
+}
+\end{lstlisting}
+
+\noindent\textbf{Funktion: }Auflisten aller noch nicht abgeschlossenen Kompressions-Aufträge\\
+\textbf{HTTP-Methode: } {\ttfamily GET} \\
+\textbf{Pfad: } {\ttfamily /jobs/dispatch} \\
+\textbf{Antwort: }
+\begin{lstlisting}[caption={Antwort auf das Auflisten nicht abgeschlossener Kompressions-Aufträge}]
+{
+		success : boolean,
+		message : string,
+		items : [{
+				job : {
+						basePath : string, 	/* Unterverzeichnis, in welchem die Datei abgelegt ist, ansonsten "" */
+						objectUid : string, /* objectTripleID (nicht objectTripleURL) der Medien-Datei */
+						mediaUid : string, 	/* mediaTripleID (nicht mediaTripleURL) der Medien-Datei */
+						title : string, 	  /* Beliebiger Titel zur Identifizierung des Kompressions-Auftrags */
+						mimeType : string, 	/* MIME-Typ der zu komprimierenden Datei */
+						levels : [string], 	/* Array mit den Bezeichnern aller gewuenschten Kompressions-Stufen */
+				},
+				receivedOn : timestamp,     /* UNIX-Timestamp, an dem der Auftrag abgesetzt wurde */
+				id : int,                   /* Vom Kompressions-System vergebene ID fuer den Auftrag */
+				state : string,             /* Aktueller Status des Auftrags, kann entweder ENQUEUED, PROCESSING, ERROR oder COMPLETED sein */
+				lastStateChange : timestamp /* UNIX-Timestamp der letzten Statusaenderung des Auftrags */
+		}]
+}
+\end{lstlisting}
+
+\noindent\textbf{Funktion: }Löschen eines Kompressions-Auftrags\\
+\textbf{HTTP-Methode: } {\ttfamily DELETE} \\
+\textbf{Pfad: } {\ttfamily /jobs/cancel/\{ID\}}, mit \{ID\} der ID des Kompressions"=Auftrags \\
+\textbf{Antwort: }
+\begin{lstlisting}[caption={Antwort auf das Löschen eines Kompressions-Auftrags}]
+{
+		success : boolean,
+		message : string
+}
+\end{lstlisting}
+
+\subsubsection{Abgeschlossene Kompressions"=Aufträge}
+
+\noindent\textbf{Funktion: }Auflisten der letzten abgeschlossenen Kompressions"=Aufträge\\
+\textbf{HTTP-Methode: } {\ttfamily GET} \\
+\textbf{Pfad: } {\ttfamily /archive/jobs/} \\
+\textbf{Antwort: }
+\begin{lstlisting}[caption={Antwort auf das Auflisten abgeschlossener Kompressions-Aufträge}]
+{
+		success : boolean,
+		message : string,
+		items : [{
+				job : {
+						basePath : string, 	/* Unterverzeichnis, in welchem die Datei abgelegt ist, ansonsten "" */
+						objectUid : string, /* objectTripleID (nicht objectTripleURL) der Medien-Datei */
+						mediaUid : string, 	/* mediaTripleID (nicht mediaTripleURL) der Medien-Datei */
+						title : string, 	  /* Beliebiger Titel zur Identifizierung des Kompressions-Auftrags */
+						mimeType : string, 	/* MIME-Typ der zu komprimierenden Datei */
+						levels : [string], 	/* Array mit den Bezeichnern aller gewuenschten Kompressions-Stufen */
+				},
+				receivedOn : timestamp,     /* UNIX-Timestamp, an dem der Auftrag abgesetzt wurde */
+				id : integer,               /* Vom Kompressions-System vergebene ID fuer den Auftrag */
+				state : string,             /* Aktueller Status des Auftrags, kann entweder ENQUEUED, PROCESSING, ERROR oder COMPLETED sein */
+				lastStateChange : timestamp /* UNIX-Timestamp der letzten Statusaenderung des Auftrags */
+		}]
+		
+}
+\end{lstlisting}
+
+\subsubsection{Status des Kompressions-Systems}
+
+Der Zustand des Kompressions"=Systems kann einen der folgenden Werte annehmen:
+\begin{itemize}
+\item {\ttfamily STARTUP:} Das System wird hochgefahren, mit der Abarbeitung von Kompressions"=Aufträgen wurde noch nicht begonnen.
+\item {\ttfamily RUNNING:} Das System ist hochgefahren und bearbeitet Kompressions"=Aufträge oder ist bereit dazu.
+\item {\ttfamily PAUSED:} Das System ist hochgefahren, die Abarbeitung von Kompressions"=Aufträgen wurde jedoch pausiert.
+\item {\ttfamily SHUTTINGDOWN:} Das System wird heruntergefahren, weshalb das Absetzen weiterer Aufträge nicht möglich ist. Jedoch werden noch Kompressions"=Aufträge verarbeitet.
+\item {\ttfamily SHUTDOWN:} Das System wurde heruntergefahren. Es können keine weiteren Aufträge abgesetzt oder verarbeitet werden.
+\end{itemize}
+
+Zum Setzen des Zustands des Kompressions"=Systems kann einer der folgenden Werte verwendet werden:
+\begin{itemize}
+\item {\ttfamily RUN:} Setze den Zustand auf {\ttfamily RUNNING} und beginne mit der Bearbeitung von Kompressions"=Aufträgen. Dieses Kommando ist nur in den Zuständen {\ttfamily PAUSED} oder {\ttfamily STARTUP} zulässig.
+\item {\ttfamily PAUSE:} Setze den Zustand auf {\ttfamily PAUSED} und pausiere damit die Abarbeitung der Kompressions"=Aufträge nach dem Abschließen des aktuellen Auftrags. Dieses Kommando ist nur im Zustand {\ttfamily PAUSED} zulässig.
+\item {\ttfamily SHUTDOWN\_PROCESS\_QUEUE:} Setze den Zustand auf {\ttfamily SHUTTINGDOWN}, verarbeite aber vor dem Herunterfahren die gesamte Auftragsliste. Dieses Kommando ist nur im Zustand {\ttfamily STARTUP}, {\ttfamily RUNNING} oder {\ttfamily PAUSED} zulässig.
+\item {\ttfamily SHUTDOWN\_IMMEDIATELY:} Setze den Zustand auf {\ttfamily SHUTTINGDOWN}, schließe aber vor dem Herunterfahren den sich aktuell in Verarbeitung befindlichen Auftrag ab.  Dieses Kommando ist nur im Zustand {\ttfamily STARTUP}, {\ttfamily RUNNING} oder {\ttfamily PAUSED} zulässig.
+\item {\ttfamily KILL}: Setze den Zustand auf {\ttfamily SHUTDOWN}, fahre das System herunter ohne Rücksicht auf ausstehende oder sich in Verarbeitung befindliche Kompressions"=Aufträge.
+\end{itemize}
+
+\noindent\textbf{Funktion: }Abrufen des Systemzustands \\
+\textbf{HTTP-Methode: } {\ttfamily GET} \\
+\textbf{Pfad: } {\ttfamily /control/state} \\
+\textbf{Antwort: }
+\begin{lstlisting}[caption={Antwort auf das Abrufen des Systemzustands}]
+{
+		success : boolean,
+		message : string,
+		state : string		/* {STARTUP | RUNNING | PAUSED | SHUTTINGDOWN | SHUTDOWN} */
+}
+\end{lstlisting}
+
+\noindent\textbf{Funktion: }Setzen des Systemzustands \\
+\textbf{HTTP-Methode: } {\ttfamily PUT} \\
+\textbf{Pfad: } {\ttfamily /control/state} \\
+\textbf{POST-Paramter: }
+\begin{lstlisting}[caption={POST-Parameter zum Setzen des Systemzustands}]
+{
+		state : string   	/* {RUN | PAUSE | SHUTDOWN_PROCESS_QUEUE | SHUTDOWN_IMMEDIATELY | KILL} */
+}
+\end{lstlisting}
+\textbf{Antwort: }
+\begin{lstlisting}[caption={Antwort auf das Setzen des Systemzustands}]
+{
+		success : boolean,
+		message : string
+}
+\end{lstlisting}
+
+\subsubsection{Konfiguration des Kompressions"=Systems}
+
+Für Details zu den einzelnen Konfigurationsoptionen wird auf Abschnitt \ref{schlenke:chp:configuration} verwiesen.
+
+\noindent\textbf{Funktion: }Abrufen der Systemkonfiguration \\
+\textbf{HTTP-Methode: } {\ttfamily GET} \\
+\textbf{Pfad: } {\ttfamily /settings/config} \\
+\textbf{Antwort: }
+\begin{lstlisting}[caption={Antwort auf das Abrufen der Systemkonfiguration}]
+{
+		success : boolean,
+		message : string,
+		config : {
+				apiPort : integer,
+				apiAccessWhitelist : [string],
+				autostart : boolean,
+				queueMaxLength : integer,
+				defaultLevels : [string],
+				textureLevelLimits : [integer],
+				textureLevelSizes : [integer]
+				imageCompressionLevels : [{
+						maxWidth : integer,
+						maxHeight : integer,
+						title : string
+				}]
+		}
+		
+}
+\end{lstlisting}
+
+\noindent\textbf{Funktion: }Setzen der Systemkonfiguration \\
+\textbf{HTTP-Methode: } {\ttfamily PUT} \\
+\textbf{Pfad: } {\ttfamily /settings/config} \\
+\textbf{POST-Paramter: } 
+\begin{lstlisting}[caption={POST-Parameter zum Setzen der Systemkonfiguration}]
+{
+		apiPort : integer,
+		apiAccessWhitelist : [string],
+		autostart : boolean,
+		queueMaxLength : integer,
+		defaultLevels : [string],
+		textureLevelLimits : [integer],
+		textureLevelSizes : [integer]
+		imageCompressionLevels : [{
+				maxWidth : integer,
+				maxHeight : integer,
+				title : string
+		}]
+}
+\end{lstlisting}
+\textbf{Antwort: }
+\begin{lstlisting}[caption={Antwort auf das Setzen der Systemkonfiguration}]
+{
+		success : boolean,
+		message : string
+}
+\end{lstlisting}
+
+
 
 
