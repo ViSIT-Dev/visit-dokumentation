@@ -12,15 +12,16 @@ Mit Docker können Linux-Container erstellt und verwendet werden können. Die er
 
 Als erster Schritt muss die Datenbank für die Applikation angelegt werden. Wie oben erklärt, wurde für das ViSIT-Projekt Docker verwendet. Damit gespeicherte Daten auch außerhalb eines Containers abgelegt oder in einem anderen Container eingebunden werden können, werden sogenannte Volumes erstellt. Volumes haben viele Vorteile, vor allem aber sind sie einfacher zu sichern oder zu migrieren. Volumes funktionieren sowohl auf Linux- als auch auf Windows-Containern.
 Im ersten Schritt wird ein Volume mit der Datenbank auf dem lokalen Rechner im Terminal mit dem Kommando
-\begin{lstlisting}[style=MyBashStyle]
+
+\begin{lstlisting}[style=MyBashStyle,caption={Docker Volume erstellen}]
 docker volume create visit-database
 \end{lstlisting} erstellt. Einen eigenen Volume benötigt man deshalb, weil die dort abgelegten Daten permanent gespeichert werden müssen - würde z.B.: der Container gelöscht oder beendet werden - dann wären die nur im Docker Container gespeicherten Daten ebenfalls gelöscht werden. Damit dies nicht passieren kann, werden die Daten parallel lokal auf dem Rechner gespeichert.
-Damit Dateien zwischen Geräten in einem lokalen Netzwerk oder zwischen entfernten Geräten über das Internet synchronisiert werden können, wird eine Datensynchronisation mit Peer-to-Peer-Übertragung benötigt. Dies wird im ViSIT-Projekt mit Syncthing realisiert und auch dafür muss ein eigener Volume lokal auf dem Rechner erstellt werden. Dies geschieht mit \begin{lstlisting}[style=MyBashStyle]
+Damit Dateien zwischen Geräten in einem lokalen Netzwerk oder zwischen entfernten Geräten über das Internet synchronisiert werden können, wird eine Datensynchronisation mit Peer-to-Peer-Übertragung benötigt. Dies wird im ViSIT-Projekt mit Syncthing realisiert und auch dafür muss ein eigener Volume lokal auf dem Rechner erstellt werden. Dies geschieht mit \begin{lstlisting}[style=MyBashStyle,caption={Docker Syncthing Volume erstellen}]
 docker volume create visit-syncthing
 \end{lstlisting}-Befehl, welcher ebenfalls im Terminal ausgeführt wird.
 Als nächster Schritt wird das gesamte ViSIT-Projekt von GitHub mittels
 
-\begin{lstlisting}[style=MyBashStyle]
+\begin{lstlisting}[style=MyBashStyle,caption={Klonen des gesamten ViSIT-Projekts von GitHub}]
 docker run -d --name visit -p 80:80 -p 22000:22000 -p 21027:21027
 -v visit-syncthing:/var/syncthing
 -v s:/p2p/visit:/var/p2p
@@ -30,58 +31,72 @@ docker run -d --name visit -p 80:80 -p 22000:22000 -p 21027:21027
 geklont. Beim erstmaligen Starten benötigt der Vorgang länger, da das Projekt aus dem Git Repository sowie das Appbundle (https://github.com/ViSIT-Dev/appbundle) heruntergeladen werden.\\
 
 Erklärung der einzelnen Befehle:\\
-\begin{lstlisting}[style=MyBashStyle]
+\begin{lstlisting}[style=MyBashStyle,caption={Docker run-Befehl}]
 docker run -d --name visit -p 80:80 -p 22000:22000 -p 21027:21027 
 \end{lstlisting}
 
-\begin{lstlisting}[style=MyBashStyle]
+\begin{lstlisting}[style=MyBashStyle,caption={docker run}]
 docker run 
 \end{lstlisting}
- startet den Container und mit den mit den Parametern \begin{lstlisting}[style=MyBashStyle]
+ startet den Container und mit den mit den Parametern \begin{lstlisting}[style=MyBashStyle,caption={-d}]
 -d 
-\end{lstlisting} gibt man an, dass der Container im Hintergrund dauerhaft laufen soll (Daemonmode). Weiters wird mit \begin{lstlisting}[style=MyBashStyle]
+\end{lstlisting} gibt man an, dass der Container im Hintergrund dauerhaft laufen soll (Daemonmode). Weiters wird mit \begin{lstlisting}[style=MyBashStyle,caption={--name visit}]
 --name visit
 \end{lstlisting} der Name des Containers festgelegt, in diesem Fall heißt der Container visit. Der Container kann im weiteren Verlauf auch über diesen Namen angesprochen werden.
 Mit dem Parameter
-\begin{lstlisting}[style=MyBashStyle]
+\begin{lstlisting}[style=MyBashStyle,caption={-p}]
 -p 80:80
 \end{lstlisting} werden die Ports vom Host an den Container gebunden. Hier wird der lokale Hostport 80 auf den Containerport 80 gemappt. Die weiteren Ports 
-\begin{lstlisting}[style=MyBashStyle]
+\begin{lstlisting}[style=MyBashStyle,caption={-p}]
 -p 22000:22000 -p 21027:21027 
 \end{lstlisting} werden für das Syncthing und für das Peer to Peer-Netzwerk benötigt.
 Als nächstes folgt der Befehl 
-\begin{lstlisting}[style=MyBashStyle]
+\begin{lstlisting}[style=MyBashStyle,caption={-v visit-syncthing}]]
 -v visit-syncthing:/var/syncthing
 \end{lstlisting}
-Mit dem Parameter \begin{lstlisting}[style=MyBashStyle]
+Mit dem Parameter \begin{lstlisting}[style=MyBashStyle,caption={-v} ]
 -v
 \end{lstlisting}
  wird ein Verzeichnis (Volume) auf dem Hostrechner zu einem Verzeichnis innerhalb des Containers verbunden, auf diese Weise werden die Daten persistent gespeichert, das heißt, dass ein Ordner auf dem Hostsystem auf einen Ordner im Container gemappt wird. Das bedeutet, dass die Daten in beiden Ordnern immer inhaltsgleich sind. Ohne dem Mapping zu einen Ordner auf dem Hostsystem, wären alle Daten aus dem Docker Container, wenn dieser Container gelöscht wird, ebenfalls gelöscht. Um die Daten persistent, also dauerhaft zu speichern, wird immer ein Ordner im Hostsystem mit dem entsprechenden Ordner im Docker Container gemappt.
-Zuerst wird das Verzeichnis auf dem Hostrechner angegeben, hier \begin{lstlisting}[style=MyBashStyle]
+Zuerst wird das Verzeichnis auf dem Hostrechner angegeben, hier \begin{lstlisting}[style=MyBashStyle, caption={visit-syncthing}]
 visit-syncthing
 \end{lstlisting}
-und nach dem Doppelpunkt steht das Verzeichnis innerhalb des Containers, hier \begin{lstlisting}[style=MyBashStyle]
+und nach dem Doppelpunkt steht das Verzeichnis innerhalb des Containers, hier \begin{lstlisting}[style=MyBashStyle, caption={Angabe des Verzeichnisses innerhalb des Containers}]
 /var/syncthing
 \end{lstlisting}
 
-Im nächsten Teil des Befehls \begin{lstlisting}[style=MyBashStyle]
+Im nächsten Teil des Befehls \begin{lstlisting}[style=MyBashStyle, caption={Angabe des Verzeichnisses auf dem Hostrechner}]
 -v s:/p2p/visit:/var/p2p
 \end{lstlisting}
- wird ebenfalls zuerst das Verzeichnis auf dem Hostrechner angegeben, \begin{lstlisting}[style=MyBashStyle]
+
+ wird ebenfalls zuerst das Verzeichnis auf dem Hostrechner angegeben, 
+ 
+ \begin{lstlisting}[style=MyBashStyle, caption={Angabe des Verzeichnisses innerhalb des Hostrechners}]
 s:/p2p/visit
-\end{lstlisting} und dann das Verzeichnis innerhalb des Containers \begin{lstlisting}[style=MyBashStyle]
+\end{lstlisting} und dann das Verzeichnis innerhalb des Containers 
+
+\begin{lstlisting}[style=MyBashStyle, caption={Angabe des Verzeichnisses innerhalb des Containers}]
 /var/p2p
 \end{lstlisting}
-Im nächsten Befehl \begin{lstlisting}[style=MyBashStyle]
+
+Im nächsten Befehl \begin{lstlisting}[style=MyBashStyle, caption={Verbindung zur Datenbank}]
 -v visit-database:/var/lib/mysql
-\end{lstlisting} geht es um die Verbindung zur Datenbank. Hier wird ebenfalls zuerst das Verzeichnis auf dem Hostrechner angegeben \begin{lstlisting}[style=MyBashStyle]
+\end{lstlisting} geht es um die Verbindung zur Datenbank. Hier wird ebenfalls zuerst das Verzeichnis auf dem Hostrechner angegeben 
+
+\begin{lstlisting}[style=MyBashStyle, caption={Angabe des Verzeichnisses auf dem Hostrechner}]
 visit-database
-\end{lstlisting} und nach dem Doppelpunkt steht das Verzeichnis innerhalb des Containers \begin{lstlisting}[style=MyBashStyle]
+\end{lstlisting} und nach dem Doppelpunkt steht das Verzeichnis innerhalb des Containers 
+
+\begin{lstlisting}[style=MyBashStyle, caption={Angabe des Verzeichnisses innerhalb des Containers}]
 /var/lib/mysql
 \end{lstlisting}
-Zuletzt wird mittels \begin{lstlisting}[style=MyBashStyle]
+Zuletzt wird mittels 
+
+\begin{lstlisting}[style=MyBashStyle, caption={Automatisches Starten des Docker Containers}]
 --restart unless-stopped visitapp/maincontainer
-\end{lstlisting} dem System mitgeteilt, dass der Docker Container \begin{lstlisting}[style=MyBashStyle]
+\end{lstlisting} dem System mitgeteilt, dass der Docker Container 
+
+\begin{lstlisting}[style=MyBashStyle, caption={Angabe des Docker Containers}]
 visitapp/maincontainer
 \end{lstlisting} automatisch gestartet werden soll außer, wenn er manuell oder anderweitig gestoppt wird.
 
@@ -258,6 +273,9 @@ Um ein Template in TYPO3 zu erstellen, muss im ersten Schritt unter WEB das “T
 Danach ins Raster “Enthält” wechseln, hier können verschiedene Objekte aus der rechten Spalte “Verfügbare Objekte” in die linke Spalte “Ausgewählte Objekte” verschoben werden, hier muss jedoch auf die Reihenfolge dieser Objekte geachtet werden. Hier zuerst auf “Fluid Content Elements (fluid\_styled\_content)” klicken, dann wandert dieses Objekt in die linke Spalte. Das gleiche mit dem Objekt “tablets (visit\_tablets)”. Jetzt befinden sich beide Objekte in der linken Spalte unter “Ausgewählte Objekte”. Damit diese Änderungen gespeichert werden, muss wieder auf das Speichern-Symbol über der Überschrift im Hauptbereicht geklickt werden. Wenn die Webseite auf dem localhost:80/ aufgerufen wird, erscheint die Karte.
 
 
+
+
+
 \section{Karten-Applikation}
 
 \subsection{Einpflegen der Daten in die Karten-Applikation}
@@ -354,7 +372,13 @@ Jetzt kann der Besucher eine Flagge auswählen, zu welcher er mehr Informationen
 
 Die Kartenelemente können jederzeit bearbeitet oder gelöscht werden. Dies geht indem zuerst die Listenansicht in der dunkelblauen Leiste ausgewählt wird. In weiterer Folge kann jedes einzelne Element (Zeile) einzeln bearbeitet oder gelöscht werden. Zum Bearbeiten wird auf das blaue Stiftsymbol auf der rechten Seite klicken, zum Löschen des Objekts, den orangen Müllkübel.
 
+
+
+
+
+
 \section{Glossar-Applikation}
+
 In der Glossar-Applikation werden Insassen des Gefängnisses aufgelistet. Die Applikation ist in zwei Bereiche aufgeteilt, rechts werden die Insassen aufgelistet, wählt der Benutzer einen Namen aus dieser Liste aus, so werden die Details zu dieser Person in der rechten Spalte angezeigt. Die Auflistung der Insassen ist alphabetisch nach Vornamen beziehungsweise, wenn vorhanden, nach dem Nachnamen \ref{img:glossar}.
 Die Auflistung kann auch nach Ereignis, Zelle oder VIP erfolgen, dies kann der Besucher in der oberen Menüzeile auswählen.
 
@@ -364,6 +388,7 @@ Die Auflistung kann auch nach Ereignis, Zelle oder VIP erfolgen, dies kann der B
 \caption{Ansicht der Glossar-Applikation auf einem Tablet}
 \label{img:glossar}
 \end{figure}
+
 
 \subsection{Einpflegen der Daten in die Glossar-Applikation}
 
@@ -405,7 +430,8 @@ Nachdem die Startseite befüllt wurde, wird sie dem Besucher als erstes angezeig
 \label{img:startseite_glossar_tablet}
 \end{figure}
 
-\subsection{Hinzufügen einer neuen Zelle}
+
+\subsection{Neue Zelle hinzufügen}
 
 Über einen Klick auf Neue Zelle in der dunkelblauen Leiste kann eine neue Zelle angelegt werden \ref{img:hinzufuegen_neue_zelle}.
 
@@ -433,7 +459,7 @@ Alle angelegten Zellen können über Liste Zellen in der dunkelblauen Leiste ang
 \label{img:angelegte_zellen}
 \end{figure}
 
-\subsection{Hinzufügen eines Events}
+\subsection{Neuen Event hinzufügen}
 
 Ein Event benötigt ebenfalls einen deutschen und einen englischen Namen, mit einem Klick auf Anlegen werden die eingegebenen Daten dauerhaft gespeichert \ref{img:hinzufuegen_event}.
 \begin{figure}[ht!]
@@ -450,7 +476,7 @@ In Liste Events in der dunkelblauen Leiste können alle Events angezeigt werden.
 \label{img:angelegte_events_listenansicht}
 \end{figure}
 
-\subsection{Neuen Insassen anlegen}
+\subsection{Neuen Insassen hinzufügen}
 
 Über die Auswahl Neuer Insasse in der dunkelblauen Leiste kann ein neuer Insasse angelegt werden. Die Felder Geburtsdatum, Todestag, Inhafiert sowie Freigelassen sind Datumsfelder. Ist eines der Daten nicht bekannt, kann das Feld freigelassen werden \ref{img:anlegen_insassen}.
 \begin{figure}[ht!]
@@ -481,24 +507,75 @@ Die Insassen werden im Browser, nach dem Auswählen der bevorzugten Sprache, ang
 \label{img:insassenuebersicht_browser}
 \end{figure}
 
-\subsection{Bearbeitung und Löschung von Insassen}
+\subsection{Bearbeitung und Löschung von Insassen, Events und Zellen}
 
+Insassen, Zellen und Events können jederzeit einzeln bearbeitet oder gelöscht werden. Dies geht, indem zuerst die jeweilige Listenansicht (Liste Insassen/Zellen/Events) in der dunkelblauen Leiste ausgewählt wird. In weiterer Folge kann jedes einzelne Element (Zeile) aus der Liste einzeln bearbeitet oder gelöscht werden. Zum Bearbeiten auf das blaue Stiftsymbol auf der rechten Seite der gewünschten Zeile klicken, zum Löschen des Objekts, den orangen Müllkübel \ref{img:loeschung_insassen}.
 
-
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/glossar/loeschen_bearbeiten_insasse.png}
+\caption{Bearbeitung bzw. Löschung von Insassen/Zellen/Events}
+\label{img:loeschung_insassen}
+\end{figure}
 
 
 
 
 \section{Galerie-Applikation}
 
-\subsection{Einpflegen der Daten in die Glossar-Applikation}
+
+\subsection{Einpflegen der Daten in die Galerie-Applikation}
+
+Dazu aus der Modulleiste links unter der Obergruppe VISIT TABLET die Karte auswählen. Im linken Teil des Hauptfensters ist der Seitenbaum zu sehen und rechts befindet sich die Kartenübersicht. Oben links im rechten Teil des Hauptfensters befindet sich ein Menü-Button, wird dieser angeklickt, wird eine weitere dunkelblaue Spalte zwischen dem Seitenbaum und dem Arbeitsbereich im Hauptfenster sichtbar (siehe Abbildung \ref{img:uebersicht_galerie}).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/galerie/uebersicht_galerie.png}
+\caption{Übersicht über alle erstellten}
+\label{img:uebersicht_galerie}
+\end{figure}
+
+\subsection{Auswahl des gewünschten Layouts}
+
+Dazu in der dunkelblauen Leiste “Einstellungen” auswählen (siehe Abbildung  \ref{img:auswahl_layout}). Zur Auswahl gibt es hier entweder das 3er-Layout mit 3 Spalten und 1 Zeile (siehe Abbildung \ref{img:layout_3er}) oder das 6er-Layout mit 3 Spalte und 2 Zeilen (siehe Abbildung \ref{img:layout_6er}).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/galerie/auswahl_layout.png}
+\caption{Auswahl des gewünschten Layouts in den Einstellungen}
+\label{img:auswahl_layout}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/galerie/layout_3er.png}
+\caption{3er-Layout (3 Spalten, 1 Zeile)}
+\label{img:layout_3er}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/galerie/layout_6er.png}
+\caption{6er-Layout (3 Spalten, 2 Zeilen)}
+\label{img:layout_6er}
+\end{figure}
 
 \subsection{Erstellung der Startseite für die Glossar-Applikation}
+
+
 
 \subsection{Neuen Insassen anlegen}
 
 
 
+
+\section{Fernrohr}
+
+\subsection{Einpflegen der Daten in die Fernrohr-Applikation}
+
+\subsection{Erstellung der Startseite für die Fernrohr-Applikation}
+
+\subsection{}
 
 
 
