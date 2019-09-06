@@ -370,7 +370,7 @@ Jetzt kann der Besucher eine Flagge auswählen, zu welcher er mehr Informationen
 
 \subsection{Bearbeitung und Löschen von angelegten Kartenelementen}
 
-Die Kartenelemente können jederzeit bearbeitet oder gelöscht werden. Dies geht indem zuerst die Listenansicht in der dunkelblauen Leiste ausgewählt wird. In weiterer Folge kann jedes einzelne Element (Zeile) einzeln bearbeitet oder gelöscht werden. Zum Bearbeiten wird auf das blaue Stiftsymbol auf der rechten Seite klicken, zum Löschen des Objekts, den orangen Müllkübel.
+Die Kartenelemente können jederzeit bearbeitet oder gelöscht werden. Dies geht indem zuerst die Listenansicht in der dunkelblauen Leiste ausgewählt wird. In weiterer Folge kann jedes einzelne Element (Zeile) einzeln bearbeitet oder gelöscht werden. Zum Bearbeiten auf das blaue Stiftsymbol auf der rechten Seite klicken, zum Löschen des Objekts, den orangen Müllkübel.
 
 
 
@@ -523,6 +523,9 @@ Insassen, Zellen und Events können jederzeit einzeln bearbeitet oder gelöscht 
 
 \section{Galerie-Applikation}
 
+In der Galerie-Applikation kann der Benutzer aus verschiedenen Teasern auswählen, wird ein Teaser angeklickt gelangt man zu den Inhaltselementen und kann diese lesen. Die Inhaltselemente wiederum können aus mehreren Subelementen bestehen. Der Benutzer muss hinunter scrollen beziehungsweise swipen.
+Wird nach rechts oder links geswiped, dann wird entweder das vorhergehende oder das nachkommende Inhaltselement (mit den dazugehörigen Subelementen) angezeigt.
+Nach einer bestimmten Zeit ohne einer Interaktion kehrt die Applikation zurück zum Menü und zeigt den Startbildschirm an.
 
 \subsection{Einpflegen der Daten in die Galerie-Applikation}
 
@@ -531,13 +534,13 @@ Dazu aus der Modulleiste links unter der Obergruppe VISIT TABLET die Karte ausw�
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=12cm]{Figures/paula/galerie/uebersicht_galerie.png}
-\caption{Übersicht über alle erstellten}
+\caption{Übersicht über alle erstellten Inhalte}
 \label{img:uebersicht_galerie}
 \end{figure}
 
-\subsection{Auswahl des gewünschten Layouts}
+\subsection{Auswahl des gewünschten Layouts für die Startseite}
 
-Dazu in der dunkelblauen Leiste “Einstellungen” auswählen (siehe Abbildung  \ref{img:auswahl_layout}). Zur Auswahl gibt es hier entweder das 3er-Layout mit 3 Spalten und 1 Zeile (siehe Abbildung \ref{img:layout_3er}) oder das 6er-Layout mit 3 Spalte und 2 Zeilen (siehe Abbildung \ref{img:layout_6er}).
+Dazu in der dunkelblauen Leiste “Einstellungen” auswählen (siehe Abbildung  \ref{img:auswahl_layout}). Zur Auswahl gibt es hier entweder das 3er-Layout mit 3 Spalten und 1 Zeile (siehe Abbildung \ref{img:layout_3er}) oder das 6er-Layout mit 3 Spalten und 2 Zeilen (siehe Abbildung \ref{img:layout_6er}) für die Teaser auf der Startseite.
 
 \begin{figure}[ht!]
 \centering
@@ -560,12 +563,92 @@ Dazu in der dunkelblauen Leiste “Einstellungen” auswählen (siehe Abbildung 
 \label{img:layout_6er}
 \end{figure}
 
-\subsection{Erstellung der Startseite für die Glossar-Applikation}
+
+\subsection{Erstellung der Startseite für die Galerie-Applikation}
+
+Die Galerie kann mit einem Klick auf Galerie in der Modulleiste konfiguriert werden (siehe Abbildung \ref{img:auswahl_layout}).
+
+
+Die Startseite der Applikation kann unter Einstellungen in der dunkelblauen Leiste konfiguriert werden. Dafür benötigt man den Text für die Startseite \url{https://github.com/ViSIT-Dev/appbundle}. Dieser Text muss in die entsprechenden Inputfelder kopiert werden (siehe Abbildung \ref{img:auswahl_layout}).
+
+
+Nachdem die Startseite befüllt wurde, wird sie dem Besucher als erstes angezeigt, auf dieser kann der Besucher dann die gewünschte Sprache auswählen (siehe Abbildung \ref{img:startseite}).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/galerie/startseite.png}
+\caption{Startseite der Galerie-Applikation}
+\label{img:startseite}
+\end{figure}
 
 
 
-\subsection{Neuen Insassen anlegen}
+\subsection{Neues Inhaltselement anlegen}
 
+Als erstes muss ein neues Inhaltselement angelegt werden. Dies geschieht über einen Klick auf Neuer Inhalt in der dunkelblauen Leiste (siehe Abbildung \ref{img:neues_inhaltselement_anlegen}).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/galerie/neues_inhaltselement_anlegen.png}
+\caption{Neues Inhaltselement anlegen}
+\label{img:neues_inhaltselement_anlegen}
+\end{figure}
+
+Im nächsten Schritt muss zuerst die Sprache ausgewählt. Dann wird das Textfeld befüllt und ein Medienobjekt kann zugefügt werden. Bei diesem Text und Medienobjekt handelt es sich um den obersten Text (siehe Abbildung \ref{img:ansicht_inhaltselement_galerie} blau eingerahmter Bereich).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/galerie/ansicht_inhaltselement_galerie.png}
+\caption{Ansicht eines Inhaltselements aus der Galerie auf einem Tablet}
+\label{img:ansicht_inhaltselement_galerie}
+\end{figure}
+
+\subsection{Sortierung der Inhaltselemente}
+
+Die Sortierung der Inhaltselemente gibt an, in welcher Reihenfolge die einzelnen Inhaltselemente durchgeswiped (sowohl nach rechts als auch nach links) werden können.
+
+
+\subsection{Anlegen eines Sub-Inhaltselements}
+Nachdem das Inhaltselement angelegt und gespeichert wurde, können - müssen aber nicht - weitere Sub-Inhaltselemente hinzugefügt werden (siehe Abbildung \ref{img:anlegen_neuer_Sub_inhaltselemente} sowie Abbildung \ref{img:ansicht_inhaltselement_galerie} grün eingerahmte Sub-Inhaltselemente).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/galerie/anlegen_neuer_Sub_inhaltselemente.png}
+\caption{Anlegen neuer Sub-Inhaltselemente zu einem bestehenden Inhaltselement}
+\label{img:anlegen_neuer_Sub_inhaltselemente}
+\end{figure}
+
+
+\subsection{Erstellung der Teaser}
+
+Für die Startseite müssen als nächstes die Teaser erstellt werden (siehe Abbildung \ref{img:layout_3er} und \ref{img:layout_6er}). Je nachdem welches Layout gewählt wurde, müssen entsprechend viele Teaser erstellt werden, also entweder 3 oder 6. 
+
+Dazu zuerst aus den dunkel blauen Leiste Neuer Teaser auswählen und den Titel sowohl in Deutsch als auch in Englisch eintragen. Des Weiteren muss der Link zum entsprechenden Inhaltselement angegeben werden (siehe Abbildung \ref{img:erstellung_teaser}). 
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/galerie/erstellung_teaser.png}
+\caption{Erstellung eines Teasers für die Startseite der Galerie-Applikation}
+\label{img:erstellung_teaser}
+\end{figure}
+
+\subsection{Sortierung der Teaserelemente}
+
+Die Sortierung der Teaser auf der Startseite kann manuell eingestellt werden. Die Reihung kann bei der Erstellung des Teasers angegeben werden (siehe Abbildung \ref{img:erstellung_teaser} bei Feld Sortierung). Hier kann über die Pfeiltasten eine Zahl ausgewählt werden, an der der Teaser auf der Startseite angezeigt wird. Im Beispiel \ref{img:sortierung_teaser} wird zuerst die Burg Kreuzenstein, dann die Festung Hohensalzburg und als dritter Teaser die Festung Kufstein angezeigt.
+
+Wird bei allen Null angegeben, dann erscheinen die Teaser in der erstellten Reihenfolge.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/galerie/sortierung_teaser.png}
+\caption{Manuelle Sortierung der Teaserelemente auf der Startseite}
+\label{img:sortierung_teaser}
+\end{figure}
+
+
+\subsection{Bearbeitung und Löschung Inhaltselementen, Sub-Inhaltselementen sowie Teasern}
+
+Die Inhaltselemente, Sub-Inhaltselemente sowie Teaser können jederzeit bearbeitet oder gelöscht werden. Dies geht indem zuerst die jeweilige Listenansicht in der dunkelblauen Leiste ausgewählt wird (für Inhaltselemente beziehungsweise Sub-Inhaltselemente die Liste Inhalte und für Teaser die Liste Teaser). In weiterer Folge kann jedes einzelne Element (Zeile) einzeln bearbeitet oder gelöscht werden. Zum Bearbeiten auf das blaue Stiftsymbol auf der rechten Seite klicken, zum Löschen des gewünschten Objekts, den orangen Müllkübel.
 
 
 
