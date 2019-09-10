@@ -747,4 +747,72 @@ Nachdem die Datei in der ViSIT Datenbank gespeichert wurde, kann sie in der Date
 \subsection{Veröffentlichung einer Datei im ViSIT-Netzwerk}
 
 Wenn eine Datei hochgeladen wurde, welche für alle ViSIT-Partner zur Verfügung stehen soll, dann muss diese Datei explizit freigegeben bzw. veröffentlicht werden. Dies
-\cite{anno4j1}
+
+
+
+
+
+
+
+
+
+\section{Update-Prozess}
+
+Ob ein Update verfügbar ist, kann im GitHub-Repository des Projekts unter Commits \url{https://github.com/ViSIT-Dev/appbundle/commits/master} eingesehen werden. Sollte ein Update fällig sein, da ein Commit kürzlich stattfand, dann gibt es zwei Möglichkeiten, dieses durchzuführen.
+
+Vor jedem Update soll immer ein Backup vom kompletten Webspace, dies beinhaltet die Datenbank sowie alle Dateien, gemacht werden.
+
+
+\subsection{Update von Programmdateien}
+
+Programmdateien können leicht manuell über \glqq Run Task\grqq{} im Scheduler des Backend aktualisiert werden.
+Dazu in der Modulleiste unter SYSTEM den Scheduler auswählen  (siehe Abbildung \ref{img:scheduler}). Im Arbeitsbereich sieht man die Scheduled Tasks und in der ersten Zeile befindet sich die App, die upgedated werden kann. Hier werden alle Änderungen vom oben genannten GitHub Repository heruntergeladen. Unter \glqq Last Execution\grqq{} (siehe Abbildung \ref{img:scheduler} blau eingerahmt) wird das Datum des letzten Updates angezeigt. Ist dieses Datum älter als das Datum des letzten Commits, dann kann ein Update vorgenommen werden (siehe Abbildung \ref{img:commits} rot eingerahmtes Datum).
+
+Dazu muss das ganz rechts in der entsprechenden Zeile befindliche Play-Symbol \glqq Run task\grqq{} angeklickt werden (siehe Abbildung \ref{img:scheduler} rot eingerahmt). Danach sollte der Cache der gesamten Webseite (Front- und Backend) gelöscht werden. Dazu das Blitz-Symbol (siehe Abbildung \ref{img:cache} gelb eingerahmt) in der Kopfzeile auswählen und den roten Blitz \glqq Flush all caches \grqq{} (siehe Abbildung \ref{img:cache} rot eingerahmt) anklicken.
+
+Jetzt sollte die Applikation wieder auf dem neuesten Stand sein.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/update_prozess/run_task.png}
+\caption{Scheduler und geplante Tasks}
+\label{img:scheduler}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/update_prozess/commits.png}
+\caption{Commits im GitHub Repository}
+\label{img:commits}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/update_prozess/cache.png}
+\caption{Cache leeren}
+\label{img:cache}
+\end{figure}
+
+\subsection{Datenbank Update}
+
+Sollte nach dem oben genannten Update über \glqq Run task\grqq{} und Cache leeren die Applikation nicht funktionieren oder es handelte sich bei dem Update um ein Datenbank-Update, dann muss zuerst die Visit App-Extension deaktiviert und wieder aktiviert werden.
+
+Die Extensions befinden sich in der Modulleiste unter ADMIN TOOLS. Danach im Arbeitsbereich hinunter scrollen bis zur Visit App (siehe Abbildung \ref{img:extension} blau eingerahmte Zeile). Im nächsten Schritt muss diese Extension kurz deaktiviert werden, dies passiert mittels Klick auf das Würfelsymbol ganz links in der Zeile (siehe Abbildung \ref{img:extension} rot eingerahmt). Nach kurzer Zeit kann die Extension auch wieder mit einem Klick auf das Würfelsymbol aktiviert werden.
+
+Danach sollten die Applikationen wieder funktionieren und auf dem neuesten Stand sein.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/update_prozess/update_extension.png}
+\caption{Visit App-Extension deaktivieren und wieder aktivieren}
+\label{img:extension}
+\end{figure}
+
+\subsection{Backup Plan}
+
+Sollten die beiden oben beschriebenen Update-Vorgänge scheitern, dann muss das Backup wiederhergestellt werden damit die Applikationen funktionsfähig sind und danach den Support anrufen und abklären, warum das Update fehlgeschlagen ist.
+
+
+
+\section{Projektverlauf}
+
