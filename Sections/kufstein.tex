@@ -658,13 +658,19 @@ Die Inhaltselemente, Sub-Inhaltselemente sowie Teaser können jederzeit bearbeit
 
 \section{Fernrohr}
 
-Das Fernrohr ist für die Einrichtung die komplexeste Applikation.
+Das Fernrohr ist für die Einrichtung die komplexeste Applikation.\\
+
+Wenn durch das Fernrohr geschaut wird, sieht man eine Karte oder Landschaft. Auf dieser Karte oder Landschaft befinden sich sogenannte POI's (Point of Interest), das sind Punkte, die Informationen beinhalten. Jeder POI hat einen zuvor festgelegten Radius, welcher die Größe des POI festlegt. POI's können unterschiedliche Größen haben, bei jedem Punkt, der angelegt wird, muss der Radius des Punktes angegeben werden.\\
+
+Das Fernrohr lässt sich nach rechts und links schwenken, sowie nach oben und unten bewegen. Wird ein POI mittig auf dem Screen anvisiert, dann vergrößert sich der Radius von diesem POI und der Inhalt wird auf dem ganzen Screen angezeigt. Handelt es sich dabei um ein Video, wird dieses direkt abgespielt. Die Videos haben eine leichte Transparenz, sodass die Karte im Hintergrund noch sichtbar ist.\\
+
+Will man den Punkt verlassen, so muss das Fernrohr aus dem Radius des POI hinaus bewegt werden. Dann wird aus dem POI hinaus gezoomt und die darunter liegende Karte oder Landschaft wird wieder sichtbar. 
 
 \subsection{Einpflegen der Daten in die Fernrohr-Applikation für Kuratoren}
 
 Dieser Absatz gilt, wenn das Fernrohr bereits eingerichtet ist und nur neuer POI (Points of Interesst) hinzugefügt werden soll.\\
 
-Dazu aus der Modulleiste links unter der Obergruppe VISIT FERNROHR POI's auswählen. Im linken Teil des Hauptfensters ist der Seitenbaum zu sehen und rechts befindet sich die Liste mit den bereits angelegten POI's (siehe Abbildung \ref{img:fernrohr_listenuebersicht}.
+Dazu aus der Modulleiste links unter der Obergruppe VISIT FERNROHR POI's auswählen. Im linken Teil des Hauptfensters ist der Seitenbaum zu sehen und rechts befindet sich die Liste mit den bereits angelegten POI's (siehe Abbildung \ref{img:fernrohr_listenuebersicht}).\\
 
 Als nächstes müssen in der dunkelblauen Leiste die Einstellungen ausgewählt und das Häckchen bei Kuratorenmodus gesetzt und gespeichert werden (siehe Abbildung \ref{img:fernrohr_einstellungen}). Danach kann bereits die Seite im Browser geöffnet werden. Dies geschieht über einen Rechtsklick auf Fernrohr im Seitenbaum und der Auswahl \glqq Show\grqq{} (siehe Abbildung \ref{img:fernrohr_browser_ansicht}). 
 
@@ -693,16 +699,26 @@ Als nächstes müssen in der dunkelblauen Leiste die Einstellungen ausgewählt u
 
 
 \subsection{Auslesen der x- und y-Koordinaten}
-Im Browser öffnet sich nun die Webseite und im oberen rechten Eck ist das sogenannte Kuratorenkästchen eingeblendet. In diesem werden die x- und y-Koordinaten der aktuellen Position des Fernrohrs und die bereits bestehenden Punkte angezeigt.
-Hat man den Punkt ausgewählt an welchem das neue Bild oder Video angezeigt werden soll, dann müssen die Werte der x- und y-Koordinaten notiert werden.
+Im Browser öffnet sich nun die Webseite und im oberen rechten Eck ist das sogenannte Kuratorenkästchen eingeblendet (siehe Abbildung \ref{img:kuratorenkaestchen}). In diesem werden die x- und y-Koordinaten der aktuellen Position des Fernrohrs (der Mittelpunkt des Sichtfeldes) und die bereits bestehenden Punkte angezeigt. Der blaue Hindergrund im der Abbildung \ref{img:kuratorenkaestchen} wird im realen Einsatz die Karte oder Landschaft sein, auf welcher sich die POI befinden.
+Hat man den Punkt ausgewählt an welchem das neue Bild oder Video angezeigt werden soll, dann müssen die Werte der x- und y-Koordinaten notiert werden.\\
+Des Weiteren sind in der Ansicht auch die Sprachauswahlmöglichkeiten sichtbar. Fährt der Besucher auf das POI mit der Deutschen Flagge, dann wird der Inhalt aller anderen POI's auf Deutsch angezeigt. Fährt der Besucher auf die Britische Flagge, werden die Inhalte aller POI's auf Englisch angezeigt. Daneben, als drittes POI, befindet sich das Impressum, welches in der gewählten Sprache erscheint, wenn der Besucher diesen POI anvisiert.\\
+Sobald eines dieser POI anvisiert wird - dieses sich also im Mittelpunkt des Sichtfensters befindet - wird der Radium des POI's größer und der Text oder das Video (wird automatisch abgespielt, der Besucher muss nicht mehr auf Start drücken) werden angezeigt (siehe Abbildung .. SCREENSHOT!!!!). 
+Will der Besucher das ausgewählte POI wieder verlassen, muss er das Fernrohr bewegen und den Punkt verlassen. So gelangt er wieder zu der Karte oder Landschaft.
 
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/fernrohr/kuratorenkaestchen.png}
+\caption{Kuratorenkästchen in der oberen rechten Ecke}
+\label{img:kuratorenkaestchen}
+\end{figure}
 
 \subsection{Anlegen eines neuen Kartenelements}
 Als nächstes wählt man aus der dunkelblauen Leiste \glqq Neu\grqq{} aus. Hier kann ein neues Kartenelement hinzugefügt werden. Als erstes wird die gewünschte Sprache ausgewählt.
 
-Die beide Überschriften werden nur benötigt, wenn es sich um einen Texttyp handelt. Bei Videos reicht nur eine Überschrift. Als nächstes muss die Position eingetragen werden. Hier müssen die zuvor notierten x- und y-Koordinaten eingetragen werden (siehe Abbildung \ref{img:fernrohr_x_u_y_koordinaten}. Handelt es sich um ein Fullscreen Video, dann muss das Häckchen daneben gesetzt werden. Als nächstes können Medien hinzugefügt werden.
+Die beiden Überschriften werden nur benötigt, wenn es sich um einen Texttyp (also zum Beispiel ein Bild und dazu ein Text zum Lesen) handelt. Zum Texttyp gab es keine Designvorlage, dies wurde lediglich Vollständigkeit halber implementiert, grundsätzlich ist es dafür da, Fullscreen Videos abzuspielen. Sollte ein Texttyp verlangt werden, muss das entsprechende Design implementiert werden.\\
+Bei Videos reicht nur eine Überschrift. Als nächstes muss die Position eingetragen werden. Hier müssen die zuvor notierten x- und y-Koordinaten aus dem Kuratorenkästchen eingetragen werden (siehe Abbildung \ref{img:fernrohr_x_u_y_koordinaten}). Handelt es sich um ein Fullscreen Video, dann muss das Häckchen daneben gesetzt werden. Als nächstes können Medien hinzugefügt werden.
 
-\subsection{Radius der POI's}
+\subsection{Größe (Radius) der POI's}
 
 Die Größe der POI's muss beim Anlegen eines neuen Kartenelements angegeben werden. Hier muss geschaut und ausprobiert werden, welche Größe als passend empfunden wird. Je größer die Zahl, desto größer wird der Punkt auf der Karte angezeigt.
 
@@ -713,11 +729,16 @@ Die Größe der POI's muss beim Anlegen eines neuen Kartenelements angegeben wer
 \label{img:fernrohr_x_u_y_koordinaten}
 \end{figure}
 
-\subsection{Erstellung der Startseite für die Fernrohr-Applikation}
 
-\subsection{}
+\subsection{Erstellung des Impressums für die Fernrohr-Applikation}
+
+Das Impressum ist ein den Einstellungen der Fernrohr-Applikation zu finden. Dazu muss aus der dunkelblauen Leiste auf Einstellungen geklickt werden (siehe Abbildung \ref{img:fernrohr_einstellungen}). Hier kann der Text des Impressums sowohl auf Englisch als auch auf Deutsch eingegeben werden. Nach dem Befüllen müssen die Daten gespeichert werden.
 
 
+\subsection{Ansicht der Benutzer des Fernrohrs ohne des Kuratorenkästchens}
+
+Für das Einpflegen der Daten war der Kuratorenmodus in den Fernrohr Einstellungen aktiviert. Ist man mit dem Einpflegen der Daten fertig und möchte die Ansicht haben, die die Benutzer haben werden, dann muss anschließend das Häckchen vom Kuratorenmodus entfernt werden.
+Dies ist wieder in den Einstellungen des Fernrohrs zu finden. Nach der Entfernung des Häckchens kann die Seite mittels Rechtsklick auf \glqq Fernrohr\grqq{} und der Auswahl von \glqq Show\grqq{} im Browser angezeigt werden. Jetzt ist das Kuratorenkästchen nicht mehr zu sehen, stattdessen befindet sich die Flagge der ausgewählten Sprache im oberen rechten Eck (siehe Abbildung SCREENSHOT!!!!!!!!!!!!!).
 
 
 
