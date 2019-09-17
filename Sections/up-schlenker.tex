@@ -82,14 +82,40 @@ Die Anforderungen an die Ressourcen, die sich für den LAS bzw. den Docker"=Cont
 Da der Algorithmus zur Kompression von 3D-Modellen kaum Parallelisierungs"=Möglichkeiten bietet, werden die Berechnungen derzeit nicht auf mehrere Prozessorkerne oder auf die Grafikkarte verlagert. 
 Experimente während der Implementierung haben gezeigt, dass Modelle mit ca. 8 Mio. Dreiecken auf einem aktuellen gut ausgestatteten Bürorechner (Intel-Core-i7-Prozessor, 32 GB RAM) komprimiert werden können. Da insbesondere der Arbeitsspeicher der limitierende Faktor ist, spielt jedoch der Speicherbedarf der anderen auf dem System laufenden Anwendungen eine wichtige Rolle.
 
-\subsubsection{Softwarevoraussetzungen}
+\subsubsection{Softwarevoraussetzungen und Lizenzen}
 
 Die Kompressions-Komponente wurde in der Programmiersprache Java implementiert, weshalb zur Ausführung ein Java Runtime Environment (JRE) im Docker-Container installiert sein muss. Für die Kompression von Bild- und Texturdateien wird im Hintergrund die Software ImageMagick verwendet. Es ergeben sich also die folgenden beiden Software-Abhängigkeiten:
 \begin{itemize}
 \item Java Runtime Environment\footnote{\url{https://java.com/de/download/}} (getestet mit Version 1.8.0)
 \item ImageMagick\footnote{\url{https://imagemagick.org/index.php}} (getestet mit Version 7.0.8)
 \end{itemize}
-Da diese Software"=Produkte jedoch bei der Installtion des entsprechenden Docker"=Containers automatisch installiert werden, muss dies nicht manuell durch den Benutzer vollzogen werden. 
+Da diese Software"=Produkte jedoch bei der Installtion des entsprechenden Docker"=Containers automatisch installiert werden, muss dies nicht manuell durch den Benutzer vollzogen werden. Die Lizenzbedingungen dieser beiden Abhängigkeiten müssen bei der Installation beachtet werden.
+
+Die Kompressions"=Komponente selbst wird unter der Apache License in der Version 2.0 veröffentlicht\footnote{\url{https://www.apache.org/licenses/LICENSE-2.0.txt}}. Die Komponente benutzt zahlreiche Software"=Bibliotheken, welche ebenfalls unter Open"=Source-Lizenzen veröffentlicht wurden. Tabelle \ref{schlenke:tbl:libraries} gibt einen Überblick über die verwendeten Bibliotheken und deren Lizensierung. Für Details wird auf das Online"=Repository der Kompressions"=Komponente verwiesen, in welchem sich die vollständigen Lizenztexte und weitere Informationen befinden, wie es von der Apache License gefordert wird.
+
+\begin{table}
+\begin{center}
+{\footnotesize
+\begin{tabular}{lll}
+Bibliothek & Version & Lizenz \\
+\hline
+Apache Commons Codec & 1.11 & Apache License 2.0 \\
+Apache Commons IO & 2.6 & Apache License 2.0 \\
+Apache Commons Lang & 3.3.7 & Apache License 2.0 \\
+Apache Commons Logging & 1.2 & Apache License 2.0 \\
+Apache Commons Math & 3.6.1 & Apache License 2.0 \\
+Apache Commons HTTP Components Client & 4.5.7 & Apache License 2.0 \\
+Apache Commons HTTP Componente Core & 4.4.11 & Apache License 2.0 \\
+Jackson Core & 2.9.6 & Apache License 2.0 \\
+Jackson Annotations & 2.9.6 & Apache License 2.0 \\
+Jackson Databind & 2.9.6 & Apache License 2.0 \\
+Apache Log4j & 2.11.0 & Apache License 2.0 \\
+SQLite JDBC Driver & 3.21.0 & Apache License 2.0 \\
+\end{tabular}}
+\caption{Verwendete Software"=Bibliotheken mit Version und Lizensierung}
+\label{schlenke:tbl:libraries}
+\end{center}
+\end{table}
 
 \subsubsection{Abgrenzungskriterien}
 
@@ -205,7 +231,7 @@ Ein texturiertes 3D"=Modell besteht in der Regel aus drei Dateien. Die OBJ"=Date
 
 Nachdem das unkomprimierte Modell repariert wurde, kann mit der eigentlichen Kompression begonnen werden. Zunächst werden die Geometriedaten (OBJ"=Dateien) und ggf. auch die Material"=Datei komprimiert und abgespeichert, wobei auch hier laut den technischen Metadaten bereits existierende Auflösungsstufen übersprungen werden. Nachdem alle Varianten der Geometriedaten erstellt wurden, erfolgt bei texturierten Modellen die Kompression der Textur separat für jede Auflösungsstufe, erneut unter der Zuhilfenahme der Software ImageMagick. Die zuvor erstellten Material"=Dateien verweisen bereits auf die nun erstellten Bilddateien. Wie bereits bei den Bilddateien werden abschließend die um die neuen Auflösungsstufen erweiterten technischen Metadaten an die Meta"=Datenbank übertragen.
 
-\subsection{Installation und Steuerung }
+\subsection{Installation und Steuerung}
 
 \subsubsection{Installation}
 
