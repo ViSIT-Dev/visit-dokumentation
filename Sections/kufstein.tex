@@ -652,9 +652,66 @@ Die Inhaltselemente, Sub-Inhaltselemente sowie Teaser können jederzeit bearbeit
 
 
 
+
+
+
+
 \section{Fernrohr}
 
-\subsection{Einpflegen der Daten in die Fernrohr-Applikation}
+Das Fernrohr ist für die Einrichtung die komplexeste Applikation.
+
+\subsection{Einpflegen der Daten in die Fernrohr-Applikation für Kuratoren}
+
+Dieser Absatz gilt, wenn das Fernrohr bereits eingerichtet ist und nur neuer POI (Points of Interesst) hinzugefügt werden soll.\\
+
+Dazu aus der Modulleiste links unter der Obergruppe VISIT FERNROHR POI's auswählen. Im linken Teil des Hauptfensters ist der Seitenbaum zu sehen und rechts befindet sich die Liste mit den bereits angelegten POI's (siehe Abbildung \ref{img:fernrohr_listenuebersicht}.
+
+Als nächstes müssen in der dunkelblauen Leiste die Einstellungen ausgewählt und das Häckchen bei Kuratorenmodus gesetzt und gespeichert werden (siehe Abbildung \ref{img:fernrohr_einstellungen}). Danach kann bereits die Seite im Browser geöffnet werden. Dies geschieht über einen Rechtsklick auf Fernrohr im Seitenbaum und der Auswahl \glqq Show\grqq{} (siehe Abbildung \ref{img:fernrohr_browser_ansicht}). 
+
+
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/fernrohr/fernrohr_liste.png}
+\caption{Fernrohr - Übersicht über alle angelegten POI}
+\label{img:fernrohr_listenuebersicht}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/fernrohr/fernrohr_einstellungen.png}
+\caption{Einstellungen - Kuratorenmodus}
+\label{img:fernrohr_einstellungen}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/fernrohr/fernrohr_ansicht_browser.png}
+\caption{Web-Ansicht öffnen}
+\label{img:fernrohr_browser_ansicht}
+\end{figure}
+
+
+\subsection{Auslesen der x- und y-Koordinaten}
+Im Browser öffnet sich nun die Webseite und im oberen rechten Eck ist das sogenannte Kuratorenkästchen eingeblendet. In diesem werden die x- und y-Koordinaten der aktuellen Position des Fernrohrs und die bereits bestehenden Punkte angezeigt.
+Hat man den Punkt ausgewählt an welchem das neue Bild oder Video angezeigt werden soll, dann müssen die Werte der x- und y-Koordinaten notiert werden.
+
+
+\subsection{Anlegen eines neuen Kartenelements}
+Als nächstes wählt man aus der dunkelblauen Leiste \glqq Neu\grqq{} aus. Hier kann ein neues Kartenelement hinzugefügt werden. Als erstes wird die gewünschte Sprache ausgewählt.
+
+Die beide Überschriften werden nur benötigt, wenn es sich um einen Texttyp handelt. Bei Videos reicht nur eine Überschrift. Als nächstes muss die Position eingetragen werden. Hier müssen die zuvor notierten x- und y-Koordinaten eingetragen werden (siehe Abbildung \ref{img:fernrohr_x_u_y_koordinaten}. Handelt es sich um ein Fullscreen Video, dann muss das Häckchen daneben gesetzt werden. Als nächstes können Medien hinzugefügt werden.
+
+\subsection{Radius der POI's}
+
+Die Größe der POI's muss beim Anlegen eines neuen Kartenelements angegeben werden. Hier muss geschaut und ausprobiert werden, welche Größe als passend empfunden wird. Je größer die Zahl, desto größer wird der Punkt auf der Karte angezeigt.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/fernrohr/fernrohr_x_u_y_koordinaten.png}
+\caption{Eintragen der x- und y-Koordinaten des neuen POI}
+\label{img:fernrohr_x_u_y_koordinaten}
+\end{figure}
 
 \subsection{Erstellung der Startseite für die Fernrohr-Applikation}
 
@@ -662,16 +719,26 @@ Die Inhaltselemente, Sub-Inhaltselemente sowie Teaser können jederzeit bearbeit
 
 
 
+
+
+
+
+
+
+
+
 \section{Dateiverwaltung}
 
 \subsection{Zugangsdaten zum Dateimanagement}
 Das Dateimanagement ist eine Applikation, mit der die Daten in der ViSIT Medien-Datenbank verwaltet werden können. Die Verwaltung befindet sich im TYPO3 Backend. Dafür müssen zuerst aus der Modulleiste die Extensions ausgewählt werden. In weiterer Folge kann im Hauptfenster die Visit App gefunden werden. Durch einen Klick darauf kommt man zu den Einstellungen (siehe Abbildung \ref{img:einstellung_extension}). Diese Einstellungen sind im ganzen System gleich.
+
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=12cm]{Figures/paula/dateiverwaltung/einstellung_extension.png}
 \caption{Einstellung der ViSIT App Extension}
 \label{img:einstellung_extension}
 \end{figure}
+
 Diese Login Daten sind sensibel, da sie Zugang zum Peer-to-Peer-Netzwerk geben, deshalb sind sie nicht im Docker angeführt. Sie bekommen diese Zugangsdaten (API User, Password for API User sowie die Syncthing Master ID) entweder von der betreuenden Firma oder von einem anderen ViSIT-Partner (siehe Abbildung \ref{img:extensions}).\\
 
 \begin{figure}[ht!]
@@ -819,4 +886,39 @@ Sollten die beiden oben beschriebenen Update-Vorgänge scheitern, dann muss das 
 
 
 \section{Projektverlauf}
+
+Das ViSIT-Projekt wurde am 1. Oktober 2016 gestartet. Dabei wurden auch einige Deadlines vereinbart, sodass mit der Entwicklung begonnen werden kann. Daraufhin wurde ab September 2018 bis Projektende ein Projektzeitplan erstellt, wo ersichtlich ist, war an was gerade arbeitet und wann was fertig sein wird (siehe Abbildung \ref{img:projektzeitplan}).
+
+
+Eine solche Deadline - zum Beispiel das Feature Freeze Tablets -  war am 31.05.2018, damit ab Juni 2018 mit der Entwicklung der Applikationen begonnen werden konnte. Zu dem Zeitpunkt stand also das Design fest, welches die Applikationen am Ende des Projekts haben sollen. Damit konnte mit der Entwicklung des Front- und Backends begonnen werden.
+
+Am 30.11.2018 wurden jedoch neue Layouts für die Tablets bekannt gegeben. Alles bis dahin entwickelte musste an das neue Layout angepasst werden, was viel Entwicklungszeit in Anspruch nahm. Als dies überarbeitet wurde, wurde am 21.05.2019 bekannt gegeben, dass ab sofort keine iPads verwendet werden sonder durch Lenovo Tablets ersetzt werden. Die überarbeiteten Layouts passten aber nicht für Lenovo Tablets und mussten neu gestaltet werden (29.05.2019). Auch jetzt musste der bereits zweimal überarbeitete Code wieder bearbeitet und auf Lenovo Tablets angepasst werden.\\
+
+
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=13cm]{Figures/paula/projektverlauf/projektzeitplan.png}
+\caption{Projektzeitplan für das ViSIT-Projekt }
+\label{img:projektzeitplan}
+\end{figure}
+
+Hier sind weitere Verzögerungen angeführt:
+
+
+
+\begin{center}
+\begin{tabular}{ c l }
+ 31.05.2018 & Feature Freeze Tablets \\ 
+ 31.07.2018 & Feature Freeze Fernrohr \\  
+ 30.11.2018 & Neue Layouts für Tablets in Zeplin \\ 
+ 21.05.2019 & iPads ersetzt durch Lenovo Tablets \\ 
+ 29.05.2019 & Nur noch neue Tablet Layouts für Tabltes (alte Obsolet) \\ 
+ 23.06.2019 & Fernrohr erhalten ohne Endstops und falschem Windows \\ 
+ 28.07.2019 & Server auf Festung eingerichtet (beschlossen im Meeting vom 09.04.2019) \\ 
+ 07.08.2019 & Fernrohr erhalten mit absoluten Drehgebern mit Overflow \\ 
+ 08.08.2019 & Netzwerk auf Festung noch nicht installiert (beschlossen im Meeting vom 9.4.2019) \\ 
+ 30.09.2019 & Projekt Ende 
+\end{tabular}
+\end{center}
 
