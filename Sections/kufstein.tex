@@ -799,7 +799,8 @@ Erklärungen zu den einzelnen Werten://
 
 \subsubsection{Encoder Offset X (RawX) und Encoder Offset Y (RawY)}
 
-Die \textbf{Raw-Werte} geben an, wie weit das Fernrohr nach links oben gedreht werden kann (bis es sowohl oben als auch links ansteht). Es sind die Werte, die man von den Drehgebern bekommt, welche die Position des Fernrohr bestimmen. Diese beiden Werte müssen unter den Plugin Optionen im Backend eingetragen werden.\\
+Die \textbf{Raw-Werte} geben die absolute Position des Drehgebers an. Diese Drehgeber sind mechanisch mit dem Fernrohrkopf verbunden und ermitteln die momentane Ausrichtung des Kopfes. Es wird die horizontale Position als Y und die vertikale Position als X erfasst. Die Werte sind abnehmend bei einer Rotation gegen den Uhrzeigersinn und Bewegung nach oben. 
+Da die Verbindung zwischen Drehgeber und Kopf varrieren kann, sind die initialen Werte der Drehgeber nicht aussagekräftig. Um eine einfache Handhabung zu ermöglichen, können diese Werte genullt werden - links oben sollte sich dann der Nullpunkt befinden. Um diese Raw-Werte zu nullen wird ein Offset angewendet. Dieser Offset wird von den tatsächlichen Drehgeberwerten (Raw) subtrahiert. 
 
 Später werden die Werte auf Null gesetzt, damit es einfacher wird, mit den Werten zu arbeiten. Somit sind bei der weiteren Arbeit ganz oben links die Koordinaten 0/0.\\
 
@@ -826,7 +827,7 @@ Durch die Angabe der \textbf{App Start X und Y-Werte} und der \textbf{App End X 
 
 Bei den Navigation Icons handelt es sich um die Sprachauswahl (Deutsch oder Englisch) und das Impressum. Sofern keine speziellen Icons verlangt werden, werden für die Sprache (deutsche und die britische Flagge) und das Impressum werden default Icons verwendet. Die Icons können jederzeit in den Fernrohr Plugin Optionen ausgetauscht werden.\\
 
-Die Lage dieser Navigation Icons wird über die Werte \textbf{Nav Icon Pos X (CurrentX)} und \textbf{Nav Icon Pos X (CurrentY)} angegeben. Diese geben den oberen linken Punkt in dem Bereich der Applikation an.
+Die Lage dieser Navigation Icons wird über die Werte \textbf{Nav Icon Pos X (CurrentX)} und \textbf{Nav Icon Pos Y (CurrentY)} angegeben. Diese geben den oberen linken Punkt in dem Bereich der Applikation an.
 
 \subsubsection{Encoder-Server URL}
 
