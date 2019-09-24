@@ -110,6 +110,7 @@ Wenn der Vorgang abgeschlossen ist, kann über Lokalhost im Browser unter \textb
 \end{figure}
 
 
+\cleardoublepage
 
 \section{TYPO3}
 \subsection{Allgemein}
@@ -274,7 +275,7 @@ Danach ins Raster \glqq Enthält\grqq{} wechseln, hier können verschiedene Obje
 
 
 
-
+\cleardoublepage
 
 \section{Karten-Applikation}
 
@@ -377,7 +378,7 @@ Die Kartenelemente können jederzeit bearbeitet oder gelöscht werden. Dies geht
 
 
 
-
+\cleardoublepage
 
 \section{Glossar-Applikation}
 
@@ -525,7 +526,7 @@ Insassen, Zellen und Events können jederzeit einzeln bearbeitet oder gelöscht 
 \end{figure}
 
 
-
+\cleardoublepage
 
 \section{Galerie-Applikation}
 
@@ -662,6 +663,10 @@ Die Inhaltselemente, Sub-Inhaltselemente sowie Teaser können jederzeit bearbeit
 
 
 
+
+\cleardoublepage
+
+
 \section{Fernrohr}
 
 Das Fernrohr ist für die Einrichtung die komplexeste Applikation.\\
@@ -704,7 +709,7 @@ Als nächstes müssen in der dunkelblauen Leiste die \glqq Einstellungen\grqq{} 
 \end{figure}
 
 
-\subsection{Auslesen der x- und y-Koordinaten}
+\subsubsection{Auslesen der x- und y-Koordinaten}
 
 Im Browser öffnet sich nun die Webseite und im oberen rechten Eck ist das sogenannte Kuratorenkästchen eingeblendet (siehe Abbildung \ref{img:kuratorenkaestchen}). In diesem werden die x- und y-Koordinaten der aktuellen Position des Fernrohrs (der Mittelpunkt des Sichtfeldes) und die bereits bestehenden Punkte angezeigt. Der blaue Hindergrund im der Abbildung \ref{img:kuratorenkaestchen} wird im realen Einsatz die Karte oder Landschaft sein, auf welcher sich die POI befinden.
 Hat man den Punkt ausgewählt an welchem das neue Bild oder Video angezeigt werden soll, dann müssen die Werte der x- und y-Koordinaten notiert werden.\\
@@ -721,14 +726,14 @@ Will der Besucher das ausgewählte POI wieder verlassen, muss er das Fernrohr be
 \label{img:kuratorenkaestchen}
 \end{figure}
 
-\subsection{Anlegen eines neuen Kartenelements}
+\subsubsection{Anlegen eines neuen Kartenelements}
 
 Als nächstes wählt man aus der dunkelblauen Leiste \glqq Neu\grqq{} aus. Hier kann ein neues Kartenelement hinzugefügt werden. Als erstes wird die gewünschte Sprache ausgewählt.
 
 Die beiden Überschriften werden nur benötigt, wenn es sich um einen Texttyp (also zum Beispiel ein Bild und dazu ein Text zum Lesen) handelt. Zum Texttyp gab es keine Designvorlage, dies wurde lediglich Vollständigkeit halber implementiert, grundsätzlich ist die Fernrohr-Applikation dafür da, Fullscreen Videos abzuspielen. Sollte ein Texttyp verlangt werden, muss das entsprechende Design implementiert werden.\\
 Bei Videos reicht nur eine Überschrift. Als nächstes muss die Position eingetragen werden. Hier müssen die zuvor notierten x- und y-Koordinaten aus dem Kuratorenkästchen eingetragen werden (siehe Abbildung \ref{img:fernrohr_x_u_y_koordinaten}). Handelt es sich um ein Fullscreen Video, dann muss das Häckchen daneben gesetzt werden. Sollte es sich um einen Texttyp handeln, dann können optional noch Medien hinzugefügt werden.
 
-\subsection{Größe (Radius) der POI's}
+\subsubsection{Größe (Radius) der POI's}
 
 Die Größe der POI's muss beim Anlegen eines neuen Kartenelements angegeben werden. Hier muss geschaut und ausprobiert werden, welche Größe als passend empfunden wird. Je größer die Zahl, desto größer wird der Punkt auf der Karte angezeigt.
 
@@ -740,17 +745,58 @@ Die Größe der POI's muss beim Anlegen eines neuen Kartenelements angegeben wer
 \end{figure}
 
 
-\subsection{Erstellung des Impressums für die Fernrohr-Applikation}
+\subsubsection{Erstellung des Impressums für die Fernrohr-Applikation}
 
 Das Impressum ist ein den Einstellungen der Fernrohr-Applikation zu finden. Dazu muss aus der dunkelblauen Leiste auf \glqq Einstellungen\grqq{} geklickt werden (siehe Abbildung \ref{img:fernrohr_einstellungen}). Hier kann der Text des Impressums sowohl auf Englisch als auch auf Deutsch eingegeben werden. Nach dem Befüllen müssen die Daten gespeichert werden.
 
 
-\subsection{Ansicht der Benutzer des Fernrohrs ohne des Kuratorenkästchens}
+\subsubsection{Ansicht der Benutzer des Fernrohrs ohne des Kuratorenkästchens}
 
 Für das Einpflegen der Daten war der Kuratorenmodus in den Fernrohr Einstellungen aktiviert. Ist man mit dem Einpflegen der Daten fertig und möchte die Ansicht haben, die die Benutzer haben werden, dann muss anschließend das Häckchen vom Kuratorenmodus entfernt werden.
 Dies ist wieder in den Einstellungen des Fernrohrs zu finden. Nach der Entfernung des Häckchens kann die Seite mittels Rechtsklick auf \glqq Fernrohr\grqq{} und der Auswahl von \glqq Show\grqq{} im Browser angezeigt werden. Jetzt ist das Kuratorenkästchen nicht mehr zu sehen, stattdessen befindet sich die Flagge der ausgewählten Sprache im oberen rechten Eck.
 
 
+\subsection{Einrichtung des Fernrohrs durch TYPO3-Administratoren}
+
+Die Einrichtung des Fernrohrs kann nur durch den TYPO3-Administrator erfolgen.\\
+Dazu als ersten Schritt das Fernrohr im Seitenbaum auswählen und dann in der Modulleiste links unter der Obergruppe WEB \glqq List\grqq{} auswählen. Danach im Page Content-Kästchen das Stiftsymbol \glqq Edit record\grqq{} auswählen (siehe Abbildung \ref{img:fernrohr_einstellungen} rot eingerahmtes Symbol). Im Arbeitsbereich erscheint \glqq Edit Page Content on page \glqq Fernrohr\grqq{}\grqq{}, hier im Raster die \glqq Plugins\grqq{} auswählen (siehe Abbildung \ref{img:fernrohr_plugin} rot eingerahmter Bereich). Jetzt muss noch der Debugmodus aktiviert werden, dazu das Häckchen im entsprechenden Kästchen setzen (siehe Abbildung \ref{img:fernrohr_plugin} blau eingerahmt). Im nächsten Schritt muss der aktivierte Debugmodus gespeichert werden. Dies geschieht mit einem Klick auf das Disketten-Symbol im oberen Teil des Arbeitsbereichs (siehe Abbildung \ref{img:fernrohr_plugin} grün eingerahmt).\\
+
+Wenn jetzt die Web-Ansicht über Rechtsklick auf Fernrohr im Seitenbaum und \glqq Show\grqq{} auswählen (siehe Abbildung \ref{img:fernrohr_webansicht_oeffnen} geöffnet wird, dann ist rechts oben ein großes Kästchen mit einigen Daten sichtbar (siehe Abbildung \ref{img:fernrohr_webansicht_debugmodus} der blaue Hintergrund ist im Produktivbetrieb eine Landkarte oder Landschaft).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/fernrohr/einrichtung_fernrohr/fernrohr_liste_uebersicht.png}
+\caption{Einstellungen des Fernrohrs}
+\label{img:fernrohr_einstellungen}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/fernrohr/einrichtung_fernrohr/fernrohr_plugin_einstellungen.png}
+\caption{Das Plugin des Fernrohrs}
+\label{img:fernrohr_plugin}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/fernrohr/einrichtung_fernrohr/fernrohr_web_ansicht.png}
+\caption{Web-Ansicht öffnen}
+\label{img:fernrohr_webansicht_oeffnen}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/fernrohr/einrichtung_fernrohr/fernrohr_web_ansicht1.png}
+\caption{Web-Ansicht der Fernrohr-Webseite im aktivierten Debugmodus}
+\label{img:fernrohr_webansicht_debugmodus}
+\end{figure}
+
+
+
+
+
+
+\subsubsection{asdkfj}
 
 
 
@@ -759,6 +805,10 @@ Dies ist wieder in den Einstellungen des Fernrohrs zu finden. Nach der Entfernun
 
 
 
+
+
+
+\cleardoublepage
 
 \section{Dateiverwaltung}
 
@@ -861,6 +911,9 @@ Soll die Datei hingegen nur für die ViSIT-Partner sichtbar sein - Zugriff \text
 
 
 
+
+\cleardoublepage
+
 \section{Update-Prozess}
 
 Ob ein Update verfügbar ist, kann im GitHub-Repository des Projekts unter Commits \url{https://github.com/ViSIT-Dev/appbundle/commits/master} eingesehen werden. Sollte ein Update fällig sein, da ein Commit kürzlich stattfand, dann gibt es zwei Möglichkeiten, dieses durchzuführen.
@@ -919,40 +972,5 @@ Sollten die beiden oben beschriebenen Update-Vorgänge scheitern, dann muss das 
 
 
 
-\section{Projektverlauf}
 
-Das ViSIT-Projekt wurde am 1. Oktober 2016 gestartet. Dabei wurden auch einige Deadlines vereinbart, sodass mit der Entwicklung begonnen werden kann. Daraufhin wurde ab September 2018 bis Projektende ein Projektzeitplan erstellt, wo ersichtlich ist, war an was gerade arbeitet und wann was fertig sein wird (siehe Abbildung \ref{img:projektzeitplan}).
-
-
-Eine solche Deadline - zum Beispiel das Feature Freeze Tablets -  war am 31.05.2018, damit ab Juni 2018 mit der Entwicklung der Applikationen begonnen werden konnte. Zu dem Zeitpunkt stand also das Design fest, welches die Applikationen am Ende des Projekts haben sollen. Damit konnte mit der Entwicklung des Front- und Backends begonnen werden.
-
-Am 30.11.2018 wurden jedoch neue Layouts für die Tablets bekannt gegeben. Alles bis dahin entwickelte musste an das neue Layout angepasst werden, was viel Entwicklungszeit in Anspruch nahm. Als dies überarbeitet wurde, wurde am 21.05.2019 bekannt gegeben, dass ab sofort keine iPads verwendet werden sonder durch Lenovo Tablets ersetzt werden. Die überarbeiteten Layouts passten aber nicht für Lenovo Tablets und mussten neu gestaltet werden (29.05.2019). Auch jetzt musste der bereits zweimal überarbeitete Code wieder bearbeitet und auf Lenovo Tablets angepasst werden.\\
-
-
-
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=13cm]{Figures/paula/projektverlauf/projektzeitplan.png}
-\caption{Projektzeitplan für das ViSIT-Projekt }
-\label{img:projektzeitplan}
-\end{figure}
-
-Hier sind weitere Verzögerungen angeführt:
-
-
-
-\begin{center}
-\begin{tabular}{ c l }
- 31.05.2018 & Feature Freeze Tablets \\ 
- 31.07.2018 & Feature Freeze Fernrohr \\  
- 30.11.2018 & Neue Layouts für Tablets in Zeplin \\ 
- 21.05.2019 & iPads ersetzt durch Lenovo Tablets \\ 
- 29.05.2019 & Nur noch neue Tablet Layouts für Tabltes (alte Obsolet) \\ 
- 23.06.2019 & Fernrohr erhalten ohne Endstops und falschem Windows \\ 
- 28.07.2019 & Server auf Festung eingerichtet (beschlossen im Meeting vom 09.04.2019) \\ 
- 07.08.2019 & Fernrohr erhalten mit absoluten Drehgebern mit Overflow \\ 
- 08.08.2019 & Netzwerk auf Festung noch nicht installiert (beschlossen im Meeting vom 9.4.2019) \\ 
- 30.09.2019 & Projekt Ende 
-\end{tabular}
-\end{center}
 
