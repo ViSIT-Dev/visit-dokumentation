@@ -807,29 +807,72 @@ Später werden die Werte auf Null gesetzt, damit es einfacher wird, mit den Wert
 
 \textbf{Zum Eintragen der Werte:}\\
 
-Von dem in dem Kästchen (siehe Abbildung \ref{img:fernrohr_webansicht_debugmodus}) angegebenen \textbf{RawX-Wert} muss zirka 1000 abgezogen werden. Dies ist aus dem Grund, dass das Fernrohr noch ein kleines Stück nach oben und links gedrückt werden kann. Sollte der \textbf{RawX-Wert} zum Beispiel 42162 sein, dann sollte 41000 in den Plugin-Optionen im Backend eingetragen werden (siehe Abbildung B I L D!!!!!).\\
+Von dem in dem Kästchen (siehe Abbildung \ref{img:fernrohr_webansicht_debugmodus}) angegebenen \textbf{RawX-Wert} muss zirka 1000 abgezogen werden. Dies ist aus dem Grund, dass das Fernrohr noch ein kleines Stück nach oben und links gedrückt werden kann. Sollte der \textbf{RawX-Wert} zum Beispiel 42162 sein, dann sollte 41000 in den Plugin-Optionen im Backend eingetragen werden (siehe Abbildung \ref{img:x_y_werte}, blau eingerahmt).\\
 \\
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/fernrohr/einrichtung_fernrohr/x_y_werte.png}
+\caption{X- und Y-Werte im Backend}
+\label{img:x_y_werte}
+\end{figure}
+
+
 Das gleiche wird mit dem \textbf{Raw-Y} gemacht. Sollte \textbf{Raw-Y} zum Beispiel 11623 sein, dann wird 11000 in die Plugin-Optionen eingetragen.
+
 
 \subsubsection{App Start X (CurrentX) und App Start Y (CurrentY)}
 
-\textbf{App Start X} und \textbf{App Start Y} geben den oberen linken Wert an, wo die Applikation anfängt. Das Fernrohr lässt einen Bewegungsradius von 180 Grad zu, für die Applikation werden jedoch nicht die vollen 180 Grad ausgenutzt sondern zum Beispiel 90 Grad. Mit den Werten \textbf{App Start X} und \textbf{App Start Y} gibt man den Startpunkt der Applikation an. Es sind also die Koordinaten von dem oberen linken Eck, wo die Landkarte oder Landschaft beginnen soll.
+\textbf{App Start X} und \textbf{App Start Y} geben den oberen linken Wert an, wo die Applikation anfängt. Das Fernrohr lässt einen Bewegungsradius von 180 Grad zu, für die Applikation werden jedoch nicht die vollen 180 Grad ausgenutzt sondern zum Beispiel 90 Grad. Mit den Werten \textbf{App Start X} und \textbf{App Start Y} gibt man den Startpunkt der Applikation an. Es sind also die Koordinaten von dem oberen linken Eck, wo die Landkarte oder Landschaft beginnen soll. Der entsprechende Wert muss im Backend in den Plugin Optionen eingetragen werden (siehe Abbildung \ref{img:x_y_werte}, grün eingerahmt).
 
 \subsubsection{App End X (CurrentX) und App End Y (CurrentY)}
 
-Wie bei App Start X und Y der Anfang der Applikation angegeben wurde, so muss auch das untere rechte Eck, also das Ende der Applikation angegeben werden. Das Ende der Applikation wird mit den \textbf{App End X} und \textbf{App End Y} angegeben.\\
+Wie bei App Start X und Y der Anfang der Applikation angegeben wurde, so muss auch das untere rechte Eck, also das Ende der Applikation angegeben werden. Das Ende der Applikation wird mit dem \textbf{App End X} und \textbf{App End Y} angegeben. Diese Werte müssen ebenfalls im Backend eingetragen werden (siehe Abbildung \ref{img:x_y_werte}, rot eingerahmt).\\
 
 Durch die Angabe der \textbf{App Start X und Y-Werte} und der \textbf{App End X und Y-Werte} entsteht ein Rechteck zwischen den Koordinaten, in welchem die Landkarte oder Landschaft angezeigt wird.
 
 
 
+
 \subsubsection{Navigation Icons}
 
-Bei den Navigation Icons handelt es sich um die Sprachauswahl (Deutsch oder Englisch) und das Impressum. Sofern keine speziellen Icons verlangt werden, werden für die Sprache (deutsche und die britische Flagge) und das Impressum werden default Icons verwendet. Die Icons können jederzeit in den Fernrohr Plugin Optionen ausgetauscht werden.\\
+Bei den Navigation Icons handelt es sich um die Sprachauswahl (Deutsch oder Englisch) und das Impressum. Sofern keine speziellen Icons verlangt werden, werden für die Sprache (die deutsche und die britische Flagge) und das Impressum (Umriss einer Burg) default Icons verwendet. Die Icons können jederzeit in den Fernrohr Plugin Optionen ausgetauscht werden (siehe Abbildung \ref{img:default_icons}, blau eingerahmt).\\
 
 Die Lage dieser Navigation Icons wird über die Werte \textbf{Nav Icon Pos X (CurrentX)} und \textbf{Nav Icon Pos Y (CurrentY)} angegeben. Diese geben den oberen linken Punkt in dem Bereich der Applikation an.
 
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/fernrohr/einrichtung_fernrohr/default_icons.png}
+\caption{Icons für die Sprachauswahl und das Impressum}
+\label{img:default_icons}
+\end{figure}
+
+
+\subsubsection{Board Size X (px) und Board Size Y (px)}
+
+
+
+
 \subsubsection{Encoder-Server URL}
+
+Die Encoder-Server URL ist die Adresse, wo sich der Server für die Drehgeber ist. Da der Drehgeber sehr hardwarenah ist, wurde ein eigener Server zum Auslesen der Daten erstellt, welcher der Web-Applikation die ausgelesenen Werte zur Verfügung stellt. Die Fernrohr-Applikation verbindet sich zum Server und stellt der Applikation in weiterer Folge die RawX- und RawY-Werte zur Verfügung.
+
+Läuft der Server lokal, dann wird hier die localhost-Adresse eingetragen (siehe Abbildung \ref{img:board_size_encoder_url}, rot eingerahmt).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=12cm]{Figures/paula/fernrohr/einrichtung_fernrohr/board_size_encoder_url.png}
+\caption{Board Size in Pixel und Encoder-Server URL}
+\label{img:board_size_encoder_url}
+\end{figure}
+
+
+\subsubsection{Spezial POI - Größe (px)}
+
+
+
+
+
 
 
 
