@@ -761,7 +761,9 @@ Dies ist wieder in den Einstellungen des Fernrohrs zu finden. Nach der Entfernun
 Die Einrichtung des Fernrohrs kann nur durch den TYPO3-Administrator erfolgen.\\
 Dazu als ersten Schritt das Fernrohr im Seitenbaum auswählen und dann in der Modulleiste links unter der Obergruppe WEB \glqq List\grqq{} auswählen. Danach im Page Content-Kästchen das Stiftsymbol \glqq Edit record\grqq{} auswählen (siehe Abbildung \ref{img:fernrohr_einstellungen} rot eingerahmtes Symbol). Im Arbeitsbereich erscheint \glqq Edit Page Content on page \glqq Fernrohr\grqq{}\grqq{}, hier im Raster die \glqq Plugins\grqq{} auswählen (siehe Abbildung \ref{img:fernrohr_plugin} rot eingerahmter Bereich). Jetzt muss noch der Debugmodus aktiviert werden, dazu das Häckchen im entsprechenden Kästchen setzen (siehe Abbildung \ref{img:fernrohr_plugin} blau eingerahmt). Im nächsten Schritt muss der aktivierte Debugmodus gespeichert werden. Dies geschieht mit einem Klick auf das Disketten-Symbol im oberen Teil des Arbeitsbereichs (siehe Abbildung \ref{img:fernrohr_plugin} grün eingerahmt).\\
 
-Wenn jetzt die Web-Ansicht über Rechtsklick auf Fernrohr im Seitenbaum und \glqq Show\grqq{} auswählen (siehe Abbildung \ref{img:fernrohr_webansicht_oeffnen} geöffnet wird, dann ist rechts oben ein großes Kästchen mit einigen Daten sichtbar (siehe Abbildung \ref{img:fernrohr_webansicht_debugmodus} der blaue Hintergrund ist im Produktivbetrieb eine Landkarte oder Landschaft).
+
+Wenn jetzt die Web-Ansicht über Rechtsklick auf Fernrohr im Seitenbaum und \glqq Show\grqq{} auswählen (siehe Abbildung \ref{img:fernrohr_webansicht_oeffnen} geöffnet wird, dann wird rechts oben ein großes Kästchen mit einigen Daten sichtbar (siehe Abbildung \ref{img:fernrohr_webansicht_debugmodus} der blaue Hintergrund ist im Produktivbetrieb eine Landkarte oder Landschaft).
+
 
 \begin{figure}[ht!]
 \centering
@@ -793,18 +795,40 @@ Wenn jetzt die Web-Ansicht über Rechtsklick auf Fernrohr im Seitenbaum und \glq
 
 
 
+Erklärungen zu den einzelnen Werten://
+
+\subsubsection{Encoder Offset X (RawX) und Encoder Offset Y (RawY)}
+
+Die \textbf{Raw-Werte} geben an, wie weit das Fernrohr nach links oben gedreht werden kann (bis es sowohl oben als auch links ansteht). Es sind die Werte, die man von den Drehgebern bekommt, welche die Position des Fernrohr bestimmen. Diese beiden Werte müssen unter den Plugin Optionen im Backend eingetragen werden.\\
+
+Später werden die Werte auf Null gesetzt, damit es einfacher wird, mit den Werten zu arbeiten. Somit sind bei der weiteren Arbeit ganz oben links die Koordinaten 0/0.\\
+
+
+\textbf{Zum Eintragen der Werte:}\\
+
+Von dem in dem Kästchen (siehe Abbildung \ref{img:fernrohr_webansicht_debugmodus}) angegebenen \textbf{RawX-Wert} muss zirka 1000 abgezogen werden. Dies ist aus dem Grund, dass das Fernrohr noch ein kleines Stück nach oben und links gedrückt werden kann. Sollte der \textbf{RawX-Wert} zum Beispiel 42162 sein, dann sollte 41000 in den Plugin-Optionen im Backend eingetragen werden (siehe Abbildung B I L D!!!!!).\\
+\\
+Das gleiche wird mit dem \textbf{Raw-Y} gemacht. Sollte \textbf{Raw-Y} zum Beispiel 11623 sein, dann wird 11000 in die Plugin-Optionen eingetragen.
+
+\subsubsection{App Start X (CurrentX) und App Start Y (CurrentY)}
+
+\textbf{App Start X} und \textbf{App Start Y} geben den oberen linken Wert an, wo die Applikation anfängt. Das Fernrohr lässt einen Bewegungsradius von 180 Grad zu, für die Applikation werden jedoch nicht die vollen 180 Grad ausgenutzt sondern zum Beispiel 90 Grad. Mit den Werten \textbf{App Start X} und \textbf{App Start Y} gibt man den Startpunkt der Applikation an. Es sind also die Koordinaten von dem oberen linken Eck, wo die Landkarte oder Landschaft beginnen soll.
+
+\subsubsection{App End X (CurrentX) und App End Y (CurrentY)}
+
+Wie bei App Start X und Y der Anfang der Applikation angegeben wurde, so muss auch das untere rechte Eck, also das Ende der Applikation angegeben werden. Das Ende der Applikation wird mit den \textbf{App End X} und \textbf{App End Y} angegeben.\\
+
+Durch die Angabe der \textbf{App Start X und Y-Werte} und der \textbf{App End X und Y-Werte} entsteht ein Rechteck zwischen den Koordinaten, in welchem die Landkarte oder Landschaft angezeigt wird.
 
 
 
-\subsubsection{asdkfj}
+\subsubsection{Navigation Icons}
 
+Bei den Navigation Icons handelt es sich um die Sprachauswahl (Deutsch oder Englisch) und das Impressum. Sofern keine speziellen Icons verlangt werden, werden für die Sprache (deutsche und die britische Flagge) und das Impressum werden default Icons verwendet. Die Icons können jederzeit in den Fernrohr Plugin Optionen ausgetauscht werden.\\
 
+Die Lage dieser Navigation Icons wird über die Werte \textbf{Nav Icon Pos X (CurrentY)} und \textbf{Nav Icon Pos X (CurrentY)}
 
-
-
-
-
-
+\subsubsection{Encoder-Server URL}
 
 
 
