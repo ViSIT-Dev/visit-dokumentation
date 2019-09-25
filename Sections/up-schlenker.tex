@@ -254,6 +254,13 @@ aus dem soeben erstellten Docker"=Image ein ausführbarer Docker"=Container gene
 \end{itemize}
 Nach dem Erstellen des Docker"=Containers wird dieser automatisch gestartet und kann, wie im folgenden Abschnitt erläutert wird, beendet oder neu gestartet werden. Bei gestartetem Container ist die Web"=Oberfläche in der Standardkonfiguration unter \url{http://localhost:1613} erreichbar, während die API unter \url{http://localhost:1613/api} zur Verfügung steht. Bevor die Kompressions"=Komponente vollständig funktionstüchtig ist, müssen jedoch die Konfigurationsoptionen geeignet angepasst werden, wobei hierfür auf Abschnitt \ref{schlenke:chp:configuration} verwiesen wird.
 
+Beim Starten des Kompressions"=Containers wird der Standardwert der Java Virtual Machine (JVM) für die maximale Größe des Heaps (dynamisch genutzter Arbeitsspeicher) verwendet. Sollen sehr große 3D"=Modelle komprimiert werden, ist dieser Wert unter Umständen zu niedrig und muss angepasst werden. Dies ist nur durch ein Bearbeiten der Datei {\ttfamily Dockerfile} im Git"=Repository möglich. Dies kann beispielsweise erreicht werden, indem vor dem Erstellen des Docker"=Images ein Fork des Git"=Repositories erstellt wird, dort die Datei {\ttfamily Dockerfile} modifiziert wird, und anschließend der Fork für das Erstellen des Docker"=Images verwendet wird. In der Datei {\ttfamily Dockerfile} genügt es, die letzte Zeile zu bearbeiten, so dass der JVM ein zusätzliches Argument übergeben wird. Beispielsweise würde durch die Zeile 
+\begin{lstlisting}[caption=Ausführen einer JAR-Datei mit Argument für die maximale Heap-Größe]
+CMD ["java", "-Xmx16G", "-jar", "/root/Compression.jar"]
+\end{lstlisting}
+der verfügbare Heap auf 16 GB beschränkt.
+
+
 \subsubsection{Steuerung des Docker-Containers}
 
 Der die Kompressions"=Komponente beinhaltende Docker"=Container kann wie jeder andere Container mit den Befehlen
