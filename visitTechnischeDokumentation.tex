@@ -36,7 +36,7 @@ BCOR5mm, % Binding correction
 %	TITLE AND AUTHOR(S)
 %----------------------------------------------------------------------------------------
 
-\title{\normalfont\spacedallcaps{ViSIT - Technische Dokumentation}} % The article title
+\title{\normalfont\spacedallcaps{ViSIT - Benutzerhandbuch und Dokumentation}} % The article title
  
 %\subtitle{Subtitle} % Uncomment to display a subtitle
 
@@ -74,8 +74,17 @@ BCOR5mm, % Binding correction
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[width=\textwidth]{Figures/logos/Logo_INTEREG}
+    \includegraphics[width=0.75\textwidth]{Figures/logos/Logo_INTEREG}
 \end{figure}
+
+\hfill \hfill  \break
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.4]{Figures/logos/fhku.jpg}
+    \includegraphics[scale=1]{Figures/logos/unipa.jpg}
+\end{figure}
+
 
 \newpage
 
@@ -103,6 +112,7 @@ BCOR5mm, % Binding correction
 \let\thefootnote\relax\footnotetext{\textsuperscript{2} \textit{Fachhochschule Kufstein}}
 
 \let\thefootnote\relax\footnotetext{\textsuperscript{3} \textit{Forwiss, Universität Passau}}
+
 \endgroup
 %----------------------------------------------------------------------------------------
 
@@ -124,8 +134,6 @@ Nach einführenden Kapiteln zum allgemeinen Installationsprozess und zu TYPO3 al
 
 \include{Sections/up-berndl}
 
-\include{Sections/appendix}
-
 %----------------------------------------------------------------------------------------
 %	BIBLIOGRAPHY
 %----------------------------------------------------------------------------------------
@@ -133,5 +141,10 @@ Nach einführenden Kapiteln zum allgemeinen Installationsprozess und zu TYPO3 al
 \printbibliography
 
 %----------------------------------------------------------------------------------------
+
+
+\include{Sections/appendix}
+
+\includepdf[pages=-,fitpaper=true]{requirements.pdf}
 
 \end{document}
